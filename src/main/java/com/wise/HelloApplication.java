@@ -9,6 +9,10 @@ import lombok.SneakyThrows;
 import java.util.Objects;
 
 public class HelloApplication extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     @SneakyThrows
     public void start(Stage stage) {
@@ -18,9 +22,5 @@ public class HelloApplication extends Application {
         stage.setTitle("Resource Professionals Marketplace");
         stage.setScene(scene);
         stage.show();
-    }
-
-    public static void main(String[] args) {
-        launch();
     }
 }

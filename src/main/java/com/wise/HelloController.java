@@ -1,4 +1,4 @@
-package wise.resource.professionals.marketplace.resourceprofessionalsmarketplace;
+package com.wise;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;

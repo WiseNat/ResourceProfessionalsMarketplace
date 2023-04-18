@@ -1,4 +1,4 @@
-module wise.resource.professionals.marketplace.resourceprofessionalsmarketplace {
+module com.wise {
     requires javafx.controls;
     requires javafx.fxml;
             
@@ -6,7 +6,8 @@ module wise.resource.professionals.marketplace.resourceprofessionalsmarketplace 
             requires com.dlsc.formsfx;
             requires net.synedra.validatorfx;
             requires org.kordamp.ikonli.javafx;
-                
-    opens wise.resource.professionals.marketplace.resourceprofessionalsmarketplace to javafx.fxml;
-    exports wise.resource.professionals.marketplace.resourceprofessionalsmarketplace;
+    requires lombok;
+
+    opens com.wise to javafx.fxml;
+    exports com.wise;
 }

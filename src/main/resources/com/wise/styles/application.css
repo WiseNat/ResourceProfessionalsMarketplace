@@ -1,0 +1,91 @@
+/* Font Faces */
+
+@font-face {
+    src: url('Roboto-Regular.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Bold.ttf');
+}
+
+@font-face {
+    src: url('Roboto-Italic.ttf');
+}
+
+
+/* Root */
+
+.root {
+    -fx-font-size: 20;
+    -fx-font-family: "Roboto";
+	rpmWhite: #FBF9FA;
+	rpmGrey: #B5B5B5;
+	rpmBlack: #203542;
+	rpmAzure: #265A6C;
+	rpmGreen: #119C79;
+	rpmDarkGreen: #20725C;
+	rpmRed: #DC3545;
+}
+
+
+/* JavaFX Classes */
+
+.hyperlink {
+    -fx-text-fill: rpmGreen;
+	-fx-underline: true;
+	-fx-border-color: transparent;
+	-fx-padding: 0;
+}
+
+.text-field {
+	-fx-font-size: 20;
+	-fx-text-fill: rpmBlack;
+	-fx-prompt-text-fill: rpmGrey;
+	-fx-highlight-fill: rpmGrey;
+	-fx-highlight-text-fill: rpmWhite;
+	-fx-background-color: rpmGrey, rpmWhite;
+	-fx-background-insets: 0, 1.5;
+	-fx-padding: 0.8em;
+	-fx-background-radius: 7;
+}
+
+.text-field:focused {
+	-fx-background-color: rpmBlack, rpmWhite;
+}
+
+.choice-box {
+	-fx-font-size: 20;
+	-fx-text-fill: rpmBlack;
+	-fx-prompt-text-fill: rpmGrey;
+	-fx-highlight-fill: rpmGrey;
+	-fx-highlight-text-fill: rpmWhite;
+	-fx-background-color: rpmGrey, rpmWhite;
+	-fx-background-insets: 0, 1.5;
+	-fx-padding: 0.5em 0.8em 0.5em 0.8em;
+	-fx-background-radius: 7;
+}
+
+
+
+.button {
+	-fx-background-color: rpmGreen;
+	-fx-text-fill: rpmWhite;
+	-fx-padding: 0.8em;
+	-fx-background-radius: 7;
+}
+
+// Add .button:hover functionality in Java code
+
+
+/* Custom Classes */
+
+.extreme-text {
+	-fx-font-size: 96;
+	-fx-font-weight: bold;
+	-fx-fill: rpmAzure;
+	-fx-text-fill: rpmAzure;
+}
+
+.negative-btn {
+	
+}

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+      <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="200.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="-Infinity" vgrow="NEVER" />
+      <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="200.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <children>
+      <VBox spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+         <children>
+            <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="extreme-text" text="Create an&#13;account" textOverrun="CLIP" />
+            <TextFlow>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? " />
+                  <Hyperlink text="Login" />
+               </children>
+            </TextFlow>
+         </children>
+      </VBox>
+      <VBox minWidth="-Infinity" spacing="50.0" GridPane.columnIndex="3" GridPane.hgrow="NEVER" GridPane.rowIndex="1" GridPane.vgrow="NEVER">
+         <children>
+            <VBox minWidth="-Infinity" spacing="22.0">
+               <children>
+                  <HBox maxWidth="1.7976931348623157E308" prefWidth="400.0" spacing="35.0">
+                     <children>
+                        <TextField promptText="First Name" />
+                        <TextField promptText="Last Name" />
+                     </children>
+                  </HBox>
+                  <TextField maxWidth="1.7976931348623157E308" promptText="Email" />
+                  <PasswordField promptText="Password" />
+                  <ChoiceBox maxWidth="1.7976931348623157E308" />
+               </children>
+            </VBox>
+            <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Account" />
+         </children>
+      </VBox>
+   </children>
+</GridPane>

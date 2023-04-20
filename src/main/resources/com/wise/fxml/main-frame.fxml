@@ -56,8 +56,18 @@
                         <Insets bottom="30.0" />
                      </padding>
                   </Label>
-                  <Separator prefWidth="200.0" scaleShape="false" />
-                  <Pane />
+                  <Separator prefWidth="200.0" scaleShape="false">
+                     <VBox.margin>
+                        <Insets bottom="70.0" />
+                     </VBox.margin></Separator>
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                  </GridPane>
                </children>
                <padding>
                   <Insets bottom="30.0" left="75.0" right="75.0" top="30.0" />

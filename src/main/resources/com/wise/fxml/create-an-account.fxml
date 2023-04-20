@@ -21,7 +21,7 @@
         <VBox alignment="CENTER_LEFT" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER"
               GridPane.rowIndex="1">
             <children>
-                <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="extreme-text"
+                <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="h1"
                        text="Create an&#13;account" textOverrun="CLIP"/>
                 <TextFlow minWidth="-Infinity">
                     <children>

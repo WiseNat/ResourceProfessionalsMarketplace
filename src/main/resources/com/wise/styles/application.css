@@ -19,8 +19,10 @@
     -fx-font-size: 20;
     -fx-font-family: "Roboto";
 	rpmWhite: #FBF9FA;
+	rpmLightGrey: #F2F2F2;
 	rpmGrey: #B5B5B5;
-	rpmBlack: #203542;
+	rpmBlack: #121C1E;
+	rpmGunMetal: #203542;
 	rpmAzure: #265A6C;
 	rpmGreen: #119C79;
 	rpmDarkGreen: #20725C;
@@ -39,7 +41,7 @@
 
 .text-field {
 	-fx-font-size: 20;
-	-fx-text-fill: rpmBlack;
+	-fx-text-fill: rpmGunMetal;
 	-fx-prompt-text-fill: rpmGrey;
 	-fx-highlight-fill: rpmGrey;
 	-fx-highlight-text-fill: rpmWhite;
@@ -50,12 +52,12 @@
 }
 
 .text-field:focused {
-	-fx-background-color: rpmBlack, rpmWhite;
+	-fx-background-color: rpmGunMetal, rpmWhite;
 }
 
 .choice-box {
 	-fx-font-size: 20;
-	-fx-text-fill: rpmBlack;
+	-fx-text-fill: rpmGunMetal;
 	-fx-prompt-text-fill: rpmGrey;
 	-fx-highlight-fill: rpmGrey;
 	-fx-highlight-text-fill: rpmWhite;
@@ -65,8 +67,6 @@
 	-fx-background-radius: 7;
 }
 
-
-
 .button {
 	-fx-background-color: rpmGreen;
 	-fx-text-fill: rpmWhite;
@@ -74,18 +74,40 @@
 	-fx-background-radius: 7;
 }
 
-// Add .button:hover functionality in Java code
-
+.separator .line {
+    -fx-background-color: rpmGrey;
+    -fx-pref-height: 1;
+    -fx-border-color: null ;
+}
 
 /* Custom Classes */
 
-.extreme-text {
+.h1 {
 	-fx-font-size: 96;
 	-fx-font-weight: bold;
 	-fx-fill: rpmAzure;
 	-fx-text-fill: rpmAzure;
 }
 
+.h2 {
+	-fx-font-size: 64;
+	-fx-font-weight: bold;
+	-fx-fill: rpmBlack;
+	-fx-text-fill: rpmBlack;
+}
+
 .negative-btn {
-	
+	-fx-background-color: rpmRed;
+}
+
+.navbar {
+	-fx-background-color: rpmBlack;
+}
+
+.main-content {
+	-fx-background-color: rpmLightGrey;
+}
+
+.sidebar {
+	-fx-background-color: rpmWhite;
 }

@@ -16,7 +16,8 @@ public class HelloApplication extends Application {
     @Override
     @SneakyThrows
     public void start(Stage stage) {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("fxml/create-an-account.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("fxml/LogIn.fxml"));
+
         Scene scene = new Scene(fxmlLoader.load(), 320, 240);
         scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("styles/application.css")).toExternalForm());
         stage.setTitle("Resource Professionals Marketplace");

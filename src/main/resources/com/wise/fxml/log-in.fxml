@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+<GridPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18">
+    <columnConstraints>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0"/>
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="-Infinity" minHeight="0.0" prefHeight="200.0" vgrow="SOMETIMES"/>
+    </rowConstraints>
+    <children>
+        <VBox alignment="CENTER_LEFT" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER"
+              GridPane.rowIndex="1">
+            <children>
+                <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="h1" text="Log in"
+                       textOverrun="CLIP"/>
+                <TextFlow minWidth="-Infinity">
+                    <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account? "/>
+                        <Hyperlink text="Create an Account"/>
+                    </children>
+                </TextFlow>
+            </children>
+        </VBox>
+        <VBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="50.0" GridPane.columnIndex="3"
+              GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+            <children>
+                <VBox minWidth="-Infinity" prefWidth="400.0" spacing="22.0">
+                    <children>
+                        <TextField maxWidth="1.7976931348623157E308" promptText="Email"/>
+                        <PasswordField promptText="Password"/>
+                    </children>
+                </VBox>
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Account"/>
+            </children>
+        </VBox>
+    </children>
+</GridPane>

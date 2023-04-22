@@ -10,4 +10,6 @@ module com.wise {
 
     opens com.wise to javafx.fxml;
     exports com.wise;
+    exports com.wise.controller;
+    opens com.wise.controller to javafx.fxml;
 }

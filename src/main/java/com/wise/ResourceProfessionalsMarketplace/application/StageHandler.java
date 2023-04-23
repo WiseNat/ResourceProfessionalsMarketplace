@@ -13,21 +13,28 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Component
-public class PrimaryStageInitialiser implements ApplicationListener<StageReadyEvent> {
+public class StageHandler implements ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
 
+    private Stage stage;
+
     @Autowired
-    public PrimaryStageInitialiser(FxWeaver fxWeaver) {
+    public StageHandler(FxWeaver fxWeaver) {
         this.fxWeaver = fxWeaver;
     }
 
+    /**
+     * Initialises the JavaFX applciation
+     *
+     * @param event the event to respond to
+     */
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
-        Scene scene = new Scene(fxWeaver.loadView(LogInController.class), 400, 300);
-        scene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("../styles/application.css")).toExternalForm());
+        Scene scene = this.getScene(LogInController.class);
+        this.sceneInit(scene);
 
-        Stage stage = event.stage;
+        stage = event.stage;
         stage.setTitle("Resource Professionals Marketplace");
         stage.setScene(scene);
 
@@ -40,5 +47,21 @@ public class PrimaryStageInitialiser implements ApplicationListener<StageReadyEv
         stage.setMaximized(true);
 
         stage.show();
+    }
+
+    public <C> Scene getScene(Class <C> controllerClass) {
+        return new Scene(fxWeaver.loadView(controllerClass));
+    }
+
+    public <C> void swapScene(Class<C> controllerClass) {
+        Scene scene = this.getScene(controllerClass);
+        this.sceneInit(scene);
+        stage.setScene(scene);
+    }
+
+    public void sceneInit(Scene scene) {
+        scene.getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("../styles/application.css")).toExternalForm()
+        );
     }
 }

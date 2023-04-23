@@ -32,7 +32,7 @@
                 <TextFlow minWidth="-Infinity">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account? " />
-                        <Hyperlink text="Create an Account" />
+                        <Hyperlink fx:id="hyperlink" onAction="#onHyperLinkClick" text="Create an Account" />
                     </children>
                 </TextFlow>
             </children>

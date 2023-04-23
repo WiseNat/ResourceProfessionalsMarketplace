@@ -133,8 +133,12 @@
 	-fx-text-fill: rpmBlack;
 }
 
-.negative-btn {
+.negative-button {
 	-fx-background-color: rpmRed;
+}
+
+.negative-text-field {
+    -fx-background-color: rpmRed, rpmWhite;
 }
 
 .navbar {

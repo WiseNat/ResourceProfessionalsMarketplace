@@ -1,8 +1,8 @@
 package com.wise.ResourceProfessionalsMarketplace.repository;
 
-import com.wise.ResourceProfessionalsMarketplace.entity.Banding;
+import com.wise.ResourceProfessionalsMarketplace.entity.BandingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface BandingRepository extends JpaRepository<Banding, Long> {
+public interface BandingRepository extends JpaRepository<BandingEntity, Long> {
 
 }

@@ -1,13 +1,15 @@
 package com.wise.ResourceProfessionalsMarketplace.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table
-public class Account {
+@Table(name = "account")
+public class AccountEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +17,11 @@ public class Account {
 
     @ManyToOne
     @JoinColumn(referencedColumnName = "id")
-    private Resource resource;
+    private ResourceEntity resource;
 
     @ManyToOne
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private AccountType accountType;
+    private AccountTypeEntity accountType;
 
     @Column(nullable = false)
     private String firstName;
@@ -30,11 +32,8 @@ public class Account {
     @Column(nullable = false)
     private String email;
 
-    @Column(nullable = false, columnDefinition = "char(64)")
-    private String hash;
-
-    @Column(nullable = false, columnDefinition = "char(64)")
-    private String salt;
+    @Column(nullable = false, columnDefinition = "char(60)")
+    private String encodedPassword;
 
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private Boolean is_approved;

@@ -1,6 +1,6 @@
 package com.wise.ResourceProfessionalsMarketplace.constant;
 
-public enum AccountTypes {
+public enum AccountTypeEnum {
     Admin("Admin"),
     Resource("Resource"),
     ProjectManager("Project Manager"),
@@ -8,7 +8,7 @@ public enum AccountTypes {
 
     public final String value;
 
-    AccountTypes(String value) {
+    AccountTypeEnum(String value) {
         this.value = value;
     }
 }

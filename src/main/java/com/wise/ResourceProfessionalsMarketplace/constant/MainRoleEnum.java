@@ -1,6 +1,6 @@
 package com.wise.ResourceProfessionalsMarketplace.constant;
 
-public enum MainRoleTypes {
+public enum MainRoleEnum {
     Developer("Developer"),
     DevOps("DevOps"),
     Architect("Architect"),
@@ -12,7 +12,7 @@ public enum MainRoleTypes {
 
     public final String value;
 
-    MainRoleTypes(String value) {
+    MainRoleEnum(String value) {
         this.value = value;
     }
 }

@@ -1,6 +1,6 @@
 package com.wise.ResourceProfessionalsMarketplace.constant;
 
-public enum SubRoleTypes {
+public enum SubRoleEnum {
     WebDeveloper("Web Developer"),
     FrontendDeveloper("Frontend Developer"),
     BackendDeveloper("Backend Developer"),
@@ -20,7 +20,7 @@ public enum SubRoleTypes {
 
     public final String value;
 
-    SubRoleTypes(String value) {
+    SubRoleEnum(String value) {
         this.value = value;
     }
 }

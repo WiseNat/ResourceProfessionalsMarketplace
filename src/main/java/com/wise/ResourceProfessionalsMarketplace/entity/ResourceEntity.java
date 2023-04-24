@@ -1,15 +1,17 @@
 package com.wise.ResourceProfessionalsMarketplace.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table
-public class Resource {
+@Table(name = "resource")
+public class ResourceEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,11 +19,11 @@ public class Resource {
 
     @ManyToOne
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private Banding banding;
+    private BandingEntity banding;
 
     @ManyToOne
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private SubRole subRole;
+    private SubRoleEntity subRole;
 
     private String loanedClient;
 

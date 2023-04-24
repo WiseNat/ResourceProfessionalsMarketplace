@@ -1,16 +1,18 @@
 package com.wise.ResourceProfessionalsMarketplace.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
 @Entity
-@Table
-public class Banding {
+@Table(name = "approval_type")
+public class ApprovalTypeEntity {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)

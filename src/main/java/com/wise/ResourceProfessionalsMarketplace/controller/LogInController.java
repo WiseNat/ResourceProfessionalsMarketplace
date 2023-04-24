@@ -1,7 +1,7 @@
 package com.wise.ResourceProfessionalsMarketplace.controller;
 
 import com.wise.ResourceProfessionalsMarketplace.application.StageHandler;
-import com.wise.ResourceProfessionalsMarketplace.entity.Account;
+import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
 import com.wise.ResourceProfessionalsMarketplace.util.PasswordUtil;
 import javafx.fxml.FXML;
@@ -43,13 +43,13 @@ public class LogInController {
         String email = emailField.getText();
         String password = passwordField.getText();
 
-        Account account = accountRepository.findAccountByEmail(email);
+        AccountEntity account = accountRepository.findAccountByEmail(email);
 
         if (account == null) {
             return false;
         }
 
-        String encodedPassword = account.getHash();
+        String encodedPassword = account.getEncodedPassword();
 
         return passwordUtil.authenticate(password, encodedPassword);
     }

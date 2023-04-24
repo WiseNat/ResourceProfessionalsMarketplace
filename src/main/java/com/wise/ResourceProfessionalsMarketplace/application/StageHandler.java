@@ -49,7 +49,7 @@ public class StageHandler implements ApplicationListener<StageReadyEvent> {
         stage.show();
     }
 
-    public <C> Scene getScene(Class <C> controllerClass) {
+    public <C> Scene getScene(Class<C> controllerClass) {
         return new Scene(fxWeaver.loadView(controllerClass));
     }
 

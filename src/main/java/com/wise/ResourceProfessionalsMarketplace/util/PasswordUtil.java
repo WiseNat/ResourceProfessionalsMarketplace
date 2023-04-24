@@ -13,20 +13,20 @@ public class PasswordUtil {
      * Hashes a given input password using BCrypt
      *
      * @param plaintextPassword the plaintext password to hash
-     * @return the BCrypt password hash
+     * @return the BCrypt encoded password
      */
     public String hashPassword(String plaintextPassword) {
         return encoder.encode(plaintextPassword);
     }
 
     /**
-     * Authenticates a plaintext password against a hashed password
+     * Authenticates a plaintext password against a BCrypt encoded password
      *
      * @param plaintextPassword the plaintext password
-     * @param hashedPassword the hashed password
+     * @param encodedPassword   the BCrypt encoded password
      * @return true if the password matches the hash, false otherwise
      */
-    public boolean authenticate(String plaintextPassword, String hashedPassword) {
-        return encoder.matches(plaintextPassword, hashedPassword);
+    public boolean authenticate(String plaintextPassword, String encodedPassword) {
+        return encoder.matches(plaintextPassword, encodedPassword);
     }
 }

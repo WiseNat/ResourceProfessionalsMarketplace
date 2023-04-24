@@ -1,6 +1,6 @@
 package com.wise.ResourceProfessionalsMarketplace.constant;
 
-public enum BandingTypes {
+public enum BandingEnum {
     BandOne("B1"),
     BandTwo("B2"),
     BandThree("B3"),
@@ -15,7 +15,7 @@ public enum BandingTypes {
 
     public final String value;
 
-    BandingTypes(String value) {
+    BandingEnum(String value) {
         this.value = value;
     }
 }

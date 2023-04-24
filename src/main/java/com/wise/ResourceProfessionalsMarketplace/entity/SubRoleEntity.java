@@ -1,12 +1,14 @@
 package com.wise.ResourceProfessionalsMarketplace.entity;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
-@Data
-@Entity
-public class SubRole {
+@Getter
+@Setter
+@Entity(name = "sub_role")
+public class SubRoleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +19,6 @@ public class SubRole {
 
     @ManyToOne
     @JoinColumn(nullable = false, referencedColumnName = "id")
-    private MainRole mainRole;
+    private MainRoleEntity mainRole;
 
 }

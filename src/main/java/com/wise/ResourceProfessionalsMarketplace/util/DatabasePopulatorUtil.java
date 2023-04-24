@@ -4,6 +4,7 @@ import com.wise.ResourceProfessionalsMarketplace.constant.*;
 import com.wise.ResourceProfessionalsMarketplace.entity.*;
 import com.wise.ResourceProfessionalsMarketplace.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -30,13 +31,20 @@ public class DatabasePopulatorUtil {
     @Autowired
     private SubRoleRepository subRoleRepository;
 
+    @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
+    private String hbm2ddlAuto;
+
 
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        this.initialiseAccountTypeTable();
-        this.initialiseApprovalTypeTable();
-        this.initialiseBandingTable();
-        this.initialiseRoleTables();
+        if (!(hbm2ddlAuto.equals("validate") || hbm2ddlAuto.equals("none") || hbm2ddlAuto.equals("update"))) {
+            this.initialiseAccountTypeTable();
+            this.initialiseApprovalTypeTable();
+            this.initialiseBandingTable();
+            this.initialiseRoleTables();
+        }
+
+
     }
 
     private void initialiseAccountTypeTable() {

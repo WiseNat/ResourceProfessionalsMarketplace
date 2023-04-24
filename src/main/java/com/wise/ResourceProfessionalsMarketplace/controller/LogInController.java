@@ -38,8 +38,20 @@ public class LogInController {
     @FXML
     private Hyperlink hyperlink;
 
+    @FXML
+    public void onLogInButtonClick() {
+        boolean valid = this.validate();
+
+        System.out.println(valid);
+    }
+
+    @FXML
+    public void onHyperLinkClick() {
+        stageHandler.swapScene(CreateAnAccountController.class);
+    }
 
     private boolean validate() {
+        // TODO: Change to just use javax bean validation...
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -53,17 +65,4 @@ public class LogInController {
 
         return passwordUtil.authenticate(password, encodedPassword);
     }
-
-    @FXML
-    public void onLogInButtonClick() {
-        boolean valid = this.validate();
-
-        System.out.println(valid);
-    }
-
-    @FXML
-    public void onHyperLinkClick() {
-        stageHandler.swapScene(CreateAnAccountController.class);
-    }
-
 }

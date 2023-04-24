@@ -35,7 +35,7 @@ public class AccountEntity {
     @Column(nullable = false, columnDefinition = "char(60)")
     private String encodedPassword;
 
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(nullable = false, columnDefinition = "TINYINT")
     private Boolean is_approved;
 
 }

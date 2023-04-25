@@ -20,9 +20,6 @@ public class DatabasePopulatorUtil {
     private AccountTypeRepository accountTypeRepository;
 
     @Autowired
-    private ApprovalTypeRepository approvalTypeRepository;
-
-    @Autowired
     private BandingRepository bandingRepository;
 
     @Autowired
@@ -39,7 +36,6 @@ public class DatabasePopulatorUtil {
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!(hbm2ddlAuto.equals("validate") || hbm2ddlAuto.equals("none") || hbm2ddlAuto.equals("update"))) {
             this.initialiseAccountTypeTable();
-            this.initialiseApprovalTypeTable();
             this.initialiseBandingTable();
             this.initialiseRoleTables();
         }
@@ -53,15 +49,6 @@ public class DatabasePopulatorUtil {
             accountTypeEntity.setName(accountType.value);
 
             accountTypeRepository.save(accountTypeEntity);
-        }
-    }
-
-    private void initialiseApprovalTypeTable() {
-        for (ApprovalTypeEnum approvalType : ApprovalTypeEnum.values()) {
-            ApprovalTypeEntity approvalTypeEntity = new ApprovalTypeEntity();
-            approvalTypeEntity.setName(approvalType.value);
-
-            approvalTypeRepository.save(approvalTypeEntity);
         }
     }
 

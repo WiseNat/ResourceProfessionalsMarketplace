@@ -20,10 +20,6 @@ public class ApprovalEntity {
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private AccountEntity account;
 
-    @ManyToOne
-    @JoinColumn(nullable = false, referencedColumnName = "id")
-    private ApprovalTypeEntity approvalType;
-
     @Column(nullable = false)
     private Date date;
 

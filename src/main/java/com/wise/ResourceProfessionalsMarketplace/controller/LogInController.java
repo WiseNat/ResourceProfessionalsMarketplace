@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
+    // TODO: Add AccountType to login
 
     @Autowired
     private StageHandler stageHandler;

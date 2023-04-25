@@ -2,8 +2,16 @@ package com.wise.ResourceProfessionalsMarketplace.controller;
 
 import com.wise.ResourceProfessionalsMarketplace.application.StageHandler;
 import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
+import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
+import com.wise.ResourceProfessionalsMarketplace.entity.AccountTypeEntity;
+import com.wise.ResourceProfessionalsMarketplace.entity.ApprovalEntity;
+import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
+import com.wise.ResourceProfessionalsMarketplace.repository.AccountTypeRepository;
+import com.wise.ResourceProfessionalsMarketplace.repository.ApprovalRepository;
 import com.wise.ResourceProfessionalsMarketplace.to.AccountTO;
+import com.wise.ResourceProfessionalsMarketplace.to.ApprovalTO;
 import com.wise.ResourceProfessionalsMarketplace.util.PasswordUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.PersistUtil;
 import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +26,7 @@ import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -30,13 +39,25 @@ public class CreateAnAccountController {
     private Validator validator;
 
     @Autowired
+    private StageHandler stageHandler;
+
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private AccountTypeRepository accountTypeRepository;
+
+    @Autowired
+    private ApprovalRepository approvalRepository;
+
+    @Autowired
     private ValidatorUtil validatorUtil;
 
     @Autowired
-    private PasswordUtil passwordUtil;
+    private PersistUtil persistUtil;
 
     @Autowired
-    private StageHandler stageHandler;
+    private PasswordUtil passwordUtil;
 
     @FXML
     private TextField firstNameField;
@@ -76,14 +97,51 @@ public class CreateAnAccountController {
 
     @FXML
     public void onCreateAccountButtonClick() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String email = emailField.getText();
+        String password = passwordField.getText();
+        String accountType = accountTypeField.getValue();
+
+        AccountTypeEntity accountTypeEntity = accountTypeRepository.findAccountTypeByString(accountType);
+
         AccountTO accountTO = new AccountTO();
-        accountTO.setFirstName(firstNameField.getText());
-        accountTO.setLastName(lastNameField.getText());
-        accountTO.setEmail(emailField.getText());
+        accountTO.setFirstName(firstName);
+        accountTO.setLastName(lastName);
+        accountTO.setEmail(email);
         accountTO.setIs_approved(false);
-        accountTO.setPassword(passwordField.getText(), passwordUtil.hashPassword(passwordField.getText()));
+        accountTO.setPassword(password, passwordUtil.hashPassword(password));
+        accountTO.setAccountType(accountTypeEntity);
 
         Set<ConstraintViolation<AccountTO>> violations = validator.validate(accountTO);
+
+        // Invalid Data
+        if (violations.size() > 0) {
+            this.markInvalidTextFields(violations);
+        }
+        // Valid Data
+        else {
+            AccountEntity existingAccountEntity = accountRepository.findAccountByEmailAndAccountType(email, accountTypeEntity);
+
+            if (existingAccountEntity == null) {
+                AccountEntity accountEntity = persistUtil.persistTo(accountTO, new AccountEntity(), accountRepository);
+
+                ApprovalTO approvalTO = new ApprovalTO();
+                approvalTO.setAccount(accountEntity);
+                approvalTO.setDate(new Date(System.currentTimeMillis()));
+
+                persistUtil.persistTo(approvalTO, new ApprovalEntity(), approvalRepository);
+            } else {
+                System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
+                // raise error?
+            }
+        }
+
+
+    }
+
+    private void markInvalidTextFields(Set<ConstraintViolation<AccountTO>> violations) {
+        // Hardcoded function... it's bad I know
 
         HashMap<TextField, Boolean> textFieldViolations = new HashMap<TextField, Boolean>() {{
             put(firstNameField, false);
@@ -92,54 +150,37 @@ public class CreateAnAccountController {
             put(passwordField, false);
         }};
 
-        // Invalid Data
-        if (violations.size() > 0) {
-            for (ConstraintViolation<AccountTO> violation : violations) {
-                String field = validatorUtil.getFieldFromConstraintViolation(violation);
+        for (ConstraintViolation<AccountTO> violation : violations) {
+            String field = validatorUtil.getFieldFromConstraintViolation(violation);
 
-                switch (field) {
-                    case "firstName":
-                        textFieldViolations.replace(firstNameField, true);
-                        break;
-                    case "lastName":
-                        textFieldViolations.replace(lastNameField, true);
-                        break;
-                    case "email":
-                        textFieldViolations.replace(emailField, true);
-                        break;
-                    case "password":
-                    case "encodedPassword":
-                        textFieldViolations.replace(passwordField, true);
-                        break;
-                }
-            }
-
-            final String NEGATIVE_TEXT_FIELD = "negative-text-field";
-
-            for (Map.Entry<TextField, Boolean> entry : textFieldViolations.entrySet()) {
-                TextField textField = entry.getKey();
-                Boolean hasViolation = entry.getValue();
-
-                if (!hasViolation) {
-                    textField.getStyleClass().remove(NEGATIVE_TEXT_FIELD);
-                } else if (!textField.getStyleClass().contains(NEGATIVE_TEXT_FIELD)) {
-                    textField.getStyleClass().add(NEGATIVE_TEXT_FIELD);
-                }
+            switch (field) {
+                case "firstName":
+                    textFieldViolations.replace(firstNameField, true);
+                    break;
+                case "lastName":
+                    textFieldViolations.replace(lastNameField, true);
+                    break;
+                case "email":
+                    textFieldViolations.replace(emailField, true);
+                    break;
+                case "password":
+                case "encodedPassword":
+                    textFieldViolations.replace(passwordField, true);
+                    break;
             }
         }
-        // Valid Data
-        else {
-            System.out.println("VALID");
+
+        final String NEGATIVE_TEXT_FIELD = "negative-text-field";
+
+        for (Map.Entry<TextField, Boolean> entry : textFieldViolations.entrySet()) {
+            TextField textField = entry.getKey();
+            Boolean hasViolation = entry.getValue();
+
+            if (!hasViolation) {
+                textField.getStyleClass().remove(NEGATIVE_TEXT_FIELD);
+            } else if (!textField.getStyleClass().contains(NEGATIVE_TEXT_FIELD)) {
+                textField.getStyleClass().add(NEGATIVE_TEXT_FIELD);
+            }
         }
-
-        // Check if account exists (for given account type)
-
-        // Check if approval exists (for given account type)
-
-        // Create Approval + Account
-    }
-
-    private void validate() {
-
     }
 }

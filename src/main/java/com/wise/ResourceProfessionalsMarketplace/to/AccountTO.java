@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Null;
 import javax.validation.constraints.Size;
 
 @Data
@@ -16,8 +15,8 @@ public class AccountTO {
 
     private ResourceEntity resource;
 
-//    @NotNull
-    @Null
+    @NotNull
+//    @Null
     private AccountTypeEntity accountType;
 
     @Size(min=1, max=255)

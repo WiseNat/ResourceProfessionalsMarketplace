@@ -10,16 +10,14 @@ import com.wise.ResourceProfessionalsMarketplace.repository.AccountTypeRepositor
 import com.wise.ResourceProfessionalsMarketplace.repository.ApprovalRepository;
 import com.wise.ResourceProfessionalsMarketplace.to.AccountTO;
 import com.wise.ResourceProfessionalsMarketplace.to.ApprovalTO;
-import com.wise.ResourceProfessionalsMarketplace.util.PasswordUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.AccountUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.ComponentUtil;
 import com.wise.ResourceProfessionalsMarketplace.util.PersistUtil;
 import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Hyperlink;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,7 +26,6 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.sql.Date;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Set;
 
 @Component
@@ -57,7 +54,10 @@ public class CreateAnAccountController {
     private PersistUtil persistUtil;
 
     @Autowired
-    private PasswordUtil passwordUtil;
+    private ComponentUtil componentUtil;
+
+    @Autowired
+    private AccountUtil accountUtil;
 
     @FXML
     private TextField firstNameField;
@@ -95,7 +95,6 @@ public class CreateAnAccountController {
         stageHandler.swapScene(LogInController.class);
     }
 
-    // TODO: Refactor to make more sense from a business perspective...
     @FXML
     public void onCreateAccountButtonClick() {
         String firstName = firstNameField.getText();
@@ -104,25 +103,23 @@ public class CreateAnAccountController {
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
 
-        AccountTypeEntity accountTypeEntity = accountTypeRepository.findAccountTypeByString(accountType);
+        AccountTypeEntity accountTypeEntity = accountTypeRepository.findByName(accountType);
 
         AccountTO accountTO = new AccountTO();
         accountTO.setFirstName(firstName);
         accountTO.setLastName(lastName);
         accountTO.setEmail(email);
         accountTO.setIs_approved(false);
-        accountTO.setPassword(password, passwordUtil.hashPassword(password));
+        accountTO.setPassword(password, accountUtil.hashPassword(password));
         accountTO.setAccountType(accountTypeEntity);
 
         Set<ConstraintViolation<AccountTO>> violations = validator.validate(accountTO);
 
-        // Invalid Data
         if (violations.size() > 0) {
-            this.markInvalidTextFields(violations);
+            this.markTextFieldsInvalid(violations);
         }
-        // Valid Data
         else {
-            AccountEntity existingAccountEntity = accountRepository.findAccountByEmailAndAccountType(email, accountTypeEntity);
+            AccountEntity existingAccountEntity = accountRepository.findByEmailAndAccountType(email, accountTypeEntity);
 
             if (existingAccountEntity == null) {
                 AccountEntity accountEntity = persistUtil.persistTo(accountTO, new AccountEntity(), accountRepository);
@@ -141,47 +138,14 @@ public class CreateAnAccountController {
 
     }
 
-    private void markInvalidTextFields(Set<ConstraintViolation<AccountTO>> violations) {
-        // Hardcoded function... it's bad I know
-
-        HashMap<TextField, Boolean> textFieldViolations = new HashMap<TextField, Boolean>() {{
-            put(firstNameField, false);
-            put(lastNameField, false);
-            put(emailField, false);
-            put(passwordField, false);
+    private void markTextFieldsInvalid(Set<ConstraintViolation<AccountTO>> violations) {
+        HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
+            put("firstName", firstNameField);
+            put("lastName", lastNameField);
+            put("email", emailField);
+            put("password", passwordField);
         }};
 
-        for (ConstraintViolation<AccountTO> violation : violations) {
-            String field = validatorUtil.getFieldFromConstraintViolation(violation);
-
-            switch (field) {
-                case "firstName":
-                    textFieldViolations.replace(firstNameField, true);
-                    break;
-                case "lastName":
-                    textFieldViolations.replace(lastNameField, true);
-                    break;
-                case "email":
-                    textFieldViolations.replace(emailField, true);
-                    break;
-                case "password":
-                case "encodedPassword":
-                    textFieldViolations.replace(passwordField, true);
-                    break;
-            }
-        }
-
-        final String NEGATIVE_TEXT_FIELD = "negative-text-field";
-
-        for (Map.Entry<TextField, Boolean> entry : textFieldViolations.entrySet()) {
-            TextField textField = entry.getKey();
-            Boolean hasViolation = entry.getValue();
-
-            if (!hasViolation) {
-                textField.getStyleClass().remove(NEGATIVE_TEXT_FIELD);
-            } else if (!textField.getStyleClass().contains(NEGATIVE_TEXT_FIELD)) {
-                textField.getStyleClass().add(NEGATIVE_TEXT_FIELD);
-            }
-        }
+        componentUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-text-field");
     }
 }

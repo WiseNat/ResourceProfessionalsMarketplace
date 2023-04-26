@@ -8,6 +8,5 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
-    @Query("SELECT a FROM ApprovalEntity a WHERE a.account = ?1")
-    ApprovalEntity findApprovalByAccount (@Param("account") AccountEntity accountEntity);
+    ApprovalEntity findByAccount(AccountEntity account);
 }

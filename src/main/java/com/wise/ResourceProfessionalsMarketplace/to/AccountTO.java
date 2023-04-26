@@ -31,7 +31,6 @@ public class AccountTO {
     @NotNull
     private String email;
 
-    @Size(min=60, max=60)
     @NotNull
     @Setter(AccessLevel.NONE)
     private String encodedPassword;

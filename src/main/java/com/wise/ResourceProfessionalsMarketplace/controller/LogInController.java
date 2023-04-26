@@ -2,15 +2,15 @@ package com.wise.ResourceProfessionalsMarketplace.controller;
 
 import com.wise.ResourceProfessionalsMarketplace.application.StageHandler;
 import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
-import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
-import com.wise.ResourceProfessionalsMarketplace.entity.AccountTypeEntity;
-import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
-import com.wise.ResourceProfessionalsMarketplace.repository.AccountTypeRepository;
-import com.wise.ResourceProfessionalsMarketplace.util.PasswordUtil;
+import com.wise.ResourceProfessionalsMarketplace.to.LoginAccountTO;
+import com.wise.ResourceProfessionalsMarketplace.util.AccountUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.ComponentUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,19 +18,15 @@ import org.springframework.stereotype.Component;
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
-    // TODO: Add AccountType to login
 
     @Autowired
     private StageHandler stageHandler;
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountUtil accountUtil;
 
     @Autowired
-    private AccountTypeRepository accountTypeRepository;
-
-    @Autowired
-    private PasswordUtil passwordUtil;
+    private ComponentUtil componentUtil;
 
     @FXML
     private TextField emailField;
@@ -40,12 +36,6 @@ public class LogInController {
 
     @FXML
     private ChoiceBox<String> accountTypeField;
-
-    @FXML
-    private Button logInButton;
-
-    @FXML
-    private Hyperlink hyperlink;
 
     @FXML
     public void initialize() {
@@ -59,27 +49,22 @@ public class LogInController {
 
     @FXML
     public void onLogInButtonClick() {
-        // TODO: Change to just use javax bean validation...
         String email = emailField.getText();
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
 
-        AccountTypeEntity accountTypeEntity = accountTypeRepository.findAccountTypeByString(accountType);
+        LoginAccountTO loginAccount = new LoginAccountTO(email, password, AccountTypeEnum.valueOf(accountType));
+        boolean isAuthenticated = accountUtil.authenticate(loginAccount);
 
-        AccountEntity account = accountRepository.findAccountByEmailAndAccountType(email, accountTypeEntity);
-
-        if (account != null) {
-            String encodedPassword = accountRepository.
-
-            passwordUtil.authenticate(password, "");
+        if (isAuthenticated) {
+            Class<Object> sceneController = accountUtil.getAccountView(loginAccount.getAccountType());
+            stageHandler.swapScene(sceneController);
         } else {
-            System.out.println("No account exists");
-            // Raise error?
+            componentUtil.markControlNegative(emailField, "negative-text-field");
+            componentUtil.markControlNegative(passwordField, "negative-text-field");
+            System.out.println("Invalid email or password");
         }
 
-        String encodedPassword = account.getEncodedPassword();
-
-        return passwordUtil.authenticate(password, encodedPassword);
     }
 
     @FXML

@@ -95,6 +95,7 @@ public class CreateAnAccountController {
         stageHandler.swapScene(LogInController.class);
     }
 
+    // TODO: Refactor to make more sense from a business perspective...
     @FXML
     public void onCreateAccountButtonClick() {
         String firstName = firstNameField.getText();

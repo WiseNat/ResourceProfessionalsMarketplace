@@ -16,7 +16,6 @@ public class AccountTO {
     private ResourceEntity resource;
 
     @NotNull
-//    @Null
     private AccountTypeEntity accountType;
 
     @Size(min=1, max=255)

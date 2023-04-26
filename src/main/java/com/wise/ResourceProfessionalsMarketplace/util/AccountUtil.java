@@ -61,6 +61,11 @@ public class AccountUtil {
             return false;
         }
 
+        if (!account.getIs_approved()) {
+            System.out.println("Unapproved Account");
+            return false;
+        }
+
         String plaintextPassword = loginAccount.getPlaintextPassword();
         String encodedPassword = account.getEncodedPassword();
 

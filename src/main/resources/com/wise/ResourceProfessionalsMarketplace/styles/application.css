@@ -142,7 +142,7 @@
 	-fx-background-color: rpmRed;
 }
 
-.negative-text-field {
+.negative-control {
     -fx-background-color: rpmRed, rpmWhite;
 }
 

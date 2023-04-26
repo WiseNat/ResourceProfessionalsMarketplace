@@ -15,6 +15,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
@@ -39,12 +43,10 @@ public class LogInController {
 
     @FXML
     public void initialize() {
-        ObservableList<String> values = FXCollections.observableArrayList(
-                AccountTypeEnum.ProjectManager.value, AccountTypeEnum.Resource.value
-        );
+        ObservableList<String> items = FXCollections.observableArrayList(AccountTypeEnum.getAllValues());
 
-        accountTypeField.setItems(values);
-        accountTypeField.setValue(values.get(0));
+        accountTypeField.setItems(items);
+        accountTypeField.setValue(items.get(0));
     }
 
     @FXML
@@ -53,15 +55,15 @@ public class LogInController {
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
 
-        LoginAccountTO loginAccount = new LoginAccountTO(email, password, AccountTypeEnum.valueOf(accountType));
+        LoginAccountTO loginAccount = new LoginAccountTO(email, password, AccountTypeEnum.valueToEnum(accountType));
         boolean isAuthenticated = accountUtil.authenticate(loginAccount);
 
         if (isAuthenticated) {
             Class<Object> sceneController = accountUtil.getAccountView(loginAccount.getAccountType());
             stageHandler.swapScene(sceneController);
         } else {
-            componentUtil.markControlNegative(emailField, "negative-text-field");
-            componentUtil.markControlNegative(passwordField, "negative-text-field");
+            componentUtil.markControlNegative(emailField, "negative-control");
+            componentUtil.markControlNegative(passwordField, "negative-control");
             System.out.println("Invalid email or password");
         }
 

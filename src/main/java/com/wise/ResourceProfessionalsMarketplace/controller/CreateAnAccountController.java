@@ -103,8 +103,14 @@ public class CreateAnAccountController {
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
 
-        AccountTypeEntity accountTypeEntity = accountTypeRepository.findByName(accountType);
+        if (AccountTypeEnum.valueToEnum(accountType) == AccountTypeEnum.Admin) {
+            componentUtil.markControlNegative(accountTypeField, "negative-control");
+            return;
+        } else {
+            componentUtil.markControlPositive(accountTypeField, "negative-control");
+        }
 
+        AccountTypeEntity accountTypeEntity = accountTypeRepository.findByName(accountType);
         AccountTO accountTO = new AccountTO();
         accountTO.setFirstName(firstName);
         accountTO.setLastName(lastName);
@@ -113,29 +119,32 @@ public class CreateAnAccountController {
         accountTO.setPassword(password, accountUtil.hashPassword(password));
         accountTO.setAccountType(accountTypeEntity);
 
+        // TODO: Move validation to Control side rather than relying on Bean validation?
         Set<ConstraintViolation<AccountTO>> violations = validator.validate(accountTO);
 
         if (violations.size() > 0) {
             this.markTextFieldsInvalid(violations);
-        }
-        else {
-            AccountEntity existingAccountEntity = accountRepository.findByEmailAndAccountType(email, accountTypeEntity);
-
-            if (existingAccountEntity == null) {
-                AccountEntity accountEntity = persistUtil.persistTo(accountTO, new AccountEntity(), accountRepository);
-
-                ApprovalTO approvalTO = new ApprovalTO();
-                approvalTO.setAccount(accountEntity);
-                approvalTO.setDate(new Date(System.currentTimeMillis()));
-
-                persistUtil.persistTo(approvalTO, new ApprovalEntity(), approvalRepository);
-            } else {
-                System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
-                // raise error?
-            }
+            return;
         }
 
+        AccountEntity existingAccountEntity = accountRepository.findByEmailAndAccountType(email, accountTypeEntity);
 
+        if (existingAccountEntity != null) {
+            System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
+            return;
+            // raise error?
+        }
+
+        AccountEntity accountEntity = persistUtil.persistTo(accountTO, new AccountEntity(), accountRepository);
+
+        ApprovalTO approvalTO = new ApprovalTO();
+        approvalTO.setAccount(accountEntity);
+        approvalTO.setDate(new Date(System.currentTimeMillis()));
+
+        persistUtil.persistTo(approvalTO, new ApprovalEntity(), approvalRepository);
+
+        // TODO: Indicate to user an account approval has been created
+        // TODO: Modal? Hint? Who knows. I don't atm because it's midnight and I'm tired
     }
 
     private void markTextFieldsInvalid(Set<ConstraintViolation<AccountTO>> violations) {
@@ -146,6 +155,6 @@ public class CreateAnAccountController {
             put("password", passwordField);
         }};
 
-        componentUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-text-field");
+        componentUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
     }
 }

@@ -18,13 +18,13 @@ import java.sql.Date;
 public class CreateAccountUtil {
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    ApprovalRepository approvalRepository;
+    private ApprovalRepository approvalRepository;
 
     @Autowired
-    EnumUtil enumUtil;
+    private EnumUtil enumUtil;
 
     public void persistAccountAndApproval(CreateAccountTO createAccountTO) {
         persistAccount(createAccountTO);

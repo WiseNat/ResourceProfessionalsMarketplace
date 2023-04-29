@@ -2,6 +2,8 @@ package com.wise.ResourceProfessionalsMarketplace.util;
 
 import com.wise.ResourceProfessionalsMarketplace.application.StageHandler;
 import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
+import com.wise.ResourceProfessionalsMarketplace.controller.LogInController;
+import com.wise.ResourceProfessionalsMarketplace.controller.ResourceController;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountTypeEntity;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
@@ -35,7 +37,7 @@ public class AccountUtil {
         boolean isAuthenticated = authenticate(loginAccount);
 
         if (isAuthenticated) {
-            Class<Object> sceneController = getAccountView(loginAccount.getAccountType());
+            Class<?> sceneController = getAccountViewController(loginAccount.getAccountType());
             stageHandler.swapScene(sceneController);
         } else {
             System.out.println("Invalid email or password");
@@ -75,7 +77,7 @@ public class AccountUtil {
      * @return FXML View Controller
      */
     @SneakyThrows
-    public <C> Class<C> getAccountView(AccountTypeEnum accountType) {
+    public Class<?> getAccountViewController(AccountTypeEnum accountType) {
         switch (accountType) {
             case Admin:
                 System.out.println("ADMIN VIEW");
@@ -85,7 +87,7 @@ public class AccountUtil {
                 break;
             case Resource:
                 System.out.println("RESOURCE VIEW");
-                break;
+                return ResourceController.class;
             default:
                 throw new IllegalArgumentException("No view exists for this Account Type!");
         }

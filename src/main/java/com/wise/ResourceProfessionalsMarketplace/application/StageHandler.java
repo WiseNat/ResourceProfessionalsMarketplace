@@ -1,6 +1,6 @@
 package com.wise.ResourceProfessionalsMarketplace.application;
 
-import com.wise.ResourceProfessionalsMarketplace.controller.LogInController;
+import com.wise.ResourceProfessionalsMarketplace.controller.ResourceController;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -31,7 +31,8 @@ public class StageHandler implements ApplicationListener<StageReadyEvent> {
      */
     @Override
     public void onApplicationEvent(StageReadyEvent event) {
-        Scene scene = this.getScene(LogInController.class);
+//        Scene scene = this.getScene(LogInController.class);
+        Scene scene = this.getScene(ResourceController.class);
         this.sceneInit(scene);
 
         stage = event.stage;

@@ -55,7 +55,7 @@ public class LogInController {
         boolean isAuthenticated = accountUtil.authenticate(loginAccount);
 
         if (isAuthenticated) {
-            Class<Object> sceneController = accountUtil.getAccountView(loginAccount.getAccountType());
+            Class<?> sceneController = accountUtil.getAccountViewController(loginAccount.getAccountType());
             stageHandler.swapScene(sceneController);
         } else {
             validatorUtil.markControlNegative(emailField, "negative-control");

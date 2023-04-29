@@ -27,25 +27,25 @@ import java.util.Set;
 public class CreateAnAccountController {
 
     @Autowired
-    StageHandler stageHandler;
+    private StageHandler stageHandler;
 
     @Autowired
-    Validator validator;
+    private Validator validator;
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    AccountUtil accountUtil;
+    private AccountUtil accountUtil;
 
     @Autowired
-    CreateAccountUtil createAccountUtil;
+    private CreateAccountUtil createAccountUtil;
 
     @Autowired
-    ValidatorUtil validatorUtil;
+    private ValidatorUtil validatorUtil;
 
     @Autowired
-    EnumUtil enumUtil;
+    private EnumUtil enumUtil;
 
     @FXML
     private TextField firstNameField;

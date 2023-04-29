@@ -57,7 +57,7 @@
 	-fx-background-color: rpmGunMetal, rpmWhite;
 }
 
-.choice-box {
+.choice-box, .choice-box .context-menu {
 	-fx-font-size: 20;
 	-fx-text-fill: rpmGunMetal;
 	-fx-prompt-text-fill: rpmGrey;
@@ -67,6 +67,11 @@
 	-fx-background-insets: 0em, 0.07em;
 	-fx-padding: 0.5em 0.8em 0.5em 0.8em;
 	-fx-background-radius: 0.4em;
+	-fx-mark-color: rpmGunMetal;
+}
+
+.choice-box:focused {
+	-fx-background-color: rpmGunMetal, rpmWhite;
 }
 
 .button {
@@ -133,8 +138,12 @@
 	-fx-text-fill: rpmBlack;
 }
 
-.negative-btn {
+.negative-button {
 	-fx-background-color: rpmRed;
+}
+
+.negative-control {
+    -fx-background-color: rpmRed, rpmWhite;
 }
 
 .navbar {

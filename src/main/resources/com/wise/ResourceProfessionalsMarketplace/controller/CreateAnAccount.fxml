@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.ResourceProfessionalsMarketplace.controller.CreateAnAccountController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
@@ -34,7 +34,7 @@
                 <TextFlow minWidth="-Infinity">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? " />
-                        <Hyperlink text="Login" />
+                        <Hyperlink fx:id="hyperlink" onMouseClicked="#onHyperLinkClick" text="Login" />
                     </children>
                 </TextFlow>
             </children>
@@ -45,16 +45,16 @@
                     <children>
                         <HBox maxWidth="1.7976931348623157E308" prefWidth="400.0" spacing="35.0">
                             <children>
-                                <TextField promptText="First Name" />
-                                <TextField promptText="Last Name" />
+                                <TextField fx:id="firstNameField" promptText="First Name" />
+                                <TextField fx:id="lastNameField" promptText="Last Name" />
                             </children>
                         </HBox>
-                        <TextField maxWidth="1.7976931348623157E308" promptText="Email" />
-                        <PasswordField promptText="Password" />
-                        <ChoiceBox maxWidth="1.7976931348623157E308" />
+                        <TextField fx:id="emailField" maxWidth="1.7976931348623157E308" promptText="Email" />
+                        <PasswordField fx:id="passwordField" promptText="Password" />
+                        <ChoiceBox fx:id="accountTypeField" maxWidth="1.7976931348623157E308" />
                     </children>
                 </VBox>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Create Account" />
+                <Button fx:id="createAccountButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onCreateAccountButtonClick" text="Create Account" />
             </children>
         </VBox>
     </children>

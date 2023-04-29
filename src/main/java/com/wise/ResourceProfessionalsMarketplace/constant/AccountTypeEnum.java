@@ -11,7 +11,7 @@ public enum AccountTypeEnum {
     private static final HashMap<String, AccountTypeEnum> cache = new HashMap<>();
 
     static {
-        for (AccountTypeEnum e: values()) {
+        for (AccountTypeEnum e : values()) {
             cache.put(e.value, e);
         }
     }

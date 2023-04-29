@@ -6,7 +6,7 @@ import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountTypeEntity;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountTypeRepository;
-import com.wise.ResourceProfessionalsMarketplace.to.LoginAccountTO;
+import com.wise.ResourceProfessionalsMarketplace.to.LogInAccountTO;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,17 +15,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class AccountUtil {
 
+    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private AccountTypeRepository accountTypeRepository;
-
     @Autowired
     private StageHandler stageHandler;
-
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
 
     /**
      * Begins the login process for a user with their given details
@@ -35,7 +31,7 @@ public class AccountUtil {
      * @param accountType the account type of the account (each email can have an associated account per account type)
      */
     public void login(String email, String password, AccountTypeEnum accountType) {
-        LoginAccountTO loginAccount = new LoginAccountTO(email, password, accountType);
+        LogInAccountTO loginAccount = new LogInAccountTO(email, password, accountType);
         boolean isAuthenticated = authenticate(loginAccount);
 
         if (isAuthenticated) {
@@ -49,10 +45,10 @@ public class AccountUtil {
     /**
      * Authenticates the user given their details
      *
-     * @param loginAccount the {@link LoginAccountTO} containing the users details
+     * @param loginAccount the {@link LogInAccountTO} containing the users details
      * @return true if authenticated, false otherwise
      */
-    public boolean authenticate(LoginAccountTO loginAccount) {
+    public boolean authenticate(LogInAccountTO loginAccount) {
         AccountTypeEntity accountTypeEntity = accountTypeRepository.findByName(loginAccount.getAccountType().value);
         AccountEntity account = accountRepository.findByEmailAndAccountType(loginAccount.getEmail(), accountTypeEntity);
 
@@ -61,7 +57,7 @@ public class AccountUtil {
             return false;
         }
 
-        if (!account.getIs_approved()) {
+        if (!account.getIsApproved()) {
             System.out.println("Unapproved Account");
             return false;
         }

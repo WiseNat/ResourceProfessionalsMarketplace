@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class LoginAccountTO {
+public class LogInAccountTO {
 
     @NonNull
     private String email;

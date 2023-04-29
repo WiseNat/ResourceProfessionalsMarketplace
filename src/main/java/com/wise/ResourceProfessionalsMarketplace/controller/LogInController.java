@@ -2,9 +2,9 @@ package com.wise.ResourceProfessionalsMarketplace.controller;
 
 import com.wise.ResourceProfessionalsMarketplace.application.StageHandler;
 import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
-import com.wise.ResourceProfessionalsMarketplace.to.LoginAccountTO;
+import com.wise.ResourceProfessionalsMarketplace.to.LogInAccountTO;
 import com.wise.ResourceProfessionalsMarketplace.util.AccountUtil;
-import com.wise.ResourceProfessionalsMarketplace.util.ComponentUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,10 +14,6 @@ import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Arrays;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Component
 @FxmlView("LogIn.fxml")
@@ -30,7 +26,7 @@ public class LogInController {
     private AccountUtil accountUtil;
 
     @Autowired
-    private ComponentUtil componentUtil;
+    private ValidatorUtil validatorUtil;
 
     @FXML
     private TextField emailField;
@@ -55,15 +51,15 @@ public class LogInController {
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
 
-        LoginAccountTO loginAccount = new LoginAccountTO(email, password, AccountTypeEnum.valueToEnum(accountType));
+        LogInAccountTO loginAccount = new LogInAccountTO(email, password, AccountTypeEnum.valueToEnum(accountType));
         boolean isAuthenticated = accountUtil.authenticate(loginAccount);
 
         if (isAuthenticated) {
             Class<Object> sceneController = accountUtil.getAccountView(loginAccount.getAccountType());
             stageHandler.swapScene(sceneController);
         } else {
-            componentUtil.markControlNegative(emailField, "negative-control");
-            componentUtil.markControlNegative(passwordField, "negative-control");
+            validatorUtil.markControlNegative(emailField, "negative-control");
+            validatorUtil.markControlNegative(passwordField, "negative-control");
             System.out.println("Invalid email or password");
         }
 

@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SubRoleRepository extends JpaRepository<SubRoleEntity, Long> {
 
+    SubRoleEntity findByName(String name);
+
 }

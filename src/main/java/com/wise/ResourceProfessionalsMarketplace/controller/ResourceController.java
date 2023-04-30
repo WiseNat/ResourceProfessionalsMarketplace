@@ -1,7 +1,7 @@
 package com.wise.ResourceProfessionalsMarketplace.controller;
 
 import com.wise.ResourceProfessionalsMarketplace.component.MainSkeleton;
-import com.wise.ResourceProfessionalsMarketplace.constant.BandingEnum;
+import com.wise.ResourceProfessionalsMarketplace.component.UpdateDetails;
 import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.SubRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
@@ -12,6 +12,7 @@ import com.wise.ResourceProfessionalsMarketplace.repository.ResourceRepository;
 import com.wise.ResourceProfessionalsMarketplace.to.LogInAccountTO;
 import com.wise.ResourceProfessionalsMarketplace.to.ResourceTO;
 import com.wise.ResourceProfessionalsMarketplace.util.EnumUtil;
+import com.wise.ResourceProfessionalsMarketplace.util.UpdateDetailsUtil;
 import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,10 +29,10 @@ import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Set;
@@ -53,6 +54,10 @@ public class ResourceController implements MainView {
     private Validator validator;
     @Autowired
     private ValidatorUtil validatorUtil;
+
+    @Autowired
+    private UpdateDetailsUtil updateDetailsUtil;
+
     @Autowired
     private EnumUtil enumUtil;
     private AccountEntity accountEntity;
@@ -94,7 +99,7 @@ public class ResourceController implements MainView {
         mainSkeleton.getController().setMainContent(updateDetails.getView().get());
         GridPane.setHalignment(updateDetails.getView().get(), HPos.CENTER);
 
-        String name = accountEntity.getFirstName() + " " + accountEntity.getLastName();
+        String name = StringUtils.capitalize(accountEntity.getFirstName()) + " " + StringUtils.capitalize(accountEntity.getLastName());
         mainSkeleton.getController().setTitle("Hi " + name, "You can change your details here");
 
         if (resourceEntity.getLoanedClient() != null) {
@@ -112,24 +117,19 @@ public class ResourceController implements MainView {
     }
 
     private void saveDetailsClicked(MouseEvent mouseEvent) {
-        ResourceTO resourceTo = new ResourceTO();
-        resourceTo.setBanding(BandingEnum.valueToEnum(updateDetails.getController().getBandField().getValue()));
-        resourceTo.setSubRole(SubRoleEnum.valueToEnum(updateDetails.getController().getSubRoleField().getValue()));
-        resourceTo.setMainRole(MainRoleEnum.valueToEnum(updateDetails.getController().getMainRoleField().getValue()));
+        String banding = updateDetails.getController().getBandField().getValue();
+        String subRole = updateDetails.getController().getSubRoleField().getValue();
+        String mainRole = updateDetails.getController().getMainRoleField().getValue();
+        String costPerHour = updateDetails.getController().getCostPerHourField().getText();
 
-        if (resourceEntity.getLoanedClient() == null) {
-            try {
-                resourceTo.setCostPerHour(new BigDecimal(updateDetails.getController().getCostPerHourField().getText()));
-            } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), "negative-control");
-            }
-        } else {
-            resourceTo.setCostPerHour(resourceEntity.getCostPerHour());
+        ResourceTO resourceTo;
+
+        try {
+            resourceTo = updateDetailsUtil.createResourceTO(banding, subRole, mainRole, costPerHour, resourceEntity);
+        } catch (NumberFormatException e) {
+            validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), "negative-control");
+            return;
         }
-
-        resourceTo.setLoanedClient(resourceEntity.getLoanedClient());
-        resourceTo.setDailyLateFee(resourceEntity.getDailyLateFee());
-        resourceTo.setAvailabilityDate(resourceEntity.getAvailabilityDate());
 
         Set<ConstraintViolation<ResourceTO>> violations = validator.validate(resourceTo);
         this.markTextFields(violations);

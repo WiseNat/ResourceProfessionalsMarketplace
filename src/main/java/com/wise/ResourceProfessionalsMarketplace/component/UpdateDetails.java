@@ -1,4 +1,4 @@
-package com.wise.ResourceProfessionalsMarketplace.controller;
+package com.wise.ResourceProfessionalsMarketplace.component;
 
 import com.wise.ResourceProfessionalsMarketplace.constant.BandingEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;

@@ -1,12 +1,8 @@
 package com.wise.ResourceProfessionalsMarketplace.application;
 
-import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
 import com.wise.ResourceProfessionalsMarketplace.controller.LogInController;
-import com.wise.ResourceProfessionalsMarketplace.controller.MainView;
 import com.wise.ResourceProfessionalsMarketplace.controller.ResourceController;
-import com.wise.ResourceProfessionalsMarketplace.to.LogInAccountTO;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;

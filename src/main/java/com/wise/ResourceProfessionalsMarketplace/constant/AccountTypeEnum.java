@@ -2,7 +2,6 @@ package com.wise.ResourceProfessionalsMarketplace.constant;
 
 import java.util.LinkedHashMap;
 import java.util.Set;
-import java.util.TreeMap;
 
 public enum AccountTypeEnum {
     Admin("Admin"),

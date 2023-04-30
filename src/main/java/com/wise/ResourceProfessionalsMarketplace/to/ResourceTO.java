@@ -28,7 +28,7 @@ public class ResourceTO {
     private Double dailyLateFee;
 
     @NotNull
-    @Digits(integer=5, fraction=2)
+    @Digits(integer = 5, fraction = 2)
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal costPerHour;
 

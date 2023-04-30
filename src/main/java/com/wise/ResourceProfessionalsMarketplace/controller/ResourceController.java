@@ -4,7 +4,9 @@ import com.wise.ResourceProfessionalsMarketplace.component.MainSkeleton;
 import com.wise.ResourceProfessionalsMarketplace.constant.BandingEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.SubRoleEnum;
-import com.wise.ResourceProfessionalsMarketplace.entity.*;
+import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
+import com.wise.ResourceProfessionalsMarketplace.entity.ResourceEntity;
+import com.wise.ResourceProfessionalsMarketplace.entity.SubRoleEntity;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
 import com.wise.ResourceProfessionalsMarketplace.repository.ResourceRepository;
 import com.wise.ResourceProfessionalsMarketplace.to.LogInAccountTO;
@@ -24,7 +26,6 @@ import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -40,25 +41,20 @@ import static com.wise.ResourceProfessionalsMarketplace.constant.RoleMapping.ROL
 
 @Component
 @FxmlView("ResourceView.fxml")
-public class ResourceController implements MainView{
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ResourceRepository resourceRepository;
-
-    @Autowired
-    private Validator validator;
-
-    @Autowired
-    private ValidatorUtil validatorUtil;
-
-    @Autowired
-    private EnumUtil enumUtil;
+public class ResourceController implements MainView {
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private ResourceRepository resourceRepository;
+    @Autowired
+    private Validator validator;
+    @Autowired
+    private ValidatorUtil validatorUtil;
+    @Autowired
+    private EnumUtil enumUtil;
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
 
@@ -107,9 +103,8 @@ public class ResourceController implements MainView{
         }
 
         updateDetails.getController().getBandField().setValue(resourceEntity.getBanding().getName());
-        updateDetails.getController().getMainRoleField().setValue(resourceEntity.getSubRole().getMainRole().getName());
+        updateDetails.getController().getMainRoleField().setValue(resourceEntity.getMainRole().getName());
         updateSubRoles();
-        updateDetails.getController().getSubRoleField().setValue(resourceEntity.getSubRole().getName());
         updateDetails.getController().getCostPerHourField().setText(resourceEntity.getCostPerHour().toPlainString());
 
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
@@ -169,6 +164,7 @@ public class ResourceController implements MainView{
     private void mainRoleFieldChanged(ActionEvent actionEvent) {
         updateSubRoles();
     }
+
     private void updateSubRoles() {
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(updateDetails.getController().getMainRoleField().getValue());
         SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);

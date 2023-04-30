@@ -12,7 +12,9 @@ import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -112,6 +114,8 @@ public class CreateAnAccountController {
         }
 
         createAccountUtil.persistAccountAndApproval(accountTO);
+
+        stageHandler.swapScene(LogInController.class);
 
         // TODO: Indicate to user an account approval has been created
         // TODO: Modal? Hint? Who knows. I don't atm because it's midnight and I'm tired

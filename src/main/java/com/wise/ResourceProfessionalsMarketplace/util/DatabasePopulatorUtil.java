@@ -13,7 +13,6 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Map;
 
 import static com.wise.ResourceProfessionalsMarketplace.constant.RoleMapping.ROLE_MAPPING;
@@ -44,7 +43,6 @@ public class DatabasePopulatorUtil {
 
     @Autowired
     private AccountUtil accountUtil;
-
 
 
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")

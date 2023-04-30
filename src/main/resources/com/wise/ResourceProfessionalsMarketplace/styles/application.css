@@ -163,3 +163,21 @@
 .sidebar {
 	-fx-background-color: rpmWhite;
 }
+
+.navbar-button, .navbar-button-active {
+	-fx-background-color: rpmBlack;
+	-fx-padding: 0.8em;
+	-fx-background-radius: 0em;
+}
+
+.navbar-button-active {
+    -fx-background-color: rpmAzure;
+}
+
+.navbar-button:hover {
+	-fx-background-color: rpmGunMetal;
+}
+
+.navbar-button-active:hover {
+	-fx-background-color: rpmAzure;
+}

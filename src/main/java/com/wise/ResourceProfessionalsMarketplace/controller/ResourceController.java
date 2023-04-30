@@ -1,7 +1,7 @@
 package com.wise.ResourceProfessionalsMarketplace.controller;
 
-import com.wise.ResourceProfessionalsMarketplace.component.MainSkeleton;
-import com.wise.ResourceProfessionalsMarketplace.component.UpdateDetails;
+import com.wise.ResourceProfessionalsMarketplace.component.MainSkeletonComponent;
+import com.wise.ResourceProfessionalsMarketplace.component.UpdateDetailsComponent;
 import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.SubRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
@@ -35,6 +35,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,8 +45,8 @@ import static com.wise.ResourceProfessionalsMarketplace.constant.RoleMapping.ROL
 @FxmlView("ResourceView.fxml")
 public class ResourceController implements MainView {
 
-    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
+    private final FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton;
+    private final FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -64,8 +65,8 @@ public class ResourceController implements MainView {
     private ResourceEntity resourceEntity;
 
     public ResourceController(
-            FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<UpdateDetails, VBox> updateDetails) {
+            FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton,
+            FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails) {
         this.mainSkeleton = mainSkeleton;
         this.updateDetails = updateDetails;
 
@@ -84,7 +85,7 @@ public class ResourceController implements MainView {
     }
 
     /**
-     * Initialisation that relies on accountEntity being set
+     * Initialisation that relies on accountEntity being set.
      * This would normally be included in initialize
      */
     @SneakyThrows
@@ -114,6 +115,18 @@ public class ResourceController implements MainView {
 
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
         updateDetails.getController().getSaveDetailsButton().setOnMouseClicked(this::saveDetailsClicked);
+
+//        NavbarButtonComponent navbarButtonComponent = new NavbarButtonComponent();
+//        URL url = Objects.requireNonNull(getClass().getResource("../images/approval.png"));
+//        Image image = new Image(url.toString());
+//        ImageView imageView = navbarButtonComponent.getImage();
+//        imageView.setImage(image);
+
+        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/approval.png")));
+        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
+
+//        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/return.png")));
+//        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/account.png")));
     }
 
     private void saveDetailsClicked(MouseEvent mouseEvent) {

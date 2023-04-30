@@ -1,14 +1,15 @@
 package com.wise.ResourceProfessionalsMarketplace.constant;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Set;
+import java.util.TreeMap;
 
 public enum AccountTypeEnum {
     Admin("Admin"),
     Resource("Resource"),
     ProjectManager("Project Manager");
 
-    private static final HashMap<String, AccountTypeEnum> cache = new HashMap<>();
+    private static final LinkedHashMap<String, AccountTypeEnum> cache = new LinkedHashMap<>();
 
     static {
         for (AccountTypeEnum e : values()) {

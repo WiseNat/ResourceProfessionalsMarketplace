@@ -6,10 +6,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 @FxmlView("MainSkeleton.fxml")
 public class MainSkeleton extends BorderPane {
 

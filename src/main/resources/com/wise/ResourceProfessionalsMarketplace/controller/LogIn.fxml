@@ -33,7 +33,7 @@
                 <TextFlow minWidth="-Infinity">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account? " />
-                        <Hyperlink fx:id="hyperlink" onAction="#onHyperLinkClick" text="Create an Account" />
+                        <Hyperlink onAction="#onHyperLinkClick" text="Create an Account" />
                     </children>
                 </TextFlow>
             </children>
@@ -47,7 +47,7 @@
                         <ChoiceBox fx:id="accountTypeField" maxWidth="1.7976931348623157E308" />
                     </children>
                 </VBox>
-                <Button fx:id="logInButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onLogInButtonClick" text="Log in" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onLogInButtonClick" text="Log in" />
             </children>
         </VBox>
     </children>

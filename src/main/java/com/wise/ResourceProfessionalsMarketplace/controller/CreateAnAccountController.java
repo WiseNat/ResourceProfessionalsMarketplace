@@ -63,12 +63,6 @@ public class CreateAnAccountController {
     private ChoiceBox<String> accountTypeField;
 
     @FXML
-    private Button createAccountButton;
-
-    @FXML
-    private Hyperlink hyperlink;
-
-    @FXML
     public void initialize() {
         ObservableList<String> values = FXCollections.observableArrayList(
                 AccountTypeEnum.ProjectManager.value, AccountTypeEnum.Resource.value

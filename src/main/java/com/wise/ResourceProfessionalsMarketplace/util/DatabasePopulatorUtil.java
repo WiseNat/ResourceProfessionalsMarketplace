@@ -124,6 +124,7 @@ public class DatabasePopulatorUtil {
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setDailyLateFee(100.0);
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
+            resourceEntity.setLoanedClient(null);
 
             resourceRepository.save(resourceEntity);
 

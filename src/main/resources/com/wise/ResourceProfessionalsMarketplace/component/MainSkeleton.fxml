@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.ResourceProfessionalsMarketplace.component.MainSkeleton">
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.ResourceProfessionalsMarketplace.component.MainSkeleton">
    <right>
       <Pane id="contentRight" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
    </right>
@@ -65,7 +65,7 @@
                      <VBox.margin>
                         <Insets bottom="70.0" />
                      </VBox.margin></Separator>
-                  <GridPane fx:id="mainContent">
+                  <GridPane fx:id="mainContent" VBox.vgrow="ALWAYS">
                     <columnConstraints>
                       <ColumnConstraints hgrow="SOMETIMES" />
                     </columnConstraints>

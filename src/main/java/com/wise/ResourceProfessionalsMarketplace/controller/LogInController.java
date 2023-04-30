@@ -65,6 +65,7 @@ public class LogInController {
         } else {
             validatorUtil.markControlNegative(emailField, "negative-control");
             validatorUtil.markControlNegative(passwordField, "negative-control");
+            validatorUtil.markControlNegative(accountTypeField, "negative-control");
             System.out.println("Invalid email or password");
         }
 

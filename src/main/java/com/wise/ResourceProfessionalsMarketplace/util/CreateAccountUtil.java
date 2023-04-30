@@ -44,17 +44,11 @@ public class CreateAccountUtil {
             resourceEntity = new ResourceEntity();
         }
 
-        AccountTypeEntity accountTypeEntity = null;
-
-        if (accountTO.getAccountType() != null) {
-            accountTypeEntity = enumUtil.accountTypeToEntity(accountTO.getAccountType());
-        }
-
         AccountEntity accountEntity = new AccountEntity();
         BeanUtils.copyProperties(accountTO, accountEntity, "resource, accountType");
 
         accountEntity.setResource(resourceEntity);
-        accountEntity.setAccountType(accountTypeEntity);
+        accountEntity.setAccountType(enumUtil.accountTypeToEntity(accountTO.getAccountType()));
 
         accountRepository.save(accountEntity);
     }

@@ -1,6 +1,7 @@
 package com.wise.ResourceProfessionalsMarketplace.to;
 
 import com.wise.ResourceProfessionalsMarketplace.constant.BandingEnum;
+import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.constant.SubRoleEnum;
 import lombok.Data;
 
@@ -16,8 +17,10 @@ public class ResourceTO {
     @NotNull
     private BandingEnum banding;
 
-    @NotNull
     private SubRoleEnum subRole;
+
+    @NotNull
+    private MainRoleEnum mainRole;
 
     private String loanedClient;
 

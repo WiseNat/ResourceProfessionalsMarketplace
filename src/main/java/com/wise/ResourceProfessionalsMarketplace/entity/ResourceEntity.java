@@ -22,8 +22,12 @@ public class ResourceEntity {
     private BandingEntity banding;
 
     @ManyToOne
-    @JoinColumn(nullable = false, referencedColumnName = "id")
+    @JoinColumn(referencedColumnName = "id")
     private SubRoleEntity subRole;
+
+    @ManyToOne
+    @JoinColumn(nullable = false, referencedColumnName = "id")
+    private MainRoleEntity mainRole;
 
     private String loanedClient;
 

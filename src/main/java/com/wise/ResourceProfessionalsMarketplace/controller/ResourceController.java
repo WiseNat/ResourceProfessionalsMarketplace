@@ -24,6 +24,7 @@ import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -108,9 +109,10 @@ public class ResourceController implements MainView{
         updateDetails.getController().getBandField().setValue(resourceEntity.getBanding().getName());
         updateDetails.getController().getMainRoleField().setValue(resourceEntity.getSubRole().getMainRole().getName());
         updateSubRoles();
+        updateDetails.getController().getSubRoleField().setValue(resourceEntity.getSubRole().getName());
+        updateDetails.getController().getCostPerHourField().setText(resourceEntity.getCostPerHour().toPlainString());
 
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
-
         updateDetails.getController().getSaveDetailsButton().setOnMouseClicked(this::saveDetailsClicked);
     }
 
@@ -118,10 +120,14 @@ public class ResourceController implements MainView{
         ResourceTO resourceTo = new ResourceTO();
         resourceTo.setBanding(BandingEnum.valueToEnum(updateDetails.getController().getBandField().getValue()));
         resourceTo.setSubRole(SubRoleEnum.valueToEnum(updateDetails.getController().getSubRoleField().getValue()));
+        resourceTo.setMainRole(MainRoleEnum.valueToEnum(updateDetails.getController().getMainRoleField().getValue()));
 
         if (resourceEntity.getLoanedClient() == null) {
-            String costPerHour = updateDetails.getController().getCostPerHourField().getText();
-            resourceTo.setCostPerHour(new BigDecimal(costPerHour.isEmpty() ? "-1" : costPerHour));
+            try {
+                resourceTo.setCostPerHour(new BigDecimal(updateDetails.getController().getCostPerHourField().getText()));
+            } catch (NumberFormatException e) {
+                validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), "negative-control");
+            }
         } else {
             resourceTo.setCostPerHour(resourceEntity.getCostPerHour());
         }
@@ -137,7 +143,17 @@ public class ResourceController implements MainView{
             return;
         }
 
-        // TODO: Persist (update)
+        SubRoleEntity subRoleEntity = null;
+        if (resourceTo.getSubRole() != null) {
+            subRoleEntity = enumUtil.subRoleToEntity(resourceTo.getSubRole());
+        }
+
+        resourceEntity.setMainRole(enumUtil.mainRoleToEntity(resourceTo.getMainRole()));
+        resourceEntity.setSubRole(subRoleEntity);
+        resourceEntity.setBanding(enumUtil.bandingToEntity(resourceTo.getBanding()));
+        resourceEntity.setCostPerHour(resourceTo.getCostPerHour());
+
+        resourceRepository.save(resourceEntity);
     }
 
     private void markTextFields(Set<ConstraintViolation<ResourceTO>> violations) {

@@ -122,6 +122,7 @@ public class DatabasePopulatorUtil {
             ResourceEntity resourceEntity = new ResourceEntity();
             resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandSix));
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
             resourceEntity.setDailyLateFee(100.0);
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
             resourceEntity.setLoanedClient(null);

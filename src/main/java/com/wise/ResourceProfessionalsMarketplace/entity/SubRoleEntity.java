@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity(name = "sub_role")
+@Entity
+@Table(name = "sub_role")
 public class SubRoleEntity {
 
     @Id

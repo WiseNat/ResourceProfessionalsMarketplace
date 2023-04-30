@@ -14,7 +14,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.ResourceProfessionalsMarketplace.controller.CreateAnAccountController">
+<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.ResourceProfessionalsMarketplace.controller.CreateAnAccountController">
     <columnConstraints>
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
         <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
@@ -34,7 +34,7 @@
                 <TextFlow minWidth="-Infinity">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? " />
-                        <Hyperlink fx:id="hyperlink" onMouseClicked="#onHyperLinkClick" text="Login" />
+                        <Hyperlink onMouseClicked="#onHyperLinkClick" text="Login" />
                     </children>
                 </TextFlow>
             </children>
@@ -54,7 +54,7 @@
                         <ChoiceBox fx:id="accountTypeField" maxWidth="1.7976931348623157E308" />
                     </children>
                 </VBox>
-                <Button fx:id="createAccountButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onCreateAccountButtonClick" text="Create Account" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onCreateAccountButtonClick" text="Create Account" />
             </children>
         </VBox>
     </children>

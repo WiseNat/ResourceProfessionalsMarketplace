@@ -8,6 +8,7 @@ import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -55,11 +56,16 @@ public class LogInController {
         boolean isAuthenticated = accountUtil.authenticate(loginAccount);
 
         if (isAuthenticated) {
-            Class<Object> sceneController = accountUtil.getAccountView(loginAccount.getAccountType());
-            stageHandler.swapScene(sceneController);
+            MainView sceneController = accountUtil.getAccountViewController(loginAccount.getAccountType());
+            Scene scene = new Scene(stageHandler.getFxWeaver().loadView(sceneController.getClass()));
+
+            sceneController.setAccountTO(loginAccount);
+
+            stageHandler.swapScene(scene);
         } else {
             validatorUtil.markControlNegative(emailField, "negative-control");
             validatorUtil.markControlNegative(passwordField, "negative-control");
+            validatorUtil.markControlNegative(accountTypeField, "negative-control");
             System.out.println("Invalid email or password");
         }
 

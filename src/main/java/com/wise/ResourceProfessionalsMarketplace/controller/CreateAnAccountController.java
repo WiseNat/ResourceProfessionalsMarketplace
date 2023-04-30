@@ -12,7 +12,9 @@ import com.wise.ResourceProfessionalsMarketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Control;
+import javafx.scene.control.TextField;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -27,25 +29,25 @@ import java.util.Set;
 public class CreateAnAccountController {
 
     @Autowired
-    StageHandler stageHandler;
+    private StageHandler stageHandler;
 
     @Autowired
-    Validator validator;
+    private Validator validator;
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    AccountUtil accountUtil;
+    private AccountUtil accountUtil;
 
     @Autowired
-    CreateAccountUtil createAccountUtil;
+    private CreateAccountUtil createAccountUtil;
 
     @Autowired
-    ValidatorUtil validatorUtil;
+    private ValidatorUtil validatorUtil;
 
     @Autowired
-    EnumUtil enumUtil;
+    private EnumUtil enumUtil;
 
     @FXML
     private TextField firstNameField;
@@ -61,12 +63,6 @@ public class CreateAnAccountController {
 
     @FXML
     private ChoiceBox<String> accountTypeField;
-
-    @FXML
-    private Button createAccountButton;
-
-    @FXML
-    private Hyperlink hyperlink;
 
     @FXML
     public void initialize() {
@@ -118,6 +114,8 @@ public class CreateAnAccountController {
         }
 
         createAccountUtil.persistAccountAndApproval(accountTO);
+
+        stageHandler.swapScene(LogInController.class);
 
         // TODO: Indicate to user an account approval has been created
         // TODO: Modal? Hint? Who knows. I don't atm because it's midnight and I'm tired

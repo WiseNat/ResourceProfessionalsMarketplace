@@ -1,10 +1,12 @@
 package com.wise.ResourceProfessionalsMarketplace.application;
 
 import com.wise.ResourceProfessionalsMarketplace.controller.LogInController;
+import com.wise.ResourceProfessionalsMarketplace.controller.ResourceController;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import lombok.Getter;
 import net.rgielen.fxweaver.core.FxWeaver;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
@@ -12,12 +14,16 @@ import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
+@Getter
 @Component
 public class StageHandler implements ApplicationListener<StageReadyEvent> {
 
     private final FxWeaver fxWeaver;
 
     private Stage stage;
+
+    @Autowired
+    private ResourceController resourceController;
 
     @Autowired
     public StageHandler(FxWeaver fxWeaver) {
@@ -55,6 +61,10 @@ public class StageHandler implements ApplicationListener<StageReadyEvent> {
 
     public <C> void swapScene(Class<C> controllerClass) {
         Scene scene = this.getScene(controllerClass);
+        this.swapScene(scene);
+    }
+
+    public <C> void swapScene(Scene scene) {
         this.sceneInit(scene);
         stage.setScene(scene);
     }

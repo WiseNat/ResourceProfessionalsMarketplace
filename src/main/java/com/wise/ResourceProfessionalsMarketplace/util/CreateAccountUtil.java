@@ -1,30 +1,39 @@
 package com.wise.ResourceProfessionalsMarketplace.util;
 
+import com.wise.ResourceProfessionalsMarketplace.constant.AccountTypeEnum;
+import com.wise.ResourceProfessionalsMarketplace.constant.BandingEnum;
+import com.wise.ResourceProfessionalsMarketplace.constant.MainRoleEnum;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountEntity;
 import com.wise.ResourceProfessionalsMarketplace.entity.AccountTypeEntity;
 import com.wise.ResourceProfessionalsMarketplace.entity.ApprovalEntity;
 import com.wise.ResourceProfessionalsMarketplace.entity.ResourceEntity;
 import com.wise.ResourceProfessionalsMarketplace.repository.AccountRepository;
 import com.wise.ResourceProfessionalsMarketplace.repository.ApprovalRepository;
+import com.wise.ResourceProfessionalsMarketplace.repository.ResourceRepository;
 import com.wise.ResourceProfessionalsMarketplace.to.ApprovalTO;
 import com.wise.ResourceProfessionalsMarketplace.to.CreateAccountTO;
+import com.wise.ResourceProfessionalsMarketplace.to.ResourceTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 @Component
 public class CreateAccountUtil {
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    ApprovalRepository approvalRepository;
+    private ApprovalRepository approvalRepository;
 
     @Autowired
-    EnumUtil enumUtil;
+    private ResourceRepository resourceRepository;
+
+    @Autowired
+    private EnumUtil enumUtil;
 
     public void persistAccountAndApproval(CreateAccountTO createAccountTO) {
         persistAccount(createAccountTO);
@@ -39,22 +48,27 @@ public class CreateAccountUtil {
     public void persistAccount(CreateAccountTO accountTO) {
         ResourceEntity resourceEntity = null;
 
-        if (accountTO.getResource() != null) {
-            // TODO: Fix this..
+        if (accountTO.getAccountType() == AccountTypeEnum.Resource) {
+            ResourceTO resourceTO = new ResourceTO();
+            resourceTO.setLoanedClient(null);
+            resourceTO.setDailyLateFee(100.0);
+            resourceTO.setCostPerHour(new BigDecimal("10.0"));
+            resourceTO.setAvailabilityDate(null);
+
             resourceEntity = new ResourceEntity();
-        }
+            BeanUtils.copyProperties(resourceTO, resourceEntity, "banding, subrole, mainRole");
 
-        AccountTypeEntity accountTypeEntity = null;
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BusinessAnalyst));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandOne));
 
-        if (accountTO.getAccountType() != null) {
-            accountTypeEntity = enumUtil.accountTypeToEntity(accountTO.getAccountType());
+            resourceRepository.save(resourceEntity);
         }
 
         AccountEntity accountEntity = new AccountEntity();
         BeanUtils.copyProperties(accountTO, accountEntity, "resource, accountType");
 
         accountEntity.setResource(resourceEntity);
-        accountEntity.setAccountType(accountTypeEntity);
+        accountEntity.setAccountType(enumUtil.accountTypeToEntity(accountTO.getAccountType()));
 
         accountRepository.save(accountEntity);
     }

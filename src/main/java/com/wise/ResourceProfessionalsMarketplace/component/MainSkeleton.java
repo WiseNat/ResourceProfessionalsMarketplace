@@ -20,6 +20,9 @@ public class MainSkeleton extends BorderPane {
     private Label title;
 
     @FXML
+    private Label subtext;
+
+    @FXML
     private GridPane mainContent;
 
     @FXML
@@ -30,7 +33,12 @@ public class MainSkeleton extends BorderPane {
         mainContent.add(content, 0, 0);
     }
 
+    public void setTitle(String mainText, String subText) {
+        title.setText(mainText);
+        subtext.setText(subText);
+    }
+
     public void setTitle(String text) {
-        title.setText(text);
+        this.setTitle(text, "");
     }
 }

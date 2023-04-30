@@ -138,6 +138,12 @@
 	-fx-text-fill: rpmBlack;
 }
 
+.h3 {
+    -fx-font-size: 40;
+    -fx-fill: rpmBlack;
+    -fx-text-fill: rpmBlack;
+}
+
 .negative-button {
 	-fx-background-color: rpmRed;
 }

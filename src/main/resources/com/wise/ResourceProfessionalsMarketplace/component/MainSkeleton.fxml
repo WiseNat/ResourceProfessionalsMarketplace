@@ -56,6 +56,11 @@
                         <Insets bottom="30.0" />
                      </padding>
                   </Label>
+                  <Label fx:id="subtext" styleClass="h3" text="SUBTEXT">
+                     <padding>
+                        <Insets bottom="30.0" />
+                     </padding>
+                  </Label>
                   <Separator prefWidth="200.0" scaleShape="false">
                      <VBox.margin>
                         <Insets bottom="70.0" />

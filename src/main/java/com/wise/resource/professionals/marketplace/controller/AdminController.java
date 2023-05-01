@@ -19,6 +19,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -73,18 +74,25 @@ public class AdminController implements MainView  {
         List<ApprovalEntity> pendingApprovals = approvalRepository.findAll();
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
-            String accountType = pendingApproval.getAccount().getAccountType().getName();
-            String name = pendingApproval.getAccount().getFirstName() + " " + pendingApproval.getAccount().getLastName();
-            String email = pendingApproval.getAccount().getEmail();
-            String date = pendingApproval.getDate().toString();
-
-            ListBox listBox = new ListBox();
-            listBox.setTitleText(accountType + " Account Creation");
-            listBox.setLeftSubtext(name + "\n" + email);
-            listBox.setRightSubtext(date);
-
-            approvals.getController().addApproval(listBox);
+            ListBox approval = createApprovalListBox(pendingApproval);
+            approvals.getController().addApproval(approval);
         }
+    }
+
+    private ListBox createApprovalListBox(ApprovalEntity approval) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy @ HH:mm");
+
+        String accountType = approval.getAccount().getAccountType().getName();
+        String name = approval.getAccount().getFirstName() + " " + approval.getAccount().getLastName();
+        String email = approval.getAccount().getEmail();
+        String date = dateFormat.format(approval.getDate());
+
+        ListBox listBox = new ListBox();
+        listBox.setTitleText(accountType + " Account Creation");
+        listBox.setLeftSubtext(name + "\n" + email);
+        listBox.setRightSubtext(date);
+
+        return listBox;
     }
 
 

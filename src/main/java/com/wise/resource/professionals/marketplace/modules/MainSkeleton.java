@@ -1,6 +1,8 @@
 package com.wise.resource.professionals.marketplace.modules;
 
+import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.controller.LogInController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -9,6 +11,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -18,6 +21,9 @@ import java.util.Objects;
 @Getter
 @FxmlView("MainSkeleton.fxml")
 public class MainSkeleton extends BorderPane {
+
+    @Autowired
+    private StageHandler stageHandler;
 
     @FXML
     private VBox topNavbar;
@@ -71,6 +77,10 @@ public class MainSkeleton extends BorderPane {
         topNavbar.getChildren().add(navbarButtonComponent);
 
         return navbarButtonComponent;
+    }
+
+    public void logout() {
+        stageHandler.swapScene(LogInController.class);
     }
 
 }

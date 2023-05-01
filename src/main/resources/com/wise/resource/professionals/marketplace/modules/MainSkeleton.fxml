@@ -30,7 +30,7 @@
                </GridPane.margin></VBox>
             <VBox GridPane.rowIndex="2">
                <children>
-                   <NavbarButton fx:id="logoutButton" />
+                   <NavbarButton fx:id="logoutButton" onMouseClicked="#logout" />
                </children>
             </VBox>
          </children>

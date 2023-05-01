@@ -46,8 +46,6 @@ import static com.wise.resource.professionals.marketplace.constant.RoleMapping.R
 @FxmlView("ResourceView.fxml")
 public class ResourceController implements MainView {
 
-    private final FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton;
-    private final FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -64,6 +62,9 @@ public class ResourceController implements MainView {
     private EnumUtil enumUtil;
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
+
+    private final FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton;
+    private final FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails;
 
     public ResourceController(
             FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton,

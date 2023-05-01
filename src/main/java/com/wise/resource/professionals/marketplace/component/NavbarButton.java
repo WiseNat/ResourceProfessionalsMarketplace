@@ -1,6 +1,8 @@
 package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -14,13 +16,16 @@ public class NavbarButton extends Button {
 
     private final ComponentUtil componentUtil;
 
-    private final ImageView image;
+    @FXML
+    private ImageView image;
 
+    @SneakyThrows
     public NavbarButton() {
-        super();
 
-        image = new ImageView();
-        this.setGraphic(image);
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("NavbarButton.fxml"));
+        fxmlLoader.setRoot(this);
+        fxmlLoader.setController(this);
+        fxmlLoader.load();
 
         if (!this.getStyleClass().contains("navbar-button")) {
             this.getStyleClass().add("navbar-button");

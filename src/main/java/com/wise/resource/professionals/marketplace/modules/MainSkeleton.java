@@ -3,14 +3,11 @@ package com.wise.resource.professionals.marketplace.modules;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +17,7 @@ import java.util.Objects;
 @Component
 @Getter
 @FxmlView("MainSkeleton.fxml")
-public class MainSkeletonComponent extends BorderPane {
+public class MainSkeleton extends BorderPane {
 
     @FXML
     private VBox topNavbar;

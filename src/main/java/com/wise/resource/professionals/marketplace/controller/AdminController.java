@@ -1,17 +1,17 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.entity.AccountEntity;
-import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
-import com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent;
-import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.modules.Approvals;
+import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -20,35 +20,32 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView  {
 
-    @Autowired
-    AccountRepository accountRepository;
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+    private final FxControllerAndView<Approvals, VBox> approvals;
 
-    @Autowired
-    EnumUtil enumUtil;
 
-    private AccountEntity accountEntity;
-    private ResourceEntity resourceEntity;
-
-    private final FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton;
-
-    public AdminController(FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton) {
+    public AdminController(
+            FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
+            FxControllerAndView<Approvals, VBox> approvals) {
         this.mainSkeleton = mainSkeleton;
+        this.approvals = approvals;
+
         this.mainSkeleton.getController().initialize();
     }
 
     @Override
     public void setAccountTO(LogInAccountTO logInAccountTO) {
-        this.accountEntity = accountRepository.findByEmailAndAccountType(
-                logInAccountTO.getEmail(),
-                enumUtil.accountTypeToEntity(logInAccountTO.getAccountType()));
-
-        this.resourceEntity = this.accountEntity.getResource();
     }
 
     @FXML
+    @SneakyThrows
     private void initialize() {
-//        mainSkeleton.getController().setMainContent(updateDetails.getView().get());
-//        GridPane.setHalignment(updateDetails.getView().get(), HPos.CENTER);
+        if (!approvals.getView().isPresent()) {
+            throw new IllegalAccessException("The view for updateDetails was not found");
+        }
+
+        mainSkeleton.getController().setMainContent(approvals.getView().get());
+        GridPane.setHalignment(approvals.getView().get(), HPos.CENTER);
 
         mainSkeleton.getController().setTitle("Approvals");
 

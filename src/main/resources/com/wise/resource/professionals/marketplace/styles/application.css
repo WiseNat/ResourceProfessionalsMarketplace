@@ -144,6 +144,19 @@
     -fx-text-fill: rpmBlack;
 }
 
+.h4 {
+    -fx-font-size: 30;
+	-fx-font-weight: bold;
+    -fx-fill: rpmBlack;
+    -fx-text-fill: rpmBlack;
+}
+
+.h4 {
+    -fx-font-size: 24;
+    -fx-fill: rpmBlack;
+    -fx-text-fill: rpmBlack;
+}
+
 .negative-button {
 	-fx-background-color: rpmRed;
 }

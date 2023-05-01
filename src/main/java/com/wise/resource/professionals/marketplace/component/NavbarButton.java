@@ -27,10 +27,6 @@ public class NavbarButton extends Button {
         fxmlLoader.setController(this);
         fxmlLoader.load();
 
-        if (!this.getStyleClass().contains("navbar-button")) {
-            this.getStyleClass().add("navbar-button");
-        }
-
         componentUtil = new ComponentUtil();
     }
 

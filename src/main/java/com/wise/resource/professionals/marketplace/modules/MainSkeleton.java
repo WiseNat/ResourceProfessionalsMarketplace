@@ -32,6 +32,9 @@ public class MainSkeleton extends BorderPane {
     private GridPane mainContent;
 
     @FXML
+    private GridPane rightContent;
+
+    @FXML
     private NavbarButton logoutButton;
 
     @FXML
@@ -43,13 +46,21 @@ public class MainSkeleton extends BorderPane {
         mainContent.add(content, 0, 0);
     }
 
+    public void setRightContent(Node content) {
+        rightContent.add(content, 0, 0);
+    }
+
+    public void setTitle(String text) {
+        this.setTitle(text, "");
+    }
+
     public void setTitle(String mainText, String subText) {
         title.setText(mainText);
         subtext.setText(subText);
     }
 
-    public void setTitle(String text) {
-        this.setTitle(text, "");
+    public void removeSubtitle() {
+        ((VBox) subtext.getParent()).getChildren().remove(subtext);
     }
 
     public NavbarButton addNavbarButton(URL url) {

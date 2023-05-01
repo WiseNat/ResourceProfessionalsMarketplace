@@ -4,11 +4,13 @@ import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.modules.Approvals;
+import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -33,13 +35,16 @@ public class AdminController implements MainView  {
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<Approvals, VBox> approvals;
+    private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
 
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<Approvals, VBox> approvals) {
+            FxControllerAndView<Approvals, VBox> approvals,
+            FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch) {
         this.mainSkeleton = mainSkeleton;
         this.approvals = approvals;
+        this.approvalsSearch = approvalsSearch;
 
         this.mainSkeleton.getController().initialize();
     }
@@ -51,15 +56,17 @@ public class AdminController implements MainView  {
     @FXML
     @SneakyThrows
     private void initialize() {
-        if (!approvals.getView().isPresent()) {
-            throw new IllegalAccessException("The view for updateDetails was not found");
+        if (!(approvals.getView().isPresent() && approvalsSearch.getView().isPresent())) {
+            throw new IllegalAccessException("A necessary view was not found");
         }
 
         mainSkeleton.getController().setMainContent(approvals.getView().get());
-        GridPane.setHalignment(approvals.getView().get(), HPos.CENTER);
-        GridPane.setValignment(approvals.getView().get(), VPos.TOP);
+
+        mainSkeleton.getController().setRightContent(approvalsSearch.getView().get());
+        approvalsSearch.getView().get().setAlignment(Pos.TOP_CENTER);
 
         mainSkeleton.getController().setTitle("Approvals");
+        mainSkeleton.getController().removeSubtitle();
 
         NavbarButton navbarButton = mainSkeleton.getController().addNavbarButton(
                 Objects.requireNonNull(getClass().getResource("../images/handshake.png")));

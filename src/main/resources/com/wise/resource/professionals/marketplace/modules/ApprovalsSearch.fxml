@@ -16,8 +16,8 @@
             <TextField fx:id="firstNameField" promptText="First Name" />
             <TextField fx:id="lastNameField" promptText="Last Name" />
             <TextField fx:id="emailField" promptText="Email" />
-            <CheckBox fx:id="resourceBox" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Resource" />
-            <CheckBox fx:id="projectManagerBox" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Project Manager" />
+            <CheckBox fx:id="resourceBox" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Resource" />
+            <CheckBox fx:id="projectManagerBox" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Project Manager" />
          </children>
       </VBox>
       <Button fx:id="applyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Apply" />

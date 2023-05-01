@@ -96,9 +96,6 @@ public class ResourceController implements MainView {
             throw new IllegalAccessException("The view for updateDetails was not found");
         }
 
-        // TODO: Figure out which line is better...
-        //mainSkeleton.getController().setMainContent(stageHandler.getScene(UpdateDetails.class).getRoot());
-        //mainSkeleton.getController().setMainContent(fxWeaver.loadView(UpdateDetails.class));
         mainSkeleton.getController().setMainContent(updateDetails.getView().get());
         GridPane.setHalignment(updateDetails.getView().get(), HPos.CENTER);
 

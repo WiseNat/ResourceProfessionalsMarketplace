@@ -8,10 +8,12 @@ import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -72,13 +74,18 @@ public class AdminController implements MainView  {
                 Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
         navbarButton.setActive(true);
 
-        populateApprovals();
+        approvalsSearch.getController().getApplyButton().setOnMouseClicked(this::applySearch);
+
+        populateAllApprovals();
     }
 
-    private void populateApprovals() {
-        approvals.getController().clearAllApprovals();
-
+    private void populateAllApprovals() {
         List<ApprovalEntity> pendingApprovals = approvalRepository.findAll();
+        populateApprovals(pendingApprovals);
+    }
+
+    private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
+        approvals.getController().clearAllApprovals();
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
@@ -100,6 +107,19 @@ public class AdminController implements MainView  {
         listBox.setRightSubtext(date);
 
         return listBox;
+    }
+
+    private void applySearch(MouseEvent mouseEvent) {
+        ApprovalsSearch controller = approvalsSearch.getController();
+
+        String firstName = controller.getFirstNameField().getText();
+        String lastName = controller.getLastNameField().getText();
+        String email = controller.getEmailField().getText();
+        boolean isResourceAllowed = controller.getResourceBox().isSelected();
+        boolean isProjectManagerAllowed = controller.getProjectManagerBox().isSelected();
+
+        List<ApprovalEntity> foundApprovals = approvalRepository.findAllApprovalsByPredicates(firstName);
+        System.out.println(foundApprovals);
     }
 
 

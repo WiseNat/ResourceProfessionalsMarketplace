@@ -117,17 +117,9 @@ public class ResourceController implements MainView {
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
         updateDetails.getController().getSaveDetailsButton().setOnMouseClicked(this::saveDetailsClicked);
 
-//        NavbarButtonComponent navbarButtonComponent = new NavbarButtonComponent();
-//        URL url = Objects.requireNonNull(getClass().getResource("../images/approval.png"));
-//        Image image = new Image(url.toString());
-//        ImageView imageView = navbarButtonComponent.getImage();
-//        imageView.setImage(image);
-
-        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/approval.png")));
-        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
-
-//        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/return.png")));
-//        mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/account.png")));
+        NavbarButton navbarButton = mainSkeleton.getController().addNavbarButton(
+                Objects.requireNonNull(getClass().getResource("../images/account.png")));
+        navbarButton.setActive(true);
     }
 
     private void saveDetailsClicked(MouseEvent mouseEvent) {

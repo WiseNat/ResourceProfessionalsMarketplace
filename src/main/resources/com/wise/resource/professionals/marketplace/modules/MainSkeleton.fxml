@@ -12,6 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <?import com.wise.resource.professionals.marketplace.component.NavbarButton?>
+
 <BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent">
    <right>
       <Pane id="contentRight" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
@@ -27,7 +28,7 @@
           <RowConstraints vgrow="NEVER" />
         </rowConstraints>
          <children>
-            <VBox fx:id="topNavbar">
+            <VBox fx:id="topNavbar" spacing="30.0">
                <GridPane.margin>
                   <Insets />
                </GridPane.margin></VBox>

@@ -27,8 +27,6 @@ public class NavbarButton extends Button {
         }
 
         componentUtil = new ComponentUtil();
-
-        setOnMouseClicked(event -> setActive(true));
     }
 
     @SneakyThrows

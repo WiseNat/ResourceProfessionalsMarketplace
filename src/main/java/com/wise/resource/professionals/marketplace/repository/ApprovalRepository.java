@@ -11,9 +11,22 @@ import java.util.List;
 public interface ApprovalRepository extends JpaRepository<ApprovalEntity, Long> {
     ApprovalEntity findByAccount(AccountEntity account);
 
-    // TODO: THIS
-    @Query(value = "SELECT a FROM ApprovalEntity a WHERE a.account IN (SELECT a.id FROM AccountEntity WHERE a.firstName = firstName)")
-    List<ApprovalEntity> findAllApprovalsByPredicates(@Param("firstName") String firstName);
+    @Query(value = "SELECT a FROM ApprovalEntity a WHERE a.account IN (" +
+            "SELECT u.id FROM AccountEntity u WHERE " +
+            "u.firstName LIKE CONCAT('%',:firstName,'%')" +
+            "AND u.lastName LIKE CONCAT('%',:lastName,'%')" +
+            "AND u.email LIKE CONCAT('%',:email,'%')" +
+            ")")
+    List<ApprovalEntity> findAllApprovalsByPredicates(
+            @Param("firstName") String firstName,
+            @Param("lastName") String lastName,
+            @Param("email") String email
+    );
+
+    // TODO: Project Manager only
+    // TODO: Resource only
+
+    // SELECT * FROM newdb.approval WHERE account_id IN (SELECT id FROM newdb.account WHERE first_name LIKE "%John%");
 
     // LIKE CONCAT('%',:firstName,'%'))
     // SELECT email

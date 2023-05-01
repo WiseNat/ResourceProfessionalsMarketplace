@@ -118,8 +118,13 @@ public class AdminController implements MainView  {
         boolean isResourceAllowed = controller.getResourceBox().isSelected();
         boolean isProjectManagerAllowed = controller.getProjectManagerBox().isSelected();
 
-        List<ApprovalEntity> foundApprovals = approvalRepository.findAllApprovalsByPredicates(firstName);
-        System.out.println(foundApprovals);
+        // TODO: Add queries for both booleans fields
+
+        List<ApprovalEntity> foundApprovals = approvalRepository.findAllApprovalsByPredicates(
+                firstName, lastName, email);
+        for (ApprovalEntity approval : foundApprovals) {
+            System.out.println(approval.getAccount().toString());
+        }
     }
 
 

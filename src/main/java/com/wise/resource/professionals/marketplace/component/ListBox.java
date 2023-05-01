@@ -4,11 +4,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
 @Getter
-public class ListBox extends Button {
+public class ListBox extends BorderPane {
 
     @FXML
     private Label title;
@@ -25,5 +26,17 @@ public class ListBox extends Button {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
+    }
+
+    public void setTitleText(String text) {
+        title.setText(text);
+    }
+
+    public void setLeftSubtext(String text) {
+        leftSubtext.setText(text);
+    }
+
+    public void setRightSubtext(String text) {
+        rightSubtext.setText(text);
     }
 }

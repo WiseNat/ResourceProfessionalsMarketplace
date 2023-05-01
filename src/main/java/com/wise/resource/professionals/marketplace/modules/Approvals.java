@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.modules;
 
+import com.wise.resource.professionals.marketplace.component.ListBox;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -15,5 +16,13 @@ public class Approvals {
 
     @FXML
     public void initialize() {
+    }
+
+    public void clearAllApprovals() {
+        body.getChildren().clear();
+    }
+
+    public void addApproval(ListBox listBox) {
+        body.getChildren().add(listBox);
     }
 }

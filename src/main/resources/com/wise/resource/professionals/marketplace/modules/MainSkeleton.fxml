@@ -11,7 +11,8 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.component.MainSkeletonComponent">
+<?import com.wise.resource.professionals.marketplace.component.NavbarButton?>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent">
    <right>
       <Pane id="contentRight" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
    </right>
@@ -32,7 +33,7 @@
                </GridPane.margin></VBox>
             <VBox GridPane.rowIndex="2">
                <children>
-                   <fx:include fx:id="logoutButton" source="NavbarButton.fxml" />
+                   <NavbarButton fx:id="logoutButton" />
                </children>
             </VBox>
          </children>

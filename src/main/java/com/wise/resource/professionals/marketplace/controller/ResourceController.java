@@ -1,7 +1,8 @@
 package com.wise.resource.professionals.marketplace.controller;
 
-import com.wise.resource.professionals.marketplace.component.MainSkeletonComponent;
-import com.wise.resource.professionals.marketplace.component.UpdateDetailsComponent;
+import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent;
+import com.wise.resource.professionals.marketplace.modules.UpdateDetailsComponent;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;

@@ -1,5 +1,6 @@
-package com.wise.resource.professionals.marketplace.component;
+package com.wise.resource.professionals.marketplace.modules;
 
+import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -33,15 +34,12 @@ public class MainSkeletonComponent extends BorderPane {
     @FXML
     private GridPane mainContent;
 
-    private final FxControllerAndView<NavbarButton, Button> logoutButton;
-
-    public MainSkeletonComponent(FxControllerAndView<NavbarButton, Button> logoutButton) {
-        this.logoutButton = logoutButton;
-    }
+    @FXML
+    private NavbarButton logoutButton;
 
     @FXML
     public void initialize() {
-        logoutButton.getController().setImageUrl(Objects.requireNonNull(getClass().getResource("../images/logout.png")));
+        logoutButton.setImageUrl(Objects.requireNonNull(getClass().getResource("../images/logout.png")));
     }
 
     public void setMainContent(Node content) {
@@ -59,10 +57,8 @@ public class MainSkeletonComponent extends BorderPane {
 
     public NavbarButton addNavbarButton(URL url) {
 
-//        NavbarButtonComponent navbarButtonComponent = fxWeaver.loadController(NavbarButtonComponent.class);
         NavbarButton navbarButtonComponent = new NavbarButton();
-        navbarButtonComponent.setText(url.toString());
-//        navbarButtonComponent.setImageUrl(url);
+        navbarButtonComponent.setImageUrl(url);
 
         topNavbar.getChildren().add(navbarButtonComponent);
 

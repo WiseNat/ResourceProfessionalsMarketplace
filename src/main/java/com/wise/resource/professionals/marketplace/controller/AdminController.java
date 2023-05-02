@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.controller;
 
+import com.wise.resource.professionals.marketplace.component.ApprovalModal;
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.Modal;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
@@ -34,15 +35,13 @@ import java.util.Objects;
 public class AdminController implements MainView {
 
 
-    @Autowired
-    private ApprovalRepository approvalRepository;
-
-    @Autowired
-    private EnumUtil enumUtil;
-
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<Approvals, VBox> approvals;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
+    @Autowired
+    private ApprovalRepository approvalRepository;
+    @Autowired
+    private EnumUtil enumUtil;
 
 
     public AdminController(
@@ -122,7 +121,7 @@ public class AdminController implements MainView {
 
     private void approvalClicked(MouseEvent mouseEvent) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
-        Modal<String> dialog = new Modal<>();
+        Modal<String> dialog = new ApprovalModal<>();
         dialog.setBlurNodes(nodes);
         dialog.showAndWait();
     }

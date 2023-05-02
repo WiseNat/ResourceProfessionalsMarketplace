@@ -19,21 +19,16 @@ import static javafx.scene.paint.Color.TRANSPARENT;
 
 public class Modal<T> extends DialogPane {
 
+    private final Dialog<T> dialog;
     @FXML
     private GridPane leftContent;
-
     @FXML
     private GridPane rightContent;
-
     @FXML
     private Label title;
-
     @FXML
     private Button closeButton;
-
     private Node[] blurNodes;
-
-    private final Dialog<T> dialog;
 
     @SneakyThrows
     public Modal() {
@@ -54,7 +49,6 @@ public class Modal<T> extends DialogPane {
         this.getScene().setFill(TRANSPARENT);
 
         closeButton.setOnMouseClicked(this::closeDialog);
-
     }
 
 
@@ -88,8 +82,7 @@ public class Modal<T> extends DialogPane {
     }
 
     public void closeDialog(MouseEvent mouseEvent) {
-        System.out.println("click");
-        // TODO: Fix..
+//        dialog.setResult(null);
         dialog.setResult((T) "FOO");
         dialog.close();
 

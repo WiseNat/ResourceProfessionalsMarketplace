@@ -34,7 +34,7 @@
 
 /* JavaFX Classes */
 
-.text-field, .choice-box, .choice-box .context-menu, .check-box .box {
+.text-field, .choice-box, .choice-box .context-menu, .check-box .box, .dialog-pane {
 	-fx-font-size: 20;
 	-fx-text-fill: rpmGunMetal;
 	-fx-prompt-text-fill: rpmGrey;
@@ -81,6 +81,7 @@
 .separator .line {
     -fx-background-color: rpmGrey;
     -fx-pref-height: 0.07em;
+    -fx-pref-width: 0.07em;
     -fx-border-color: null ;
 }
 

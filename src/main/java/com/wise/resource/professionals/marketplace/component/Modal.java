@@ -4,11 +4,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.stage.StageStyle;
 import lombok.SneakyThrows;
 
-public class Modal<T> extends Dialog<T> {
+import java.util.Objects;
+
+import static javafx.scene.paint.Color.TRANSPARENT;
+
+public class Modal<T> extends DialogPane {
 
     @FXML
     private GridPane leftContent;
@@ -38,6 +44,20 @@ public class Modal<T> extends Dialog<T> {
 
     public void setInnerTitle(String text) {
         title.setText(text);
+    }
+
+    public void showAndWait() {
+        Dialog<String> dialog = new Dialog<>();
+        dialog.initStyle(StageStyle.TRANSPARENT);
+        dialog.setDialogPane(this);
+
+        this.getScene().getStylesheets().add(
+                Objects.requireNonNull(getClass().getResource("../styles/application.css")).toExternalForm()
+        );
+
+        this.getScene().setFill(TRANSPARENT);
+
+        dialog.showAndWait();
     }
 
 }

@@ -1,6 +1,7 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
+import com.wise.resource.professionals.marketplace.component.Modal;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
@@ -13,7 +14,6 @@ import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
-import javafx.scene.control.Dialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -121,7 +121,7 @@ public class AdminController implements MainView {
 
     private void approvalClicked(MouseEvent mouseEvent) {
         // TODO: Custom Modal class extending Dialog
-        Dialog<String> dialog = new Dialog<>();
+        Modal<String> dialog = new Modal<>();
         dialog.showAndWait();
     }
 

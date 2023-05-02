@@ -2,13 +2,11 @@ package com.wise.resource.professionals.marketplace.component;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -31,6 +29,7 @@ public class ListBox extends BorderPane {
 
     @SneakyThrows
     public ListBox() {
+
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ListBox.fxml"));
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);

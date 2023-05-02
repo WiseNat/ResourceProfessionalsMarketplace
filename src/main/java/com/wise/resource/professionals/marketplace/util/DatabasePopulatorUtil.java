@@ -151,7 +151,7 @@ public class DatabasePopulatorUtil {
     }
 
     private void populateApprovalsTableWithFakeData() {
-        CreateAccountTO[] createAccountTOS = new CreateAccountTO[] {
+        CreateAccountTO[] createAccountTOS = new CreateAccountTO[]{
                 new CreateAccountTO(), new CreateAccountTO()
         };
         Random rnd = new Random();

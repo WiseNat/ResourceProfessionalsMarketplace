@@ -13,6 +13,7 @@ import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.control.Dialog;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -29,7 +30,7 @@ import java.util.Objects;
 
 @Component
 @FxmlView("AdminView.fxml")
-public class AdminController implements MainView  {
+public class AdminController implements MainView {
 
 
     @Autowired
@@ -113,7 +114,15 @@ public class AdminController implements MainView  {
         listBox.setRightSubtext(date);
         listBox.removeImage();
 
+        listBox.setOnMouseClicked(this::approvalClicked);
+
         return listBox;
+    }
+
+    private void approvalClicked(MouseEvent mouseEvent) {
+        // TODO: Custom Modal class extending Dialog
+        Dialog<String> dialog = new Dialog<>();
+        dialog.showAndWait();
     }
 
     private void applySearch(MouseEvent mouseEvent) {

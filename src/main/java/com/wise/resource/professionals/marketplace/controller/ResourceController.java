@@ -1,13 +1,13 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
-import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
+import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
+import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;

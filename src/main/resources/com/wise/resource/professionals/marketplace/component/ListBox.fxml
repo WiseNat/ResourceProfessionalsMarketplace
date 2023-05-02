@@ -2,7 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 
@@ -14,18 +16,20 @@
          </children>
       </VBox>
    </right>
-   <left>
-      <VBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
-         <children>
-            <Label fx:id="title" styleClass="h4" text="Label" />
-            <Label fx:id="leftSubtext" styleClass="h5" text="Label" />
-         </children>
-         <BorderPane.margin>
-            <Insets />
-         </BorderPane.margin>
-      </VBox>
-   </left>
    <padding>
       <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
    </padding>
+   <left>
+      <HBox spacing="20.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="image" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
+            <VBox alignment="CENTER_LEFT">
+               <children>
+                  <Label fx:id="title" styleClass="h4" text="Label" />
+                  <Label fx:id="leftSubtext" styleClass="h5" text="Label" />
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </left>
 </fx:root>

@@ -2,20 +2,19 @@ package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
+import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.modules.Approvals;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import javafx.event.ActionEvent;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
-import javafx.geometry.HPos;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
@@ -24,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,7 +33,10 @@ public class AdminController implements MainView  {
 
 
     @Autowired
-    ApprovalRepository approvalRepository;
+    private ApprovalRepository approvalRepository;
+
+    @Autowired
+    private EnumUtil enumUtil;
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<Approvals, VBox> approvals;
@@ -87,6 +90,9 @@ public class AdminController implements MainView  {
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
         approvals.getController().clearAllApprovals();
 
+        approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
+
+
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
             approvals.getController().addApproval(approval);
@@ -105,6 +111,7 @@ public class AdminController implements MainView  {
         listBox.setTitleText(accountType + " Account Creation");
         listBox.setLeftSubtext(name + "\n" + email);
         listBox.setRightSubtext(date);
+        listBox.removeImage();
 
         return listBox;
     }
@@ -118,13 +125,21 @@ public class AdminController implements MainView  {
         boolean isResourceAllowed = controller.getResourceBox().isSelected();
         boolean isProjectManagerAllowed = controller.getProjectManagerBox().isSelected();
 
-        // TODO: Add queries for both booleans fields
+        List<ApprovalEntity> foundApprovals;
 
-        List<ApprovalEntity> foundApprovals = approvalRepository.findAllApprovalsByPredicates(
-                firstName, lastName, email);
-        for (ApprovalEntity approval : foundApprovals) {
-            System.out.println(approval.getAccount().toString());
+        if (isResourceAllowed && isProjectManagerAllowed) {
+            foundApprovals = approvalRepository.findAllApprovalsByPredicates(firstName, lastName, email);
+        } else if (isProjectManagerAllowed) {
+            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager);
+            foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(firstName, lastName, email, accountType);
+        } else if (isResourceAllowed) {
+            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.Resource);
+            foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(firstName, lastName, email, accountType);
+        } else {
+            foundApprovals = new ArrayList<>();
         }
+
+        populateApprovals(foundApprovals);
     }
 
 

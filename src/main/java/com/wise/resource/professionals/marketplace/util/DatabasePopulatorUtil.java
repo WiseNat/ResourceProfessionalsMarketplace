@@ -118,7 +118,7 @@ public class DatabasePopulatorUtil {
             accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Admin));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Admin");
-            accountEntity.setEmail("dev@admin");
+            accountEntity.setEmail("dev@account");
             accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
             accountEntity.setIsApproved(true);
 
@@ -141,7 +141,7 @@ public class DatabasePopulatorUtil {
             accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Resource));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Resource");
-            accountEntity.setEmail("dev@resource");
+            accountEntity.setEmail("dev@account");
             accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
             accountEntity.setIsApproved(true);
 

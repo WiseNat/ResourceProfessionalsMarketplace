@@ -14,6 +14,7 @@ import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -75,7 +76,7 @@ public class AdminController implements MainView {
         mainSkeleton.getController().removeSubtitle();
 
         NavbarButton navbarButton = mainSkeleton.getController().addNavbarButton(
-                Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
+                Objects.requireNonNull(getClass().getResource("../images/approval.png")));
         navbarButton.setActive(true);
 
         approvalsSearch.getController().getApplyButton().setOnMouseClicked(this::applySearch);
@@ -120,8 +121,9 @@ public class AdminController implements MainView {
     }
 
     private void approvalClicked(MouseEvent mouseEvent) {
-        // TODO: Custom Modal class extending Dialog
+        Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
         Modal<String> dialog = new Modal<>();
+        dialog.setBlurNodes(nodes);
         dialog.showAndWait();
     }
 

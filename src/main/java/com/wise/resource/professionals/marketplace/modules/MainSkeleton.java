@@ -6,6 +6,7 @@ import com.wise.resource.professionals.marketplace.controller.LogInController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -42,6 +43,9 @@ public class MainSkeleton extends BorderPane {
 
     @FXML
     private NavbarButton logoutButton;
+
+    @FXML
+    private ScrollPane scrollpane;
 
     @FXML
     public void initialize() {

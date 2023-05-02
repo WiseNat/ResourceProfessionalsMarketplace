@@ -40,7 +40,7 @@
       </GridPane>
    </left>
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scrollpane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
             <VBox styleClass="main-content">
                <children>

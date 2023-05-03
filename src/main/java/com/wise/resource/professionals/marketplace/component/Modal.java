@@ -8,6 +8,8 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.StageStyle;
@@ -17,9 +19,9 @@ import java.util.Objects;
 
 import static javafx.scene.paint.Color.TRANSPARENT;
 
-public class Modal<T> extends DialogPane {
+public class Modal extends DialogPane {
 
-    private final Dialog<T> dialog;
+    private final Dialog<Boolean> dialog;
     @FXML
     private GridPane leftContent;
     @FXML
@@ -48,9 +50,13 @@ public class Modal<T> extends DialogPane {
 
         this.getScene().setFill(TRANSPARENT);
 
-        closeButton.setOnMouseClicked(this::closeDialog);
+        closeButton.setOnMouseClicked(this::closeButtonClicked);
+        this.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            if (e.getCode() == KeyCode.ESCAPE) {
+                this.closeDialog();
+            }
+        });
     }
-
 
     public void setLeftContent(Node content) {
         leftContent.add(content, 0, 0);
@@ -81,9 +87,12 @@ public class Modal<T> extends DialogPane {
         this.blurNodes = nodes;
     }
 
-    public void closeDialog(MouseEvent mouseEvent) {
-//        dialog.setResult(null);
-        dialog.setResult((T) "FOO");
+    public void closeButtonClicked(MouseEvent mouseEvent) {
+        closeDialog();
+    }
+
+    public void closeDialog() {
+        dialog.setResult(false);
         dialog.close();
 
         for (Node node : blurNodes) {

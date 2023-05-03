@@ -1,15 +1,17 @@
 package com.wise.resource.professionals.marketplace.controller;
 
+import com.wise.resource.professionals.marketplace.component.ApprovalListBox;
 import com.wise.resource.professionals.marketplace.component.ApprovalModal;
 import com.wise.resource.professionals.marketplace.component.ListBox;
-import com.wise.resource.professionals.marketplace.component.Modal;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
+import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.modules.Approvals;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
+import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
@@ -25,7 +27,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +41,9 @@ public class AdminController implements MainView {
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
     @Autowired
     private EnumUtil enumUtil;
 
@@ -78,9 +82,13 @@ public class AdminController implements MainView {
                 Objects.requireNonNull(getClass().getResource("../images/approval.png")));
         navbarButton.setActive(true);
 
-        approvalsSearch.getController().getApplyButton().setOnMouseClicked(this::applySearch);
+        approvalsSearch.getController().getApplyButton().setOnMouseClicked(this::searchClicked);
 
         populateAllApprovals();
+    }
+
+    private void searchClicked(MouseEvent mouseEvent) {
+        applySearch();
     }
 
     private void populateAllApprovals() {
@@ -93,40 +101,30 @@ public class AdminController implements MainView {
 
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
-
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
             approvals.getController().addApproval(approval);
         }
     }
 
-    private ListBox createApprovalListBox(ApprovalEntity approval) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy @ HH:mm");
-
-        String accountType = approval.getAccount().getAccountType().getName();
-        String name = approval.getAccount().getFirstName() + " " + approval.getAccount().getLastName();
-        String email = approval.getAccount().getEmail();
-        String date = dateFormat.format(approval.getDate());
-
-        ListBox listBox = new ListBox();
-        listBox.setTitleText(accountType + " Account Creation");
-        listBox.setLeftSubtext(name + "\n" + email);
-        listBox.setRightSubtext(date);
-        listBox.removeImage();
-
-        listBox.setOnMouseClicked(this::approvalClicked);
+    private ApprovalListBox createApprovalListBox(ApprovalEntity approval) {
+        ApprovalListBox listBox = new ApprovalListBox(approval);
+        listBox.setOnMouseClicked(e -> approvalClicked(listBox));
 
         return listBox;
     }
 
-    private void approvalClicked(MouseEvent mouseEvent) {
+    private void approvalClicked(ApprovalListBox approvalListBox) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
-        Modal<String> dialog = new ApprovalModal<>();
+
+        ApprovalModal dialog = new ApprovalModal(approvalListBox.getApproval());
         dialog.setBlurNodes(nodes);
+        dialog.getApproveButton().setOnMouseClicked(e -> this.approveButtonClicked(dialog));
+        dialog.getDenyButton().setOnMouseClicked(e -> this.denyButtonClicked(dialog));
         dialog.showAndWait();
     }
 
-    private void applySearch(MouseEvent mouseEvent) {
+    private void applySearch() {
         ApprovalsSearch controller = approvalsSearch.getController();
 
         String firstName = controller.getFirstNameField().getText();
@@ -150,6 +148,29 @@ public class AdminController implements MainView {
         }
 
         populateApprovals(foundApprovals);
+    }
+
+    private void denyButtonClicked(ApprovalModal approvalModal) {
+        AccountEntity account = approvalModal.getApproval().getAccount();
+
+        approvalRepository.delete(approvalModal.getApproval());
+        accountRepository.delete(account);
+
+        applySearch();
+
+        approvalModal.closeDialog();
+    }
+
+    private void approveButtonClicked(ApprovalModal approvalModal) {
+        AccountEntity account = approvalModal.getApproval().getAccount();
+        account.setIsApproved(true);
+
+        approvalRepository.delete(approvalModal.getApproval());
+        accountRepository.save(account);
+
+        applySearch();
+
+        approvalModal.closeDialog();
     }
 
 

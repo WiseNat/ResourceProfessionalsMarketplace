@@ -46,9 +46,9 @@ public class LogInController {
         accountTypeField.setValue(items.get(0));
 
         // TODO: Remove
-        emailField.setText("dev@resource");
+        emailField.setText("dev@account");
         passwordField.setText("password");
-        accountTypeField.setValue(AccountTypeEnum.Resource.value);
+        accountTypeField.setValue(AccountTypeEnum.Admin.value);
     }
 
     @FXML

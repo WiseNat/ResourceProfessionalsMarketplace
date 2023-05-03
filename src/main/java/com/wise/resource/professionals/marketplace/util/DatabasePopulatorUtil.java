@@ -6,6 +6,9 @@ import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.*;
+import com.wise.resource.professionals.marketplace.to.ApprovalTO;
+import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -13,7 +16,9 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Map;
+import java.util.Random;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
@@ -44,6 +49,9 @@ public class DatabasePopulatorUtil {
     @Autowired
     private AccountUtil accountUtil;
 
+    @Autowired
+    private CreateAccountUtil createAccountUtil;
+
 
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
@@ -57,6 +65,7 @@ public class DatabasePopulatorUtil {
             this.initialiseRoleTables();
 
             this.populateAccountTableWithFakeData();
+            this.populateApprovalsTableWithFakeData();
         }
 
 
@@ -109,7 +118,7 @@ public class DatabasePopulatorUtil {
             accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Admin));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Admin");
-            accountEntity.setEmail("dev@admin");
+            accountEntity.setEmail("dev@account");
             accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
             accountEntity.setIsApproved(true);
 
@@ -132,12 +141,41 @@ public class DatabasePopulatorUtil {
             accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Resource));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Resource");
-            accountEntity.setEmail("dev@resource");
+            accountEntity.setEmail("dev@account");
             accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
             accountEntity.setIsApproved(true);
 
             accountRepository.save(accountEntity);
         }
 
+    }
+
+    private void populateApprovalsTableWithFakeData() {
+        CreateAccountTO[] createAccountTOS = new CreateAccountTO[]{
+                new CreateAccountTO(), new CreateAccountTO()
+        };
+        Random rnd = new Random();
+
+        createAccountTOS[0].setFirstName("John");
+        createAccountTOS[0].setLastName("Cleese");
+        createAccountTOS[0].setEmail("John.Cleese@company.com");
+        createAccountTOS[0].setIsApproved(false);
+        createAccountTOS[0].setPassword("pass");
+        createAccountTOS[0].setEncodedPassword(accountUtil.hashPassword("pass"));
+        createAccountTOS[0].setAccountType(AccountTypeEnum.Resource);
+
+        BeanUtils.copyProperties(createAccountTOS[0], createAccountTOS[1]);
+
+        createAccountTOS[1].setAccountType(AccountTypeEnum.ProjectManager);
+
+        for (CreateAccountTO createAccountTO : createAccountTOS) {
+            createAccountUtil.persistAccount(createAccountTO);
+
+            ApprovalTO approvalTO = new ApprovalTO();
+            approvalTO.setAccount(createAccountTO);
+            approvalTO.setDate(new Date(-946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000))));
+
+            createAccountUtil.persistApproval(approvalTO);
+        }
     }
 }

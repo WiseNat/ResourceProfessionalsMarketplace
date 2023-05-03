@@ -7,16 +7,12 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
 <?import com.wise.resource.professionals.marketplace.component.NavbarButton?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent">
-   <right>
-      <Pane id="contentRight" style="-fx-background-color: green;" BorderPane.alignment="CENTER" />
-   </right>
+<BorderPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.MainSkeleton">
    <left>
       <GridPane styleClass="navbar" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -34,7 +30,7 @@
                </GridPane.margin></VBox>
             <VBox GridPane.rowIndex="2">
                <children>
-                   <NavbarButton fx:id="logoutButton" />
+                   <NavbarButton fx:id="logoutButton" onMouseClicked="#logout" />
                </children>
             </VBox>
          </children>
@@ -44,7 +40,7 @@
       </GridPane>
    </left>
    <center>
-      <ScrollPane fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
+      <ScrollPane fx:id="scrollpane" fitToHeight="true" fitToWidth="true" BorderPane.alignment="CENTER">
          <content>
             <VBox styleClass="main-content">
                <children>
@@ -78,4 +74,17 @@
          </content>
       </ScrollPane>
    </center>
+   <right>
+      <GridPane fx:id="rightContent" BorderPane.alignment="CENTER">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints vgrow="SOMETIMES" />
+         </rowConstraints>
+         <BorderPane.margin>
+            <Insets bottom="30.0" left="50.0" right="50.0" top="30.0" />
+         </BorderPane.margin>
+      </GridPane>
+   </right>
 </BorderPane>

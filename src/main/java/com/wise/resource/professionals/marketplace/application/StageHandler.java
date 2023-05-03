@@ -1,7 +1,6 @@
 package com.wise.resource.professionals.marketplace.application;
 
 import com.wise.resource.professionals.marketplace.controller.LogInController;
-import com.wise.resource.professionals.marketplace.controller.ResourceController;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
@@ -21,9 +20,6 @@ public class StageHandler implements ApplicationListener<StageReadyEvent> {
     private final FxWeaver fxWeaver;
 
     private Stage stage;
-
-    @Autowired
-    private ResourceController resourceController;
 
     @Autowired
     public StageHandler(FxWeaver fxWeaver) {

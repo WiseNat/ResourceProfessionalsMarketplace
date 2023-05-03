@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -20,6 +20,8 @@ public class ApprovalEntity {
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private AccountEntity account;
 
+    @Basic
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
     private Date date;
 

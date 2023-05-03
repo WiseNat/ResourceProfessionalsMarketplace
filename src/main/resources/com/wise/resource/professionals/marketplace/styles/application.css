@@ -34,6 +34,19 @@
 
 /* JavaFX Classes */
 
+.text-field, .choice-box, .choice-box .context-menu, .check-box .box, .dialog-pane {
+	-fx-font-size: 20;
+	-fx-text-fill: rpmGunMetal;
+	-fx-prompt-text-fill: rpmGrey;
+	-fx-highlight-fill: rpmGrey;
+	-fx-highlight-text-fill: rpmWhite;
+	-fx-background-color: rpmGrey, rpmWhite;
+	-fx-background-insets: 0em, 0.05em;
+	-fx-padding: 0.8em;
+	-fx-background-radius: 0.4em;
+	-fx-border-radius: 0.4em;
+}
+
 .hyperlink {
     -fx-text-fill: rpmGreen;
 	-fx-underline: true;
@@ -41,32 +54,12 @@
 	-fx-padding: 0em;
 }
 
-.text-field {
-	-fx-font-size: 20;
-	-fx-text-fill: rpmGunMetal;
-	-fx-prompt-text-fill: rpmGrey;
-	-fx-highlight-fill: rpmGrey;
-	-fx-highlight-text-fill: rpmWhite;
-	-fx-background-color: rpmGrey, rpmWhite;
-	-fx-background-insets: 0em, 0.07em;
-	-fx-padding: 0.8em;
-	-fx-background-radius: 0.4em;
-}
-
 .text-field:focused {
 	-fx-background-color: rpmGunMetal, rpmWhite;
 }
 
 .choice-box, .choice-box .context-menu {
-	-fx-font-size: 20;
-	-fx-text-fill: rpmGunMetal;
-	-fx-prompt-text-fill: rpmGrey;
-	-fx-highlight-fill: rpmGrey;
-	-fx-highlight-text-fill: rpmWhite;
-	-fx-background-color: rpmGrey, rpmWhite;
-	-fx-background-insets: 0em, 0.07em;
 	-fx-padding: 0.5em 0.8em 0.5em 0.8em;
-	-fx-background-radius: 0.4em;
 	-fx-mark-color: rpmGunMetal;
 }
 
@@ -88,6 +81,7 @@
 .separator .line {
     -fx-background-color: rpmGrey;
     -fx-pref-height: 0.07em;
+    -fx-pref-width: 0.07em;
     -fx-border-color: null ;
 }
 
@@ -113,6 +107,17 @@
     -fx-padding :0em 0.15em;
 }
 
+.scroll-pane {
+	-fx-background-color: rpmGrey;
+	-fx-background-insets: 0;
+	-fx-padding: 0em 0.05em 0em 0em;
+}
+
+.scroll-pane:focused {
+	-fx-background-color: rpmGrey;
+	-fx-padding: 0em 0.05em 0em 0em;
+}
+
 .thumb {
     -fx-background-color: rpmDarkGrey;
     -fx-background-radius: 2.0em;
@@ -120,6 +125,15 @@
 
 .thumb:hover {
     -fx-background-color: rpmDarkerGrey;
+}
+
+.check-box .box {
+	-fx-padding: 0.4em;
+}
+
+.check-box:selected .mark {
+	-fx-background-color: rpmGrey;
+	-fx-shape: "m 43.546627,68.556357 4.38154,-4.38154 c 0.01021,-0.01021 0.02666,-0.01022 0.03688,0 l 58.178713,58.178703 c 0.0102,0.0102 0.0102,0.0267 1e-5,0.0369 l -4.38154,4.38154 c -0.0102,0.0102 -0.0267,0.0102 -0.0369,-1e-5 L 43.546625,68.593237 c -0.01021,-0.01021 -0.01022,-0.02666 0,-0.03688 z";
 }
 
 /* Custom Classes */
@@ -140,6 +154,19 @@
 
 .h3 {
     -fx-font-size: 40;
+    -fx-fill: rpmBlack;
+    -fx-text-fill: rpmBlack;
+}
+
+.h4 {
+    -fx-font-size: 30;
+	-fx-font-weight: bold;
+    -fx-fill: rpmBlack;
+    -fx-text-fill: rpmBlack;
+}
+
+.h4 {
+    -fx-font-size: 24;
     -fx-fill: rpmBlack;
     -fx-text-fill: rpmBlack;
 }

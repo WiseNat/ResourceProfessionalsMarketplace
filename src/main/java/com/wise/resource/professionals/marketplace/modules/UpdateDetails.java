@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Getter
 @FxmlView("UpdateDetails.fxml")
-public class UpdateDetailsComponent {
+public class UpdateDetails {
     @FXML
     private ChoiceBox<String> mainRoleField;
 

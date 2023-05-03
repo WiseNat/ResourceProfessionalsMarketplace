@@ -1,17 +1,18 @@
 package com.wise.resource.professionals.marketplace.modules;
 
+import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.controller.LogInController;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
-import net.rgielen.fxweaver.core.FxControllerAndView;
-import net.rgielen.fxweaver.core.FxWeaver;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.net.URL;
@@ -20,7 +21,10 @@ import java.util.Objects;
 @Component
 @Getter
 @FxmlView("MainSkeleton.fxml")
-public class MainSkeletonComponent extends BorderPane {
+public class MainSkeleton extends BorderPane {
+
+    @Autowired
+    private StageHandler stageHandler;
 
     @FXML
     private VBox topNavbar;
@@ -35,7 +39,13 @@ public class MainSkeletonComponent extends BorderPane {
     private GridPane mainContent;
 
     @FXML
+    private GridPane rightContent;
+
+    @FXML
     private NavbarButton logoutButton;
+
+    @FXML
+    private ScrollPane scrollpane;
 
     @FXML
     public void initialize() {
@@ -46,13 +56,21 @@ public class MainSkeletonComponent extends BorderPane {
         mainContent.add(content, 0, 0);
     }
 
+    public void setRightContent(Node content) {
+        rightContent.add(content, 0, 0);
+    }
+
+    public void setTitle(String text) {
+        this.setTitle(text, "");
+    }
+
     public void setTitle(String mainText, String subText) {
         title.setText(mainText);
         subtext.setText(subText);
     }
 
-    public void setTitle(String text) {
-        this.setTitle(text, "");
+    public void removeSubtitle() {
+        ((VBox) subtext.getParent()).getChildren().remove(subtext);
     }
 
     public NavbarButton addNavbarButton(URL url) {
@@ -63,6 +81,10 @@ public class MainSkeletonComponent extends BorderPane {
         topNavbar.getChildren().add(navbarButtonComponent);
 
         return navbarButtonComponent;
+    }
+
+    public void logout() {
+        stageHandler.swapScene(LogInController.class);
     }
 
 }

@@ -1,13 +1,13 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.modules.MainSkeletonComponent;
-import com.wise.resource.professionals.marketplace.modules.UpdateDetailsComponent;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
+import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
+import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
@@ -46,8 +46,8 @@ import static com.wise.resource.professionals.marketplace.constant.RoleMapping.R
 @FxmlView("ResourceView.fxml")
 public class ResourceController implements MainView {
 
-    private final FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton;
-    private final FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails;
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+    private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -56,18 +56,16 @@ public class ResourceController implements MainView {
     private Validator validator;
     @Autowired
     private ValidatorUtil validatorUtil;
-
     @Autowired
     private UpdateDetailsUtil updateDetailsUtil;
-
     @Autowired
     private EnumUtil enumUtil;
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
 
     public ResourceController(
-            FxControllerAndView<MainSkeletonComponent, BorderPane> mainSkeleton,
-            FxControllerAndView<UpdateDetailsComponent, VBox> updateDetails) {
+            FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
+            FxControllerAndView<UpdateDetails, VBox> updateDetails) {
         this.mainSkeleton = mainSkeleton;
         this.updateDetails = updateDetails;
 
@@ -95,9 +93,6 @@ public class ResourceController implements MainView {
             throw new IllegalAccessException("The view for updateDetails was not found");
         }
 
-        // TODO: Figure out which line is better...
-        //mainSkeleton.getController().setMainContent(stageHandler.getScene(UpdateDetails.class).getRoot());
-        //mainSkeleton.getController().setMainContent(fxWeaver.loadView(UpdateDetails.class));
         mainSkeleton.getController().setMainContent(updateDetails.getView().get());
         GridPane.setHalignment(updateDetails.getView().get(), HPos.CENTER);
 

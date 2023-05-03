@@ -2,6 +2,7 @@ package com.wise.resource.professionals.marketplace.util;
 
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
+import com.wise.resource.professionals.marketplace.controller.AdminController;
 import com.wise.resource.professionals.marketplace.controller.MainView;
 import com.wise.resource.professionals.marketplace.controller.ResourceController;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
@@ -27,6 +28,9 @@ public class AccountUtil {
 
     @Autowired
     private ResourceController resourceController;
+
+    @Autowired
+    private AdminController adminController;
 
 
     /**
@@ -66,7 +70,7 @@ public class AccountUtil {
         switch (accountType) {
             case Admin:
                 System.out.println("ADMIN VIEW");
-                break;
+                return adminController;
             case ProjectManager:
                 System.out.println("PROJECT MANAGER VIEW");
                 break;

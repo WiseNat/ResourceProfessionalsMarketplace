@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root prefWidth="1000.0" type="DialogPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <VBox spacing="80.0">
+         <children>
+            <Label fx:id="title" styleClass="h2" text="Label" />
+            <BorderPane>
+               <left>
+                  <GridPane fx:id="leftContent" maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </left>
+               <right>
+                  <GridPane fx:id="rightContent" maxHeight="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </right>
+            </BorderPane>
+         </children>
+         <padding>
+            <Insets bottom="100.0" left="70.0" right="70.0" top="100.0" />
+         </padding>
+      </VBox>
+
+   </content>
+   <header>
+      <HBox alignment="TOP_RIGHT">
+         <children>
+            <Button fx:id="closeButton" mnemonicParsing="false" style="-fx-background-color: rpmRed;">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true" />
+               </graphic>
+               <font>
+                  <Font size="1.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+   </header>
+</fx:root>

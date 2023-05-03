@@ -4,6 +4,7 @@ import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.controller.AdminController;
 import com.wise.resource.professionals.marketplace.controller.MainView;
+import com.wise.resource.professionals.marketplace.controller.ProjectManagerController;
 import com.wise.resource.professionals.marketplace.controller.ResourceController;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
@@ -31,6 +32,9 @@ public class AccountUtil {
 
     @Autowired
     private AdminController adminController;
+
+    @Autowired
+    private ProjectManagerController projectManagerController;
 
 
     /**
@@ -73,15 +77,13 @@ public class AccountUtil {
                 return adminController;
             case ProjectManager:
                 System.out.println("PROJECT MANAGER VIEW");
-                break;
+                return projectManagerController;
             case Resource:
                 System.out.println("RESOURCE VIEW");
                 return resourceController;
             default:
                 throw new IllegalArgumentException("No view exists for this Account Type!");
         }
-
-        return null;
     }
 
 

@@ -73,6 +73,10 @@ public class MainSkeleton extends BorderPane {
         ((VBox) subtext.getParent()).getChildren().remove(subtext);
     }
 
+    public void removeRightContent() {
+        ((BorderPane) rightContent.getParent()).getChildren().remove(rightContent);
+    }
+
     public NavbarButton addNavbarButton(URL url) {
 
         NavbarButton navbarButtonComponent = new NavbarButton();

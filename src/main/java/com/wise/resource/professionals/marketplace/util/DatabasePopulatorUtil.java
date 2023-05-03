@@ -148,6 +148,19 @@ public class DatabasePopulatorUtil {
             accountRepository.save(accountEntity);
         }
 
+        { // Admin
+            accountEntity = new AccountEntity();
+            accountEntity.setResource(null);
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager));
+            accountEntity.setFirstName("Dev");
+            accountEntity.setLastName("Project Manager");
+            accountEntity.setEmail("dev@account");
+            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            accountEntity.setIsApproved(true);
+
+            accountRepository.save(accountEntity);
+        }
+
     }
 
     private void populateApprovalsTableWithFakeData() {

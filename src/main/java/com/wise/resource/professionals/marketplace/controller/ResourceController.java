@@ -99,6 +99,8 @@ public class ResourceController implements MainView {
         String name = StringUtils.capitalize(accountEntity.getFirstName()) + " " + StringUtils.capitalize(accountEntity.getLastName());
         mainSkeleton.getController().setTitle("Hi " + name, "You can change your details here");
 
+        mainSkeleton.getController().removeRightContent();
+
         if (resourceEntity.getLoanedClient() != null) {
             TextField costPerHourField = updateDetails.getController().getCostPerHourField();
             ((VBox) costPerHourField.getParent()).getChildren().remove(costPerHourField);

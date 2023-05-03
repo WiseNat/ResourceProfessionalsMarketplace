@@ -29,6 +29,7 @@
 	rpmGreen: #119C79;
 	rpmDarkGreen: #20725C;
 	rpmRed: #DC3545;
+	rpmDarkRed: #A03E48;
 }
 
 
@@ -175,6 +176,10 @@
 	-fx-background-color: rpmRed;
 }
 
+.negative-button: hover {
+	-fx-background-color: rpmDarkRed;
+}
+
 .negative-control {
     -fx-background-color: rpmRed, rpmWhite;
 }
@@ -207,4 +212,13 @@
 
 .navbar-button-active:hover {
 	-fx-background-color: rpmAzure;
+}
+
+.close-button {
+    -fx-shape: "m 102.34127,80.057248 -0.49747,-0.512013 2.09828,-2.816068 -2.09828,-2.816068 0.49747,-0.512013 2.73611,2.272728 2.73611,-2.272728 0.49747,0.512013 -2.24001,2.816068 2.24001,2.816068 -0.49747,0.512013 -2.73611,-2.225481 z";
+    -fx-background-color: rpmDarkerGrey;
+}
+
+.close-button:hover {
+    -fx-background-color: rpmRed;
 }

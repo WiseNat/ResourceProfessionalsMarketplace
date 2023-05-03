@@ -2,6 +2,7 @@ package com.wise.resource.professionals.marketplace.modules;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -9,8 +10,8 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Getter
-@FxmlView("Approvals.fxml")
-public class Approvals {
+@FxmlView("ListView.fxml")
+public class ListView {
     @FXML
     private VBox body;
 
@@ -18,11 +19,11 @@ public class Approvals {
     public void initialize() {
     }
 
-    public void clearAllApprovals() {
+    public void clearAllChildren() {
         body.getChildren().clear();
     }
 
-    public void addApproval(ListBox listBox) {
-        body.getChildren().add(listBox);
+    public void addChild(Node node) {
+        body.getChildren().add(node);
     }
 }

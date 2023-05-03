@@ -8,7 +8,7 @@ import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
-import com.wise.resource.professionals.marketplace.modules.Approvals;
+import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
@@ -37,7 +37,7 @@ public class AdminController implements MainView {
 
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<Approvals, VBox> approvals;
+    private final FxControllerAndView<ListView, VBox> approvals;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
@@ -50,7 +50,7 @@ public class AdminController implements MainView {
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<Approvals, VBox> approvals,
+            FxControllerAndView<ListView, VBox> approvals,
             FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch) {
         this.mainSkeleton = mainSkeleton;
         this.approvals = approvals;
@@ -97,13 +97,13 @@ public class AdminController implements MainView {
     }
 
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
-        approvals.getController().clearAllApprovals();
+        approvals.getController().clearAllChildren();
 
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
-            approvals.getController().addApproval(approval);
+            approvals.getController().addChild(approval);
         }
     }
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox fx:id="body" minHeight="-Infinity" minWidth="-Infinity" spacing="30.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.ListView" />

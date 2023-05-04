@@ -1,6 +1,5 @@
 package com.wise.resource.professionals.marketplace.modules;
 
-import com.wise.resource.professionals.marketplace.component.ListBox;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;

@@ -3,13 +3,17 @@ package com.wise.resource.professionals.marketplace.controller;
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.LoanableResourceListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
+import com.wise.resource.professionals.marketplace.constant.BandingEnum;
+import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
+import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
@@ -21,8 +25,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @FxmlView("ProjectManagerView.fxml")
@@ -88,12 +94,26 @@ public class ProjectManagerController implements MainView {
     }
 
     private void populateAllLoanables() {
-        List<ResourceEntity> loanableResources = resourceRepository.findAllByLoanedClientNull();
+        List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
+        
+        ArrayList<ResourceCollectionTO> resourceCollections = new ArrayList<>();
+        for (ResourceRepository.IResourceCollection rawResourceCollection : rawResourceCollections) {
+            ResourceTO resourceTO = new ResourceTO();
+            resourceTO.setBanding(BandingEnum.valueToEnum(rawResourceCollection.getBanding().getName()));
+            resourceTO.setMainRole(MainRoleEnum.valueToEnum(rawResourceCollection.getMainRole().getName()));
+            resourceTO.setCostPerHour(rawResourceCollection.getCostPerHour());
 
-        // TODO: Populate this...
-        List<ResourceCollectionTO> resourceCollections = null;
+            Optional<SubRoleEntity> subRole = rawResourceCollection.getSubRole();
+            subRole.ifPresent(subRoleEntity -> resourceTO.setSubRole(SubRoleEnum.valueToEnum(subRoleEntity.getName())));
 
-//        populateLoanables(resourceCollections);
+            ResourceCollectionTO resourceCollectionTO = new ResourceCollectionTO();
+            resourceCollectionTO.setQuantity(rawResourceCollection.getCount());
+            resourceCollectionTO.setResource(resourceTO);
+
+            resourceCollections.add(resourceCollectionTO);
+        }
+
+        populateLoanables(resourceCollections);
     }
 
     private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {

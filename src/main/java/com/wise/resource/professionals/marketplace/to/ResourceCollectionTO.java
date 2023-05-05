@@ -11,6 +11,6 @@ public class ResourceCollectionTO {
     private ResourceTO resource;
 
     @NotNull
-    private int quantity;
+    private long quantity;
 
 }

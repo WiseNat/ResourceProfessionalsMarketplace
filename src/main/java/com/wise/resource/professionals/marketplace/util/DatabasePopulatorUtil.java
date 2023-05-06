@@ -70,7 +70,7 @@ public class DatabasePopulatorUtil {
             log.info("Populating tables with fake data");
             this.populateDevAccounts();
             this.populateFakeUnapprovedAccounts(20);
-            this.populateFakeAvailableResources(20);
+            this.populateFakeAvailableResources(1000);
         }
     }
 

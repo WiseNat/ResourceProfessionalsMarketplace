@@ -3,13 +3,19 @@ package com.wise.resource.professionals.marketplace.controller;
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.LoanableResourceListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.constant.BandingEnum;
+import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
+import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.LoanUtil;
+import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +27,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +44,11 @@ public class ProjectManagerController implements MainView {
     @Autowired
     private LoanUtil loanUtil;
 
+    @Autowired
+    private EnumUtil enumUtil;
+
+    @Autowired
+    private ValidatorUtil validatorUtil;
 
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -87,7 +99,33 @@ public class ProjectManagerController implements MainView {
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {
-        applyLoanSearch();
+        BandingEnum banding = BandingEnum.valueToEnum(loanSearch.getController().getBandField().getValue());
+        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(loanSearch.getController().getMainRoleField().getValue());
+
+        String subRoleString = loanSearch.getController().getSubRoleField().getValue();
+        SubRoleEnum subRole = null;
+        if (subRoleString != null) {
+            subRole = SubRoleEnum.valueToEnum(subRoleString);
+        }
+
+        String costPerHourString = loanSearch.getController().getCostPerHourField().getText();
+        BigDecimal costPerHour = null;
+        if (!costPerHourString.isEmpty()) {
+            try {
+                costPerHour = new BigDecimal(loanSearch.getController().getCostPerHourField().getText());
+            } catch (NumberFormatException e) {
+                validatorUtil.markControlNegative(loanSearch.getController().getCostPerHourField(), "negative-control");
+                return;
+            }
+        }
+
+        LoanSearchTO loanSearchTO = new LoanSearchTO();
+        loanSearchTO.setBanding(banding);
+        loanSearchTO.setMainRole(mainRole);
+        loanSearchTO.setSubRole(subRole);
+        loanSearchTO.setCostPerHour(costPerHour);
+
+        applyLoanSearch(loanSearchTO);
     }
 
     private void populateAllLoanables() {
@@ -124,7 +162,17 @@ public class ProjectManagerController implements MainView {
         // TODO: Create Modal
     }
 
-    private void applyLoanSearch() {
-        // TODO: This
+    private void applyLoanSearch(LoanSearchTO loanSearchTO) {
+        // TODO: Handle null values properly when passing to enumUtil...
+        List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
+                enumUtil.bandingToEntity(loanSearchTO.getBanding()),
+                enumUtil.mainRoleToEntity(loanSearchTO.getMainRole()),
+                enumUtil.subRoleToEntity(loanSearchTO.getSubRole()),
+                loanSearchTO.getCostPerHour()
+        );
+
+        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(foundLoanables);
+
+        populateLoanables(resourceCollections);
     }
 }

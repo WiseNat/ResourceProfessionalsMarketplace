@@ -31,18 +31,34 @@ public class EnumUtil {
     SubRoleRepository subRoleRepository;
 
     public AccountTypeEntity accountTypeToEntity(AccountTypeEnum accountTypeEnum) {
+        if (accountTypeEnum == null) {
+            return null;
+        }
+
         return accountTypeRepository.findByName(accountTypeEnum.value);
     }
 
     public BandingEntity bandingToEntity(BandingEnum bandingEnum) {
+        if (bandingEnum == null) {
+            return null;
+        }
+
         return bandingRepository.findByName(bandingEnum.value);
     }
 
     public MainRoleEntity mainRoleToEntity(MainRoleEnum mainRoleEnum) {
+        if (mainRoleEnum == null) {
+            return null;
+        }
+
         return mainRoleRepository.findByName(mainRoleEnum.value);
     }
 
     public SubRoleEntity subRoleToEntity(SubRoleEnum subRoleEnum) {
+        if (subRoleEnum == null) {
+            return null;
+        }
+
         return subRoleRepository.findByName(subRoleEnum.value);
     }
 }

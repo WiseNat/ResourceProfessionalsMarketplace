@@ -68,11 +68,12 @@ public class LoanSearch {
     }
 
     private void resetFields() {
-        setChoiceBoxPrompt(bandField, "Minimum Band");
+        setChoiceBoxPrompt(bandField, "Band");
         setChoiceBoxPrompt(mainRoleField, "Main Role");
         setChoiceBoxPrompt(subRoleField, "Sub Role");
 
         costPerHourField.setText("");
+        bandField.setValue(null);
         mainRoleField.setValue(null);
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
@@ -96,10 +97,10 @@ public class LoanSearch {
 
     private void updateSubRoles() {
         String mainRoleString = mainRoleField.getValue();
+        subRoleField.setValue(null);
 
         if (mainRoleString == null) {
             subRoleField.setDisable(true);
-            subRoleField.setValue(null);
             return;
         }
 
@@ -108,7 +109,6 @@ public class LoanSearch {
 
         if (subRoles.length == 0) {
             subRoleField.setDisable(true);
-            subRoleField.setValue(null);
         } else {
             subRoleField.setDisable(false);
 
@@ -116,7 +116,6 @@ public class LoanSearch {
                     Arrays.stream(subRoles).map(e -> e.value).collect(Collectors.toList()));
 
             subRoleField.setItems(subRoleItems);
-            subRoleField.setValue(subRoleItems.get(0));
         }
     }
 }

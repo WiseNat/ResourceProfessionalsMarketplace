@@ -79,7 +79,7 @@ public class ProjectManagerController implements MainView {
         navbarButton.setActive(true);
 
         mainSkeleton.getController().addNavbarButton(
-                Objects.requireNonNull(getClass().getResource("../images/returns.png")));
+                Objects.requireNonNull(getClass().getResource("../images/return.png")));
 
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
 

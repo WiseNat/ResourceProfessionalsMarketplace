@@ -1,15 +1,15 @@
 package com.wise.resource.professionals.marketplace.modules;
 
-import com.wise.resource.professionals.marketplace.component.MinMaxField;
+import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
+import javafx.scene.Node;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
@@ -34,10 +34,10 @@ public class LoanSearch {
     private ChoiceBox<String> subRoleField;
 
     @FXML
-    private MinMaxField bandField;
+    private ChoiceBox<String> bandField;
 
     @FXML
-    private MinMaxField costPerHourField;
+    private TextField costPerHourField;
 
     @FXML
     private Button applyButton;
@@ -47,11 +47,11 @@ public class LoanSearch {
 
     @FXML
     public void initialize() {
-        bandField.setPromptText("Band");
-        costPerHourField.setPromptText("Cost Per Hour");
-
         ObservableList<String> mainRoleItems = FXCollections.observableArrayList(MainRoleEnum.getAllValues());
         mainRoleField.setItems(mainRoleItems);
+
+        ObservableList<String> bandItems = FXCollections.observableArrayList(BandingEnum.getAllValues());
+        bandField.setItems(bandItems);
 
         mainRoleField.setOnAction(this::mainRoleFieldChanged);
         resetButton.setOnMouseClicked(this::resetButtonClicked);
@@ -68,15 +68,30 @@ public class LoanSearch {
     }
 
     private void resetFields() {
-        bandField.getMaxField().setText("");
-        bandField.getMinField().setText("");
+        setChoiceBoxPrompt(bandField, "Minimum Band");
+        setChoiceBoxPrompt(mainRoleField, "Main Role");
+        setChoiceBoxPrompt(subRoleField, "Sub Role");
 
-        costPerHourField.getMaxField().setText("");
-        costPerHourField.getMinField().setText("");
-
+        costPerHourField.setText("");
         mainRoleField.setValue(null);
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
+    }
+
+    private <T> void setChoiceBoxPrompt(ChoiceBox<T> choiceBox, String promptText) {
+        Platform.runLater(() -> {
+            @SuppressWarnings("unchecked")
+            SkinBase<ChoiceBox<T>> skin = (SkinBase<ChoiceBox<T>>) choiceBox.getSkin();
+            for (Node child : skin.getChildren()) {
+                if (child instanceof Label) {
+                    Label label = (Label) child;
+                    if (label.getText().isEmpty()) {
+                        label.setText(promptText);
+                    }
+                    return;
+                }
+            }
+        });
     }
 
     private void updateSubRoles() {

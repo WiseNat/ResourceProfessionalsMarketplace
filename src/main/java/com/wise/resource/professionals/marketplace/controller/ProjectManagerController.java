@@ -3,17 +3,13 @@ package com.wise.resource.professionals.marketplace.controller;
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.LoanableResourceListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.constant.BandingEnum;
-import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
-import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
-import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
@@ -25,10 +21,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 @Component
 @FxmlView("ProjectManagerView.fxml")
@@ -38,7 +32,10 @@ public class ProjectManagerController implements MainView {
     private final FxControllerAndView<ListView, VBox> listView;
     private final FxControllerAndView<LoanSearch, VBox> loanSearch;
     @Autowired
-    ResourceRepository resourceRepository;
+    private ResourceRepository resourceRepository;
+
+    @Autowired
+    private LoanUtil loanUtil;
 
 
     public ProjectManagerController(
@@ -95,23 +92,7 @@ public class ProjectManagerController implements MainView {
 
     private void populateAllLoanables() {
         List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
-
-        ArrayList<ResourceCollectionTO> resourceCollections = new ArrayList<>();
-        for (ResourceRepository.IResourceCollection rawResourceCollection : rawResourceCollections) {
-            ResourceTO resourceTO = new ResourceTO();
-            resourceTO.setBanding(BandingEnum.valueToEnum(rawResourceCollection.getBanding().getName()));
-            resourceTO.setMainRole(MainRoleEnum.valueToEnum(rawResourceCollection.getMainRole().getName()));
-            resourceTO.setCostPerHour(rawResourceCollection.getCostPerHour());
-
-            Optional<SubRoleEntity> subRole = rawResourceCollection.getSubRole();
-            subRole.ifPresent(subRoleEntity -> resourceTO.setSubRole(SubRoleEnum.valueToEnum(subRoleEntity.getName())));
-
-            ResourceCollectionTO resourceCollectionTO = new ResourceCollectionTO();
-            resourceCollectionTO.setQuantity(rawResourceCollection.getCount());
-            resourceCollectionTO.setResource(resourceTO);
-
-            resourceCollections.add(resourceCollectionTO);
-        }
+        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(rawResourceCollections);
 
         populateLoanables(resourceCollections);
     }

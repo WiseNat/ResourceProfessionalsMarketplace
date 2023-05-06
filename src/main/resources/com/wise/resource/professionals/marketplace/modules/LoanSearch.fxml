@@ -1,24 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.wise.resource.professionals.marketplace.component.MinMaxField?>
-<?import javafx.scene.control.*?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.VBox?>
-<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity"
-      minHeight="-Infinity" minWidth="-Infinity" prefWidth="250.0" spacing="50.0"
-      xmlns="http://javafx.com/javafx/8"
-      fx:controller="com.wise.resource.professionals.marketplace.modules.LoanSearch">
+
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="300.0" spacing="30.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.LoanSearch">
     <children>
-        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-              minHeight="-Infinity" minWidth="-Infinity" spacing="30.0">
+        <VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="30.0">
             <children>
-                <Label fx:id="title" styleClass="h5" text="Label"/>
-                <Separator maxWidth="1.7976931348623157E308"/>
-                <ChoiceBox fx:id="mainRoleField" maxWidth="1.7976931348623157E308"/>
-                <ChoiceBox fx:id="subRoleField" maxWidth="1.7976931348623157E308"/>
+                <Label fx:id="title" styleClass="h5" text="Label" textAlignment="CENTER" />
+                <Separator maxWidth="1.7976931348623157E308" />
+                <ChoiceBox fx:id="mainRoleField" maxWidth="1.7976931348623157E308" />
+                <ChoiceBox fx:id="subRoleField" maxWidth="1.7976931348623157E308" />
                 <MinMaxField fx:id="bandField" maxWidth="1.7976931348623157E308"/>
                 <MinMaxField fx:id="costPerHourField" maxWidth="1.7976931348623157E308"/>
             </children>
+         <VBox.margin>
+            <Insets bottom="20.0" />
+         </VBox.margin>
         </VBox>
-        <Button fx:id="applyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Apply"/>
+        <Button fx:id="resetButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="negative-button" text="Reset" />
+        <Button fx:id="applyButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Apply" />
     </children>
 </VBox>

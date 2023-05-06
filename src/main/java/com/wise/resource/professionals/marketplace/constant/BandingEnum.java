@@ -8,12 +8,7 @@ public enum BandingEnum {
     BandTwo("B2"),
     BandThree("B3"),
     BandFour("B4"),
-    BandFive("B5"),
-    BandSix("B6"),
-    BandSeven("B7"),
-    BandEight("B8"),
-    BandNine("B9"),
-    BandTen("B10");
+    BandFive("B5");
 
     private static final LinkedHashMap<String, BandingEnum> cache = new LinkedHashMap<>();
 

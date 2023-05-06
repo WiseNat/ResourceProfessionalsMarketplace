@@ -119,12 +119,17 @@ public class ProjectManagerController implements MainView {
     private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
         listView.getController().clearAllChildren();
 
-        loanSearch.getController().getTitle().setText(resourceCollections.size() + " loanable resources found");
+        int totalResources = 0;
 
         for (ResourceCollectionTO resourceCollection : resourceCollections) {
+            totalResources += resourceCollection.getQuantity();
+
             ListBox approval = createLoanableResourceListBox(resourceCollection);
             listView.getController().addChild(approval);
         }
+
+        loanSearch.getController().getTitle().setText(
+                resourceCollections.size() + " collections found\n" + totalResources + " loanable resources found");
     }
 
     private LoanableResourceListBox createLoanableResourceListBox(ResourceCollectionTO resourceCollection) {

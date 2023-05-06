@@ -9,6 +9,7 @@ import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.*;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -23,6 +24,7 @@ import java.util.Random;
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
 @Component
+@Slf4j
 public class DatabasePopulatorUtil {
 
     @Autowired
@@ -60,12 +62,15 @@ public class DatabasePopulatorUtil {
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!(hbm2ddlAuto.equals("validate") || hbm2ddlAuto.equals("none") || hbm2ddlAuto.equals("update"))) {
+            log.info("Intialising ordinal tables");
             this.initialiseAccountTypeTable();
             this.initialiseBandingTable();
             this.initialiseRoleTables();
 
+            log.info("Populating tables with fake data");
             this.populateDevAccounts();
             this.populateFakeUnapprovedAccounts(20);
+            this.populateFakeAvailableResources(500);
         }
     }
 
@@ -138,7 +143,7 @@ public class DatabasePopulatorUtil {
 
         { // Resource
             ResourceEntity resourceEntity = new ResourceEntity();
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandSix));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandFive));
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
             resourceEntity.setDailyLateFee(100.0);
@@ -190,33 +195,62 @@ public class DatabasePopulatorUtil {
             createAccountUtil.persistAccount(createAccountTO);
             createAccountUtil.persistApproval(approvalTO);
         }
-
-
-//        CreateAccountTO[] createAccountTOS = new CreateAccountTO[]{
-//                new CreateAccountTO(), new CreateAccountTO()
-//        };
-//        Random rnd = new Random();
-//
-//        createAccountTOS[0].setFirstName("John");
-//        createAccountTOS[0].setLastName("Cleese");
-//        createAccountTOS[0].setEmail("John.Cleese@company.com");
-//        createAccountTOS[0].setIsApproved(false);
-//        createAccountTOS[0].setPassword("pass");
-//        createAccountTOS[0].setEncodedPassword(accountUtil.hashPassword("pass"));
-//        createAccountTOS[0].setAccountType(AccountTypeEnum.Resource);
-//
-//        BeanUtils.copyProperties(createAccountTOS[0], createAccountTOS[1]);
-//
-//        createAccountTOS[1].setAccountType(AccountTypeEnum.ProjectManager);
-//
-//        for (CreateAccountTO createAccountTO : createAccountTOS) {
-//            createAccountUtil.persistAccount(createAccountTO);
-//
-//            ApprovalTO approvalTO = new ApprovalTO();
-//            approvalTO.setAccount(createAccountTO);
-//            approvalTO.setDate(new Date(-946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000))));
-//
-//            createAccountUtil.persistApproval(approvalTO);
-//        }
     }
+
+    private void populateFakeAvailableResources(int amount) {
+        Random random = new Random();
+        Faker faker = new Faker(new Locale("en-GB"));
+        BigDecimal[] validBigDecimals = new BigDecimal[]{
+                new BigDecimal("10.50"),
+                new BigDecimal("12.78"),
+                new BigDecimal("24.10"),
+                new BigDecimal("17.20"),
+                new BigDecimal("8.42"),
+        };
+
+        for (int i = 0; i < amount; i++) {
+            BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
+            MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
+            Double dailyLateFee = faker.number().randomDouble(5, 1, 5000);
+            BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
+
+            SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
+            SubRoleEnum subRole = null;
+            if (subRoles.length != 0) {
+                subRole = subRoles[random.nextInt(subRoles.length)];
+            }
+
+            ResourceEntity resourceEntity = new ResourceEntity();
+            resourceEntity.setBanding(enumUtil.bandingToEntity(banding));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(mainRole));
+            resourceEntity.setSubRole(null);
+            resourceEntity.setDailyLateFee(dailyLateFee);
+            resourceEntity.setCostPerHour(costPerHour);
+            resourceEntity.setLoanedClient(null);
+
+            if (subRole != null) {
+                resourceEntity.setSubRole(enumUtil.subRoleToEntity(subRole));
+            }
+
+            resourceRepository.save(resourceEntity);
+
+            AccountTypeEnum accountType = AccountTypeEnum.Resource;
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = faker.internet().emailAddress(firstName + "." + lastName);
+            String password = faker.internet().password();
+
+            AccountEntity accountEntity = new AccountEntity();
+            accountEntity.setResource(resourceEntity);
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(accountType));
+            accountEntity.setFirstName(firstName);
+            accountEntity.setLastName(lastName);
+            accountEntity.setEmail(email);
+            accountEntity.setEncodedPassword(accountUtil.hashPassword(password));
+            accountEntity.setIsApproved(true);
+
+            accountRepository.save(accountEntity);
+        }
+    }
+
 }

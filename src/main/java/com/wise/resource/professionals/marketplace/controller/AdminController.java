@@ -5,15 +5,20 @@ import com.wise.resource.professionals.marketplace.component.ApprovalModal;
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
+import com.wise.resource.professionals.marketplace.constant.BandingEnum;
+import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
+import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
+import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
+import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -24,9 +29,11 @@ import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -41,6 +48,9 @@ public class AdminController implements MainView {
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
+
+    @Autowired
+    private ResourceRepository resourceRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -164,6 +174,24 @@ public class AdminController implements MainView {
     private void approveButtonClicked(ApprovalModal approvalModal) {
         AccountEntity account = approvalModal.getApproval().getAccount();
         account.setIsApproved(true);
+
+        if (AccountTypeEnum.valueToEnum(account.getAccountType().getName()) == AccountTypeEnum.Resource) {
+            ResourceTO resourceTO = new ResourceTO();
+            resourceTO.setLoanedClient(null);
+            resourceTO.setDailyLateFee(100.0);
+            resourceTO.setCostPerHour(new BigDecimal("10.0"));
+            resourceTO.setAvailabilityDate(null);
+
+            ResourceEntity resourceEntity = new ResourceEntity();
+            BeanUtils.copyProperties(resourceTO, resourceEntity, "banding, subrole, mainRole");
+
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BusinessAnalyst));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandOne));
+
+            resourceRepository.save(resourceEntity);
+
+            account.setResource(resourceEntity);
+        }
 
         approvalRepository.delete(approvalModal.getApproval());
         accountRepository.save(account);

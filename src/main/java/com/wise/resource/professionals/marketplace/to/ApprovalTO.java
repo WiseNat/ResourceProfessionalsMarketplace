@@ -3,7 +3,7 @@ package com.wise.resource.professionals.marketplace.to;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.util.Date;
 
 @Data
 public class ApprovalTO {

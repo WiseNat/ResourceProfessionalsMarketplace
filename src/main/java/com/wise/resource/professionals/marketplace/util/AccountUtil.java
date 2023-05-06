@@ -73,13 +73,10 @@ public class AccountUtil {
     public MainView getAccountViewController(AccountTypeEnum accountType) {
         switch (accountType) {
             case Admin:
-                System.out.println("ADMIN VIEW");
                 return adminController;
             case ProjectManager:
-                System.out.println("PROJECT MANAGER VIEW");
                 return projectManagerController;
             case Resource:
-                System.out.println("RESOURCE VIEW");
                 return resourceController;
             default:
                 throw new IllegalArgumentException("No view exists for this Account Type!");

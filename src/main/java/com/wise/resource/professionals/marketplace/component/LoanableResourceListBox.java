@@ -34,7 +34,7 @@ public class LoanableResourceListBox extends ListBox {
         this.setTitleText(mainRole);
         this.setLeftSubtext(subRole + "Band " + banding + "\n"
                 + "£" + costPerHour + " per Hour");
-        this.setRightSubtext(quantity + "available");
+        this.setRightSubtext(quantity + " available");
 
         // TODO: Add images..
         this.removeImage();

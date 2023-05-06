@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.util;
 
+import com.github.javafaker.Faker;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -8,7 +9,6 @@ import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.*;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -16,7 +16,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -64,11 +64,9 @@ public class DatabasePopulatorUtil {
             this.initialiseBandingTable();
             this.initialiseRoleTables();
 
-            this.populateAccountTableWithFakeData();
-            this.populateApprovalsTableWithFakeData();
+            this.populateDevAccounts();
+            this.populateFakeUnapprovedAccounts(20);
         }
-
-
     }
 
     private void initialiseAccountTypeTable() {
@@ -109,8 +107,21 @@ public class DatabasePopulatorUtil {
         }
     }
 
-    private void populateAccountTableWithFakeData() {
+    private void populateDevAccounts() {
         AccountEntity accountEntity;
+
+        { // Admin
+            accountEntity = new AccountEntity();
+            accountEntity.setResource(null);
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager));
+            accountEntity.setFirstName("Dev");
+            accountEntity.setLastName("Project Manager");
+            accountEntity.setEmail("dev@account");
+            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            accountEntity.setIsApproved(true);
+
+            accountRepository.save(accountEntity);
+        }
 
         { // Admin
             accountEntity = new AccountEntity();
@@ -147,48 +158,65 @@ public class DatabasePopulatorUtil {
 
             accountRepository.save(accountEntity);
         }
-
-        { // Admin
-            accountEntity = new AccountEntity();
-            accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager));
-            accountEntity.setFirstName("Dev");
-            accountEntity.setLastName("Project Manager");
-            accountEntity.setEmail("dev@account");
-            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
-            accountEntity.setIsApproved(true);
-
-            accountRepository.save(accountEntity);
-        }
-
     }
 
-    private void populateApprovalsTableWithFakeData() {
-        CreateAccountTO[] createAccountTOS = new CreateAccountTO[]{
-                new CreateAccountTO(), new CreateAccountTO()
-        };
-        Random rnd = new Random();
+    private void populateFakeUnapprovedAccounts(int amount) {
+        Random random = new Random();
+        Faker faker = new Faker(new Locale("en-GB"));
+        AccountTypeEnum[] validAccountTypes = new AccountTypeEnum[]{AccountTypeEnum.ProjectManager, AccountTypeEnum.Resource};
 
-        createAccountTOS[0].setFirstName("John");
-        createAccountTOS[0].setLastName("Cleese");
-        createAccountTOS[0].setEmail("John.Cleese@company.com");
-        createAccountTOS[0].setIsApproved(false);
-        createAccountTOS[0].setPassword("pass");
-        createAccountTOS[0].setEncodedPassword(accountUtil.hashPassword("pass"));
-        createAccountTOS[0].setAccountType(AccountTypeEnum.Resource);
+        for (int i = 0; i < amount; i++) {
+            AccountTypeEnum accountType = validAccountTypes[random.nextInt(validAccountTypes.length)];
+            String firstName = faker.name().firstName();
+            String lastName = faker.name().lastName();
+            String email = faker.internet().emailAddress(firstName + "." + lastName);
+            String password = faker.internet().password();
+            String encodedPassword = accountUtil.hashPassword(password);
+            boolean isApproved = false;
 
-        BeanUtils.copyProperties(createAccountTOS[0], createAccountTOS[1]);
-
-        createAccountTOS[1].setAccountType(AccountTypeEnum.ProjectManager);
-
-        for (CreateAccountTO createAccountTO : createAccountTOS) {
-            createAccountUtil.persistAccount(createAccountTO);
+            CreateAccountTO createAccountTO = new CreateAccountTO();
+            createAccountTO.setAccountType(accountType);
+            createAccountTO.setFirstName(firstName);
+            createAccountTO.setLastName(lastName);
+            createAccountTO.setEmail(email);
+            createAccountTO.setPassword(password);
+            createAccountTO.setEncodedPassword(encodedPassword);
+            createAccountTO.setIsApproved(isApproved);
 
             ApprovalTO approvalTO = new ApprovalTO();
             approvalTO.setAccount(createAccountTO);
-            approvalTO.setDate(new Date(-946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000))));
+            approvalTO.setDate(faker.date().birthday());
 
+            createAccountUtil.persistAccount(createAccountTO);
             createAccountUtil.persistApproval(approvalTO);
         }
+
+
+//        CreateAccountTO[] createAccountTOS = new CreateAccountTO[]{
+//                new CreateAccountTO(), new CreateAccountTO()
+//        };
+//        Random rnd = new Random();
+//
+//        createAccountTOS[0].setFirstName("John");
+//        createAccountTOS[0].setLastName("Cleese");
+//        createAccountTOS[0].setEmail("John.Cleese@company.com");
+//        createAccountTOS[0].setIsApproved(false);
+//        createAccountTOS[0].setPassword("pass");
+//        createAccountTOS[0].setEncodedPassword(accountUtil.hashPassword("pass"));
+//        createAccountTOS[0].setAccountType(AccountTypeEnum.Resource);
+//
+//        BeanUtils.copyProperties(createAccountTOS[0], createAccountTOS[1]);
+//
+//        createAccountTOS[1].setAccountType(AccountTypeEnum.ProjectManager);
+//
+//        for (CreateAccountTO createAccountTO : createAccountTOS) {
+//            createAccountUtil.persistAccount(createAccountTO);
+//
+//            ApprovalTO approvalTO = new ApprovalTO();
+//            approvalTO.setAccount(createAccountTO);
+//            approvalTO.setDate(new Date(-946771200000L + (Math.abs(rnd.nextLong()) % (70L * 365 * 24 * 60 * 60 * 1000))));
+//
+//            createAccountUtil.persistApproval(approvalTO);
+//        }
     }
 }

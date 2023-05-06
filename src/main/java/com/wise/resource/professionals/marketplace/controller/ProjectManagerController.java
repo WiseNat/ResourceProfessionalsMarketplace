@@ -95,7 +95,7 @@ public class ProjectManagerController implements MainView {
 
     private void populateAllLoanables() {
         List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
-        
+
         ArrayList<ResourceCollectionTO> resourceCollections = new ArrayList<>();
         for (ResourceRepository.IResourceCollection rawResourceCollection : rawResourceCollections) {
             ResourceTO resourceTO = new ResourceTO();

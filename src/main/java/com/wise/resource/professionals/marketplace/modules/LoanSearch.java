@@ -3,16 +3,19 @@ package com.wise.resource.professionals.marketplace.modules;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import javafx.application.Platform;
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
@@ -45,6 +48,9 @@ public class LoanSearch {
     @FXML
     private Button resetButton;
 
+    @Autowired
+    private ComponentUtil componentUtil;
+
     @FXML
     public void initialize() {
         ObservableList<String> mainRoleItems = FXCollections.observableArrayList(MainRoleEnum.getAllValues());
@@ -68,31 +74,15 @@ public class LoanSearch {
     }
 
     private void resetFields() {
-        setChoiceBoxPrompt(bandField, "Band");
-        setChoiceBoxPrompt(mainRoleField, "Main Role");
-        setChoiceBoxPrompt(subRoleField, "Sub Role");
+        componentUtil.setChoiceBoxPrompt(bandField, "Band");
+        componentUtil.setChoiceBoxPrompt(mainRoleField, "Main Role");
+        componentUtil.setChoiceBoxPrompt(subRoleField, "Sub Role");
 
         costPerHourField.setText("");
         bandField.setValue(null);
         mainRoleField.setValue(null);
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
-    }
-
-    private <T> void setChoiceBoxPrompt(ChoiceBox<T> choiceBox, String promptText) {
-        Platform.runLater(() -> {
-            @SuppressWarnings("unchecked")
-            SkinBase<ChoiceBox<T>> skin = (SkinBase<ChoiceBox<T>>) choiceBox.getSkin();
-            for (Node child : skin.getChildren()) {
-                if (child instanceof Label) {
-                    Label label = (Label) child;
-                    if (label.getText().isEmpty()) {
-                        label.setText(promptText);
-                    }
-                    return;
-                }
-            }
-        });
     }
 
     private void updateSubRoles() {

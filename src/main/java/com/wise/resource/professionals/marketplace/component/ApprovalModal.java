@@ -1,8 +1,6 @@
 package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
-import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -18,16 +16,18 @@ public class ApprovalModal extends Modal {
 
 
     private final ApprovalEntity approval;
+
     @FXML
-    Label topText;
+    private Label topText;
+
     @FXML
-    Label bottomText;
+    private Label bottomText;
+
     @FXML
-    Button approveButton;
+    private Button approveButton;
+
     @FXML
-    Button denyButton;
-    private ApprovalRepository approvalRepository;
-    private AccountRepository accountRepository;
+    private Button denyButton;
 
     @SneakyThrows
     public ApprovalModal(ApprovalEntity approval) {

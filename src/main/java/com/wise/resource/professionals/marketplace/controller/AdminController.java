@@ -124,10 +124,10 @@ public class AdminController implements MainView {
         return listBox;
     }
 
-    private void approvalClicked(ApprovalListBox approvalListBox) {
+    private void approvalClicked(ApprovalListBox listBox) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
 
-        ApprovalModal dialog = new ApprovalModal(approvalListBox.getApproval());
+        ApprovalModal dialog = new ApprovalModal(listBox.getApproval());
         dialog.setBlurNodes(nodes);
         dialog.getApproveButton().setOnMouseClicked(e -> this.approveButtonClicked(dialog));
         dialog.getDenyButton().setOnMouseClicked(e -> this.denyButtonClicked(dialog));

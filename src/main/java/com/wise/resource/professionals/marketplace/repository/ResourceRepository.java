@@ -14,6 +14,30 @@ import java.util.Optional;
 
 public interface ResourceRepository extends JpaRepository<ResourceEntity, Long> {
 
+    @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
+            "FROM ResourceEntity r LEFT JOIN r.subRole " +
+            "WHERE r.loanedClient is null " +
+            "GROUP BY r.banding, r.subRole, r.mainRole, r.costPerHour")
+    List<IResourceCollection> findAllByCollection();
+
+    @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
+            "FROM ResourceEntity r LEFT JOIN r.subRole " +
+            "WHERE r.loanedClient is null " +
+            "AND (:banding is null OR r.banding = :banding) " +
+            "AND (:mainRole is null OR r.mainRole = :mainRole) " +
+            "AND (:subRole is null OR r.subRole = :subRole) " +
+            "AND (:costPerHour is null OR r.costPerHour <= :costPerHour) " +
+            "GROUP BY r.banding, r.subRole, r.mainRole, r.costPerHour")
+    List<IResourceCollection> findAllByCollectionWithPredicates(
+            @Param("banding") BandingEntity banding,
+            @Param("mainRole") MainRoleEntity mainRole,
+            @Param("subRole") SubRoleEntity subRole,
+            @Param("costPerHour") BigDecimal costPerHour
+    );
+
+    List<ResourceEntity> findByBandingAndMainRoleAndSubRoleAndCostPerHour(
+            BandingEntity banding, MainRoleEntity mainRole, SubRoleEntity subRole, BigDecimal costPerHour);
+
     interface IResourceCollection {
         Long getCount();
 
@@ -25,26 +49,4 @@ public interface ResourceRepository extends JpaRepository<ResourceEntity, Long> 
 
         BigDecimal getCostPerHour();
     }
-
-    @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
-            "FROM ResourceEntity r LEFT JOIN r.subRole " +
-            "WHERE r.loanedClient is null " +
-            "GROUP BY r.banding, r.subRole, r.mainRole, r.costPerHour")
-    List<IResourceCollection> findAllByCollection();
-
-    // TODO: Fix costPerHour... it should be a minimum... not an equivalency
-    @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
-            "FROM ResourceEntity r LEFT JOIN r.subRole " +
-            "WHERE r.loanedClient is null " +
-            "AND (:banding is null OR r.banding = :banding) " +
-            "AND (:mainRole is null OR r.mainRole = :mainRole) " +
-            "AND (:subRole is null OR r.subRole = :subRole) " +
-            "AND (:costPerHour is null OR r.costPerHour = :costPerHour) " +
-            "GROUP BY r.banding, r.subRole, r.mainRole, r.costPerHour")
-    List<IResourceCollection> findAllByCollectionWithPredicates(
-            @Param("banding") BandingEntity banding,
-            @Param("mainRole") MainRoleEntity mainRole,
-            @Param("subRole") SubRoleEntity subRole,
-            @Param("costPerHour") BigDecimal costPerHour
-    );
 }

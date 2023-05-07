@@ -1,16 +1,22 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
+import com.wise.resource.professionals.marketplace.component.LoanModal;
 import com.wise.resource.professionals.marketplace.component.LoanableResourceListBox;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import com.wise.resource.professionals.marketplace.entity.BandingEntity;
+import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
+import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
+import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
+import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
@@ -18,6 +24,8 @@ import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -27,9 +35,10 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Component
 @FxmlView("ProjectManagerView.fxml")
@@ -49,6 +58,9 @@ public class ProjectManagerController implements MainView {
 
     @Autowired
     private ValidatorUtil validatorUtil;
+
+    @Autowired
+    private Validator validator;
 
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -99,6 +111,10 @@ public class ProjectManagerController implements MainView {
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {
+        populatePredicateLoanables();
+    }
+
+    private void populatePredicateLoanables() {
         BandingEnum banding = BandingEnum.valueToEnum(loanSearch.getController().getBandField().getValue());
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(loanSearch.getController().getMainRoleField().getValue());
 
@@ -159,11 +175,63 @@ public class ProjectManagerController implements MainView {
     }
 
     private void loanableResourceClicked(LoanableResourceListBox listBox) {
-        // TODO: Create Modal
+        Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
+
+        LoanModal dialog = new LoanModal(listBox.getResourceCollection());
+        dialog.setBlurNodes(nodes);
+        dialog.getLoanButton().setOnMouseClicked(e -> this.loanButtonClicked(dialog));
+        dialog.showAndWait();
+    }
+
+    private void loanButtonClicked(LoanModal loanModal) {
+        LoanTO loanTO = new LoanTO();
+        loanTO.setAmount(loanModal.getAmountField().getValue());
+        loanTO.setClientName(loanModal.getClientField().getText());
+
+        Set<ConstraintViolation<LoanTO>> violations = validator.validate(loanTO);
+        HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
+            put("clientName", loanModal.getClientField());
+            put("amount", loanModal.getAmountField());
+        }};
+
+        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+
+        if (violations.size() > 0) {
+            return;
+        }
+
+        BandingEntity banding = enumUtil.bandingToEntity(loanModal.getResourceCollectionTO().getResource().getBanding());
+        MainRoleEntity mainRole = enumUtil.mainRoleToEntity(loanModal.getResourceCollectionTO().getResource().getMainRole());
+        SubRoleEntity subRole = enumUtil.subRoleToEntity(loanModal.getResourceCollectionTO().getResource().getSubRole());
+        BigDecimal costPerHour = loanModal.getResourceCollectionTO().getResource().getCostPerHour();
+
+        List<ResourceEntity> resources = resourceRepository.findByBandingAndMainRoleAndSubRoleAndCostPerHour(
+                banding, mainRole, subRole, costPerHour);
+
+        Collections.shuffle(resources);
+
+        List<ResourceEntity> selectedResources = resources.subList(0, loanModal.getAmountField().getValue());
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date(System.currentTimeMillis()));
+        cal.add(Calendar.YEAR, 1);
+        Date availabilityDate = cal.getTime();
+
+        String client = loanModal.getClientField().getText();
+
+        for (ResourceEntity resourceEntity : selectedResources) {
+            resourceEntity.setAvailabilityDate(availabilityDate);
+            resourceEntity.setLoanedClient(client);
+
+            resourceRepository.save(resourceEntity);
+        }
+
+        populatePredicateLoanables();
+
+        loanModal.closeDialog();
     }
 
     private void applyLoanSearch(LoanSearchTO loanSearchTO) {
-        // TODO: Handle null values properly when passing to enumUtil...
         List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
                 enumUtil.bandingToEntity(loanSearchTO.getBanding()),
                 enumUtil.mainRoleToEntity(loanSearchTO.getMainRole()),

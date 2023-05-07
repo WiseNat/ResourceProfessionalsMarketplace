@@ -48,6 +48,27 @@
 	-fx-border-radius: 0.4em;
 }
 
+.spinner {
+    -fx-background-radius: 0.4em;
+}
+
+.spinner > .text-field {
+    -fx-background-radius: 0.4em 0em 0em 0.4em;
+}
+
+.spinner > .increment-arrow-button, .spinner > decrement-arrow-button {
+    -fx-background-color: rpmGrey, rpmWhite;
+}
+
+.spinner > .increment-arrow-button {
+    -fx-background-radius: 0em 0.4em 0em 0em;
+}
+
+.spinner > .decrement-arrow-button {
+    -fx-background-radius: 0em 0em 0.4em 0em;
+    -fx-background-color: rpmGrey, rpmWhite;
+}
+
 .hyperlink {
     -fx-text-fill: rpmGreen;
 	-fx-underline: true;

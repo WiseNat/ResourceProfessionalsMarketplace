@@ -44,7 +44,7 @@ public class AdminController implements MainView {
 
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<ListView, VBox> approvals;
+    private final FxControllerAndView<ListView, VBox> listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
@@ -60,10 +60,10 @@ public class AdminController implements MainView {
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<ListView, VBox> approvals,
+            FxControllerAndView<ListView, VBox> listView,
             FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch) {
         this.mainSkeleton = mainSkeleton;
-        this.approvals = approvals;
+        this.listView = listView;
         this.approvalsSearch = approvalsSearch;
 
         this.mainSkeleton.getController().initialize();
@@ -76,11 +76,11 @@ public class AdminController implements MainView {
     @FXML
     @SneakyThrows
     private void initialize() {
-        if (!(approvals.getView().isPresent() && approvalsSearch.getView().isPresent())) {
+        if (!(listView.getView().isPresent() && approvalsSearch.getView().isPresent())) {
             throw new IllegalAccessException("A necessary view was not found");
         }
 
-        mainSkeleton.getController().setMainContent(approvals.getView().get());
+        mainSkeleton.getController().setMainContent(listView.getView().get());
 
         mainSkeleton.getController().setRightContent(approvalsSearch.getView().get());
         approvalsSearch.getView().get().setAlignment(Pos.TOP_CENTER);
@@ -107,13 +107,13 @@ public class AdminController implements MainView {
     }
 
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
-        approvals.getController().clearAllChildren();
+        listView.getController().clearAllChildren();
 
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
-            approvals.getController().addChild(approval);
+            listView.getController().addChild(approval);
         }
     }
 

@@ -9,7 +9,11 @@ import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
+import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +27,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -57,9 +62,6 @@ public class ReturnSearch {
     private ChoiceBox<String> bandField;
 
     @FXML
-    private TextField costPerHourField;
-
-    @FXML
     private Button applyButton;
 
     @FXML
@@ -73,6 +75,9 @@ public class ReturnSearch {
 
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private EnumUtil enumUtil;
 
     private FxControllerAndView<ListView, VBox> listView;
 
@@ -98,11 +103,10 @@ public class ReturnSearch {
         resetFields();
     }
 
-    public void resetFields() {
+    private void resetFields() {
         bandField.setTooltip(new Tooltip("Band"));
-//        componentUtil.setChoiceBoxPrompt(bandField, "Band");
-//        componentUtil.setChoiceBoxPrompt(mainRoleField, "Main Role");
-//        componentUtil.setChoiceBoxPrompt(subRoleField, "Sub Role");
+        mainRoleField.setTooltip(new Tooltip("Main Role"));
+        subRoleField.setTooltip(new Tooltip("Sub Role"));
 
         firstNameField.setText("");
         lastNameField.setText("");
@@ -111,7 +115,6 @@ public class ReturnSearch {
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
         bandField.setValue(null);
-        costPerHourField.setText("");
     }
 
     private void updateSubRoles() {
@@ -136,6 +139,45 @@ public class ReturnSearch {
 
             subRoleField.setItems(subRoleItems);
         }
+    }
+
+    public void populatePredicateReturnables() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String client = clientField.getText();
+        BandingEnum banding = BandingEnum.valueToEnum(bandField.getValue());
+        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleField.getValue());
+
+        String subRoleString = subRoleField.getValue();
+        SubRoleEnum subRole = null;
+        if (subRoleString != null) {
+            subRole = SubRoleEnum.valueToEnum(subRoleString);
+        }
+
+        ReturnSearchTO returnSearchTO = new ReturnSearchTO();
+        returnSearchTO.setFirstName(firstName);
+        returnSearchTO.setLastName(lastName);
+        returnSearchTO.setClient(client);
+        returnSearchTO.setSubRole(subRole);
+        returnSearchTO.setMainRole(mainRole);
+        returnSearchTO.setBanding(banding);
+
+        applyReturnSearch(returnSearchTO);
+    }
+
+    private void applyReturnSearch(ReturnSearchTO returnSearchTO) {
+        // TODO: Call SQL here...
+        List<AccountEntity> resources = accountRepository.findAllWithPredicates(
+                returnSearchTO.getFirstName(),
+                returnSearchTO.getLastName(),
+                returnSearchTO.getClient(),
+                enumUtil.bandingToEntity(returnSearchTO.getBanding()),
+                enumUtil.mainRoleToEntity(returnSearchTO.getMainRole()),
+                enumUtil.subRoleToEntity(returnSearchTO.getSubRole())
+        );
+
+        // TODO: Pass result here...
+        populateReturnables(resources);
     }
 
     public void populateAllReturnables() {

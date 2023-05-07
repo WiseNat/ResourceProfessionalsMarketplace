@@ -67,9 +67,9 @@ public class DatabasePopulatorUtil {
 
             log.info("Populating tables with fake data");
             this.populateDevAccounts();
-            this.populateFakeUnapprovedAccounts(100);
-            this.populateFakeAvailableResources(100);
-            this.populateFakeLoanedResources(100);
+            this.populateFakeUnapprovedAccounts(20);
+            this.populateFakeAvailableResources(20);
+            this.populateFakeLoanedResources(20);
         }
     }
 

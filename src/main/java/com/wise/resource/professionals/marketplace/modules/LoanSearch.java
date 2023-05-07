@@ -16,10 +16,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import lombok.Getter;
@@ -100,9 +97,9 @@ public class LoanSearch {
     }
 
     private void resetFields() {
-//        componentUtil.setChoiceBoxPrompt(bandField, "Band");
-//        componentUtil.setChoiceBoxPrompt(mainRoleField, "Main Role");
-//        componentUtil.setChoiceBoxPrompt(subRoleField, "Sub Role");
+        bandField.setTooltip(new Tooltip("Band"));
+        mainRoleField.setTooltip(new Tooltip("Main Role"));
+        subRoleField.setTooltip(new Tooltip("Sub Role"));
 
         mainRoleField.setValue(null);
         subRoleField.setValue(null);

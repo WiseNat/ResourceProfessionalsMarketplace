@@ -101,15 +101,16 @@ public class ResourceController implements MainView {
 
         mainSkeleton.getController().removeRightContent();
 
-        if (resourceEntity.getLoanedClient() != null) {
-            TextField costPerHourField = updateDetails.getController().getCostPerHourField();
-            ((VBox) costPerHourField.getParent()).getChildren().remove(costPerHourField);
-        }
+        TextField costPerHourField = updateDetails.getController().getCostPerHourField();
+        costPerHourField.setVisible(resourceEntity.getLoanedClient() == null);
 
         updateDetails.getController().getBandField().setValue(resourceEntity.getBanding().getName());
         updateDetails.getController().getMainRoleField().setValue(resourceEntity.getMainRole().getName());
-        updateSubRoles();
         updateDetails.getController().getCostPerHourField().setText(resourceEntity.getCostPerHour().toPlainString());
+
+        updateSubRoles();
+
+        updateDetails.getController().getSubRoleField().setValue(resourceEntity.getSubRole().getName());
 
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
         updateDetails.getController().getSaveDetailsButton().setOnMouseClicked(this::saveDetailsClicked);

@@ -130,8 +130,6 @@ public class ProjectManagerController implements MainView {
 
         mainSkeleton.getController().setTitle("Loan Resources");
 
-        listView.getController().clearAllChildren();
-
         loanNavbarButton.setActive(true);
         returnNavbarButton.setActive(false);
 
@@ -176,7 +174,7 @@ public class ProjectManagerController implements MainView {
     }
 
     private void returnSearchClicked(MouseEvent mouseEvent) {
-        // TODO: This...
+        returnSearch.getController().populatePredicateReturnables();
 
         for (Node node : listView.getController().getChildren()) {
             node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));

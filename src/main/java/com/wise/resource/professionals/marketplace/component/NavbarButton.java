@@ -19,6 +19,8 @@ public class NavbarButton extends Button {
     @FXML
     private ImageView image;
 
+    private boolean isActive;
+
     @SneakyThrows
     public NavbarButton() {
 
@@ -26,6 +28,8 @@ public class NavbarButton extends Button {
         fxmlLoader.setRoot(this);
         fxmlLoader.setController(this);
         fxmlLoader.load();
+
+        this.isActive = false;
 
         componentUtil = new ComponentUtil();
     }
@@ -38,6 +42,7 @@ public class NavbarButton extends Button {
 
     public void setActive(boolean isActive) {
         String ACTIVE_STYLE_CLASS = "navbar-button-active";
+        this.isActive = isActive;
 
         if (isActive) {
             componentUtil.safeAddStyleClass(this, ACTIVE_STYLE_CLASS);

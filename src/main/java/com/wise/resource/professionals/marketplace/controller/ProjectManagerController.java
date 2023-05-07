@@ -14,6 +14,7 @@ import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
+import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
@@ -47,6 +48,11 @@ public class ProjectManagerController implements MainView {
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<ListView, VBox> listView;
     private final FxControllerAndView<LoanSearch, VBox> loanSearch;
+    private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
+
+    private NavbarButton loanNavbarButton;
+    private NavbarButton returnNavbarButton;
+
     @Autowired
     private ResourceRepository resourceRepository;
 
@@ -65,10 +71,13 @@ public class ProjectManagerController implements MainView {
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
             FxControllerAndView<ListView, VBox> listView,
-            FxControllerAndView<LoanSearch, VBox> loanSearch) {
+            FxControllerAndView<LoanSearch, VBox> loanSearch,
+            FxControllerAndView<ReturnSearch, VBox> returnSearch
+    ) {
         this.mainSkeleton = mainSkeleton;
         this.listView = listView;
         this.loanSearch = loanSearch;
+        this.returnSearch = returnSearch;
 
         this.mainSkeleton.getController().initialize();
     }
@@ -81,33 +90,77 @@ public class ProjectManagerController implements MainView {
     @FXML
     @SneakyThrows
     private void initialize() {
-        initialiseLoansView();
-    }
-
-    @SneakyThrows
-    private void initialiseLoansView() {
-        if (!(listView.getView().isPresent() && loanSearch.getView().isPresent())) {
+        if (!(listView.getView().isPresent())) {
             throw new IllegalAccessException("A necessary view was not found");
         }
 
         mainSkeleton.getController().setMainContent(listView.getView().get());
 
+        mainSkeleton.getController().removeSubtitle();
+
+        loanNavbarButton = mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
+        returnNavbarButton = mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/return.png")));
+
+        loanNavbarButton.setOnMouseClicked(this::loanNavbarButtonClicked);
+        returnNavbarButton.setOnMouseClicked(this::returnNavbarButtonClicked);
+
+        initialiseLoansView();
+    }
+
+    private void returnNavbarButtonClicked(MouseEvent mouseEvent) {
+        if (!returnNavbarButton.isActive()) {
+            returnNavbarButton.setActive(true);
+            loanNavbarButton.setActive(false);
+
+            initialiseReturnsView();
+        }
+    }
+
+    private void loanNavbarButtonClicked(MouseEvent mouseEvent) {
+        if (!loanNavbarButton.isActive()) {
+            loanNavbarButton.setActive(true);
+            returnNavbarButton.setActive(false);
+
+            initialiseLoansView();
+        }
+    }
+
+    @SneakyThrows
+    private void initialiseLoansView() {
+        if (!(loanSearch.getView().isPresent())) {
+            throw new IllegalAccessException("A necessary view was not found");
+        }
+
         mainSkeleton.getController().setRightContent(loanSearch.getView().get());
         loanSearch.getView().get().setAlignment(Pos.TOP_CENTER);
 
-        mainSkeleton.getController().setTitle("Loan an Individual");
-        mainSkeleton.getController().removeSubtitle();
+        mainSkeleton.getController().setTitle("Loan Resources");
 
-        NavbarButton navbarButton = mainSkeleton.getController().addNavbarButton(
-                Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
-        navbarButton.setActive(true);
+        listView.getController().clearAllChildren();
 
-        mainSkeleton.getController().addNavbarButton(
-                Objects.requireNonNull(getClass().getResource("../images/return.png")));
+        loanNavbarButton.setActive(true);
+        returnNavbarButton.setActive(false);
 
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
 
         populateAllLoanables();
+    }
+
+    @SneakyThrows
+    private void initialiseReturnsView() {
+        if (!(returnSearch.getView().isPresent())) {
+            throw new IllegalAccessException("A necessary view was not found");
+        }
+
+        mainSkeleton.getController().setRightContent(returnSearch.getView().get());
+        returnSearch.getView().get().setAlignment(Pos.TOP_CENTER);
+
+        listView.getController().clearAllChildren();
+
+        loanNavbarButton.setActive(false);
+        returnNavbarButton.setActive(true);
+        
+        mainSkeleton.getController().setTitle("Return a Resource");
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {

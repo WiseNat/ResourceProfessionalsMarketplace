@@ -53,10 +53,12 @@ public class MainSkeleton extends BorderPane {
     }
 
     public void setMainContent(Node content) {
+        mainContent.getChildren().removeIf(n -> GridPane.getColumnIndex(n) == 0 && GridPane.getRowIndex(n) == 0);
         mainContent.add(content, 0, 0);
     }
 
     public void setRightContent(Node content) {
+        rightContent.getChildren().removeIf(n -> GridPane.getColumnIndex(n) == 0 && GridPane.getRowIndex(n) == 0);
         rightContent.add(content, 0, 0);
     }
 

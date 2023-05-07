@@ -4,41 +4,46 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
-<GridPane prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.controller.LogInController">
+<GridPane xmlns:fx="http://javafx.com/fxml/1" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8"
+          fx:controller="com.wise.resource.professionals.marketplace.controller.LogInController">
     <columnConstraints>
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" />
-        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0" />
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+        <ColumnConstraints hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="0.0" prefWidth="200.0"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity"/>
+        <ColumnConstraints hgrow="SOMETIMES" maxWidth="-Infinity" minWidth="0.0" prefWidth="250.0"/>
     </columnConstraints>
     <rowConstraints>
-        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
-        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS" />
-        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="200.0" vgrow="SOMETIMES" />
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES"/>
+        <RowConstraints maxHeight="1.7976931348623157E308" vgrow="ALWAYS"/>
+        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="200.0" vgrow="SOMETIMES"/>
     </rowConstraints>
     <children>
-        <VBox alignment="CENTER_LEFT" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+        <VBox alignment="CENTER_LEFT" spacing="30.0" GridPane.columnIndex="1" GridPane.hgrow="NEVER"
+              GridPane.rowIndex="1">
             <children>
-                <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="h1" text="Log in" textOverrun="CLIP" />
+                <Label contentDisplay="TEXT_ONLY" minWidth="-Infinity" styleClass="h1" text="Log in"
+                       textOverrun="CLIP"/>
                 <TextFlow minWidth="-Infinity">
                     <children>
-                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account? " />
-                        <Hyperlink onAction="#onHyperLinkClick" text="Create an Account" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Need an account? "/>
+                        <Hyperlink onAction="#onHyperLinkClick" text="Create an Account"/>
                     </children>
                 </TextFlow>
             </children>
         </VBox>
-        <VBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="50.0" GridPane.columnIndex="3" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+        <VBox alignment="CENTER_LEFT" minWidth="-Infinity" spacing="50.0" GridPane.columnIndex="3"
+              GridPane.hgrow="NEVER" GridPane.rowIndex="1">
             <children>
                 <VBox minWidth="-Infinity" prefWidth="400.0" spacing="22.0">
                     <children>
-                        <TextField fx:id="emailField" maxWidth="1.7976931348623157E308" promptText="Email" />
-                        <PasswordField fx:id="passwordField" promptText="Password" />
-                        <ChoiceBox fx:id="accountTypeField" maxWidth="1.7976931348623157E308" />
+                        <TextField fx:id="emailField" maxWidth="1.7976931348623157E308" promptText="Email"/>
+                        <PasswordField fx:id="passwordField" promptText="Password"/>
+                        <ChoiceBox fx:id="accountTypeField" maxWidth="1.7976931348623157E308"/>
                     </children>
                 </VBox>
-                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onLogInButtonClick" text="Log in" />
+                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onMouseClicked="#onLogInButtonClick"
+                        text="Log in"/>
             </children>
         </VBox>
     </children>

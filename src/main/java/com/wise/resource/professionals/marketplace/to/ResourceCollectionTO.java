@@ -3,15 +3,14 @@ package com.wise.resource.professionals.marketplace.to;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Data
-public class ApprovalTO {
+public class ResourceCollectionTO {
 
     @NotNull
-    private CreateAccountTO account;
+    private ResourceTO resource;
 
     @NotNull
-    private Date date;
+    private long quantity;
 
 }

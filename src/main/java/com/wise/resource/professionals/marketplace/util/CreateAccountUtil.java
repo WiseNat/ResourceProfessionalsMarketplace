@@ -1,24 +1,18 @@
 package com.wise.resource.professionals.marketplace.util;
 
-import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
-import com.wise.resource.professionals.marketplace.constant.BandingEnum;
-import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
-import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
 @Component
 public class CreateAccountUtil {
@@ -46,28 +40,10 @@ public class CreateAccountUtil {
     }
 
     public void persistAccount(CreateAccountTO accountTO) {
-        ResourceEntity resourceEntity = null;
-
-        if (accountTO.getAccountType() == AccountTypeEnum.Resource) {
-            ResourceTO resourceTO = new ResourceTO();
-            resourceTO.setLoanedClient(null);
-            resourceTO.setDailyLateFee(100.0);
-            resourceTO.setCostPerHour(new BigDecimal("10.0"));
-            resourceTO.setAvailabilityDate(null);
-
-            resourceEntity = new ResourceEntity();
-            BeanUtils.copyProperties(resourceTO, resourceEntity, "banding, subrole, mainRole");
-
-            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BusinessAnalyst));
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandOne));
-
-            resourceRepository.save(resourceEntity);
-        }
-
         AccountEntity accountEntity = new AccountEntity();
         BeanUtils.copyProperties(accountTO, accountEntity, "resource, accountType");
 
-        accountEntity.setResource(resourceEntity);
+        accountEntity.setResource(null);
         accountEntity.setAccountType(enumUtil.accountTypeToEntity(accountTO.getAccountType()));
 
         accountRepository.save(accountEntity);

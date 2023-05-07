@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
-<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-
-<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="800.0" spacing="72.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.wise.resource.professionals.marketplace.modules.UpdateDetails">
-   <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="35.0">
-         <children>
-            <ChoiceBox fx:id="mainRoleField" maxWidth="1.7976931348623157E308" />
-            <ChoiceBox fx:id="subRoleField" maxWidth="1.7976931348623157E308" />
-            <ChoiceBox fx:id="bandField" maxWidth="1.7976931348623157E308" />
-            <TextField fx:id="costPerHourField" maxWidth="1.7976931348623157E308" promptText="Cost Per Hour" />
-         </children>
-      </VBox>
-      <Button fx:id="saveDetailsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save" />
-   </children>
+<VBox xmlns:fx="http://javafx.com/fxml/1" alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity"
+      minHeight="-Infinity" minWidth="-Infinity" prefWidth="800.0" spacing="72.0"
+      xmlns="http://javafx.com/javafx/8"
+      fx:controller="com.wise.resource.professionals.marketplace.modules.UpdateDetails">
+    <children>
+        <VBox prefHeight="200.0" prefWidth="100.0" spacing="35.0">
+            <children>
+                <ChoiceBox fx:id="mainRoleField" maxWidth="1.7976931348623157E308"/>
+                <ChoiceBox fx:id="subRoleField" maxWidth="1.7976931348623157E308"/>
+                <ChoiceBox fx:id="bandField" maxWidth="1.7976931348623157E308"/>
+                <TextField fx:id="costPerHourField" maxWidth="1.7976931348623157E308" promptText="Cost Per Hour"/>
+            </children>
+        </VBox>
+        <Button fx:id="saveDetailsButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Save"/>
+    </children>
 </VBox>

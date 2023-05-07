@@ -29,12 +29,13 @@
 	rpmGreen: #119C79;
 	rpmDarkGreen: #20725C;
 	rpmRed: #DC3545;
+	rpmDarkRed: #A03E48;
 }
 
 
 /* JavaFX Classes */
 
-.text-field, .choice-box, .choice-box .context-menu, .check-box .box, .dialog-pane {
+.text-field, .choice-box, .choice-box .context-menu, .check-box .box, .dialog-pane, .border-class {
 	-fx-font-size: 20;
 	-fx-text-fill: rpmGunMetal;
 	-fx-prompt-text-fill: rpmGrey;
@@ -45,6 +46,27 @@
 	-fx-padding: 0.8em;
 	-fx-background-radius: 0.4em;
 	-fx-border-radius: 0.4em;
+}
+
+.spinner {
+    -fx-background-radius: 0.4em;
+}
+
+.spinner > .text-field {
+    -fx-background-radius: 0.4em 0em 0em 0.4em;
+}
+
+.spinner > .increment-arrow-button, .spinner > decrement-arrow-button {
+    -fx-background-color: rpmGrey, rpmWhite;
+}
+
+.spinner > .increment-arrow-button {
+    -fx-background-radius: 0em 0.4em 0em 0em;
+}
+
+.spinner > .decrement-arrow-button {
+    -fx-background-radius: 0em 0em 0.4em 0em;
+    -fx-background-color: rpmGrey, rpmWhite;
 }
 
 .hyperlink {
@@ -175,6 +197,10 @@
 	-fx-background-color: rpmRed;
 }
 
+.negative-button: hover {
+	-fx-background-color: rpmDarkRed;
+}
+
 .negative-control {
     -fx-background-color: rpmRed, rpmWhite;
 }
@@ -207,4 +233,13 @@
 
 .navbar-button-active:hover {
 	-fx-background-color: rpmAzure;
+}
+
+.close-button {
+    -fx-shape: "m 102.34127,80.057248 -0.49747,-0.512013 2.09828,-2.816068 -2.09828,-2.816068 0.49747,-0.512013 2.73611,2.272728 2.73611,-2.272728 0.49747,0.512013 -2.24001,2.816068 2.24001,2.816068 -0.49747,0.512013 -2.73611,-2.225481 z";
+    -fx-background-color: rpmDarkerGrey;
+}
+
+.close-button:hover {
+    -fx-background-color: rpmRed;
 }

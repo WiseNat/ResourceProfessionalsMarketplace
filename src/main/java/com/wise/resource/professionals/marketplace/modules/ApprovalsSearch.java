@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
@@ -32,9 +33,26 @@ public class ApprovalsSearch {
     private CheckBox projectManagerBox;
 
     @FXML
+    private Button resetButton;
+
+    @FXML
     private Button applyButton;
 
     @FXML
     public void initialize() {
+        resetButton.setOnMouseClicked(this::resetButtonClicked);
+    }
+
+    private void resetButtonClicked(MouseEvent mouseEvent) {
+        resetFields();
+    }
+
+    private void resetFields() {
+        firstNameField.setText("");
+        lastNameField.setText("");
+        emailField.setText("");
+
+        resourceBox.setSelected(true);
+        projectManagerBox.setSelected(true);
     }
 }

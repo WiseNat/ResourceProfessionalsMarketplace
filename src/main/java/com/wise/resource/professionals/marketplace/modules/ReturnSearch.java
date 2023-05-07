@@ -1,6 +1,7 @@
 package com.wise.resource.professionals.marketplace.modules;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
+import com.wise.resource.professionals.marketplace.component.ListView;
 import com.wise.resource.professionals.marketplace.component.ReturnResourceListBox;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -9,8 +10,6 @@ import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
@@ -27,7 +26,6 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -79,7 +77,7 @@ public class ReturnSearch {
     @Autowired
     private EnumUtil enumUtil;
 
-    private FxControllerAndView<ListView, VBox> listView;
+    private ListView listView;
 
     @FXML
     public void initialize() {
@@ -192,17 +190,17 @@ public class ReturnSearch {
     }
 
     private void populateReturnables(List<AccountEntity> accountEntities) {
-        listView.getController().clearAllChildren();
+        listView.clearAllChildren();
 
         for (AccountEntity accountEntity : accountEntities) {
             ListBox returnableResourceListBox = new ReturnResourceListBox(accountEntity);
-            listView.getController().addChild(returnableResourceListBox);
+            listView.addChild(returnableResourceListBox);
         }
 
         title.setText(accountEntities.size() + " loaned resources found");
     }
 
-    public void setListView(FxControllerAndView<ListView, VBox> listView) {
+    public void setListView(ListView listView) {
         this.listView = listView;
     }
 

@@ -5,7 +5,7 @@ import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
-import com.wise.resource.professionals.marketplace.modules.ListView;
+import com.wise.resource.professionals.marketplace.component.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
@@ -38,10 +38,10 @@ import java.util.*;
 public class ProjectManagerController implements MainView {
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<ListView, VBox> listView;
     private final FxControllerAndView<LoanSearch, VBox> loanSearch;
     private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
 
+    private final ListView listView;
     private NavbarButton loanNavbarButton;
     private NavbarButton returnNavbarButton;
 
@@ -62,12 +62,11 @@ public class ProjectManagerController implements MainView {
 
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<ListView, VBox> listView,
             FxControllerAndView<LoanSearch, VBox> loanSearch,
             FxControllerAndView<ReturnSearch, VBox> returnSearch
     ) {
         this.mainSkeleton = mainSkeleton;
-        this.listView = listView;
+        this.listView = new ListView();
         this.loanSearch = loanSearch;
         this.returnSearch = returnSearch;
 
@@ -82,11 +81,7 @@ public class ProjectManagerController implements MainView {
     @FXML
     @SneakyThrows
     private void initialize() {
-        if (!(listView.getView().isPresent())) {
-            throw new IllegalAccessException("A necessary view was not found");
-        }
-
-        mainSkeleton.getController().setMainContent(listView.getView().get());
+        mainSkeleton.getController().setMainContent(listView);
         mainSkeleton.getController().removeSubtitle();
 
         loanSearch.getController().setListView(listView);
@@ -136,7 +131,7 @@ public class ProjectManagerController implements MainView {
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
         loanSearch.getController().populateAllLoanables();
 
-        for (Node node : listView.getController().getChildren()) {
+        for (Node node : listView.getChildren()) {
             node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
         }
     }
@@ -152,7 +147,7 @@ public class ProjectManagerController implements MainView {
 
         mainSkeleton.getController().setTitle("Return a Resource");
 
-        listView.getController().clearAllChildren();
+        listView.clearAllChildren();
 
         loanNavbarButton.setActive(false);
         returnNavbarButton.setActive(true);
@@ -160,7 +155,7 @@ public class ProjectManagerController implements MainView {
         returnSearch.getController().getApplyButton().setOnMouseClicked(this::returnSearchClicked);
         returnSearch.getController().populateAllReturnables();
 
-        for (Node node : listView.getController().getChildren()) {
+        for (Node node : listView.getChildren()) {
             node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
         }
     }
@@ -168,7 +163,7 @@ public class ProjectManagerController implements MainView {
     private void loanSearchClicked(MouseEvent mouseEvent) {
         loanSearch.getController().populatePredicateLoanables();
 
-        for (Node node : listView.getController().getChildren()) {
+        for (Node node : listView.getChildren()) {
             node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
         }
     }
@@ -176,7 +171,7 @@ public class ProjectManagerController implements MainView {
     private void returnSearchClicked(MouseEvent mouseEvent) {
         returnSearch.getController().populatePredicateReturnables();
 
-        for (Node node : listView.getController().getChildren()) {
+        for (Node node : listView.getChildren()) {
             node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
         }
     }
@@ -243,7 +238,7 @@ public class ProjectManagerController implements MainView {
 
         loanSearch.getController().populatePredicateLoanables();
 
-        for (Node node : listView.getController().getChildren()) {
+        for (Node node : listView.getChildren()) {
             node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
         }
 

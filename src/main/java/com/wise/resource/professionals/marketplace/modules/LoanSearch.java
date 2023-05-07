@@ -1,6 +1,7 @@
 package com.wise.resource.professionals.marketplace.modules;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
+import com.wise.resource.professionals.marketplace.component.ListView;
 import com.wise.resource.professionals.marketplace.component.LoanResourceListBox;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -72,7 +73,7 @@ public class LoanSearch {
     @Autowired
     private LoanUtil loanUtil;
 
-    private FxControllerAndView<ListView, VBox> listView;
+    private ListView listView;
 
     @FXML
     public void initialize() {
@@ -183,7 +184,7 @@ public class LoanSearch {
     }
 
     private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
-        listView.getController().clearAllChildren();
+        listView.clearAllChildren();
 
         int totalResources = 0;
 
@@ -191,13 +192,13 @@ public class LoanSearch {
             totalResources += resourceCollection.getQuantity();
 
             ListBox loanableResourceListBox = new LoanResourceListBox(resourceCollection);
-            listView.getController().addChild(loanableResourceListBox);
+            listView.addChild(loanableResourceListBox);
         }
 
         title.setText(resourceCollections.size() + " collections found\n" + totalResources + " loanable resources found");
     }
 
-    public void setListView(FxControllerAndView<ListView, VBox> listView) {
+    public void setListView(ListView listView) {
         this.listView = listView;
     }
 }

@@ -12,7 +12,7 @@ import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
-import com.wise.resource.professionals.marketplace.modules.ListView;
+import com.wise.resource.professionals.marketplace.component.ListView;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
@@ -44,7 +44,7 @@ public class AdminController implements MainView {
 
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<ListView, VBox> listView;
+    private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
@@ -57,14 +57,12 @@ public class AdminController implements MainView {
     @Autowired
     private EnumUtil enumUtil;
 
-
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<ListView, VBox> listView,
             FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch) {
         this.mainSkeleton = mainSkeleton;
-        this.listView = listView;
         this.approvalsSearch = approvalsSearch;
+        this.listView = new ListView();
 
         this.mainSkeleton.getController().initialize();
     }
@@ -76,11 +74,11 @@ public class AdminController implements MainView {
     @FXML
     @SneakyThrows
     private void initialize() {
-        if (!(listView.getView().isPresent() && approvalsSearch.getView().isPresent())) {
+        if (!(approvalsSearch.getView().isPresent())) {
             throw new IllegalAccessException("A necessary view was not found");
         }
 
-        mainSkeleton.getController().setMainContent(listView.getView().get());
+        mainSkeleton.getController().setMainContent(listView);
 
         mainSkeleton.getController().setRightContent(approvalsSearch.getView().get());
         approvalsSearch.getView().get().setAlignment(Pos.TOP_CENTER);
@@ -107,13 +105,13 @@ public class AdminController implements MainView {
     }
 
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
-        listView.getController().clearAllChildren();
+        listView.clearAllChildren();
 
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
-            listView.getController().addChild(approval);
+            listView.addChild(approval);
         }
     }
 

@@ -18,7 +18,7 @@ public class ComponentUtil {
     public <T> void setChoiceBoxPrompt(ChoiceBox<T> choiceBox, String promptText) {
         Platform.runLater(() -> {
             @SuppressWarnings("unchecked")
-            SkinBase<ChoiceBox<T>> skin = (SkinBase<ChoiceBox<T>>) choiceBox.getSkin();
+            SkinBase<?> skin = (SkinBase<?>) choiceBox.getSkin();
             for (Node child : skin.getChildren()) {
                 if (child instanceof Label) {
                     Label label = (Label) child;

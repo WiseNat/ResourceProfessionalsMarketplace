@@ -31,6 +31,7 @@ public class ApprovalListBox extends ListBox {
         this.setTitleText(accountType + " Account Creation");
         this.setLeftSubtext(name + "\n" + email);
         this.setRightSubtext(date);
+
         this.removeImage();
     }
 }

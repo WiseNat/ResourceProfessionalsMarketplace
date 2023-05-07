@@ -6,12 +6,12 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 @Getter
-public class LoanableResourceListBox extends ListBox {
+public class LoanResourceListBox extends ListBox {
 
     private final ResourceCollectionTO resourceCollection;
 
     @SneakyThrows
-    public LoanableResourceListBox(ResourceCollectionTO resourceCollection) {
+    public LoanResourceListBox(ResourceCollectionTO resourceCollection) {
         super();
 
         this.resourceCollection = resourceCollection;

@@ -1,12 +1,6 @@
 package com.wise.resource.professionals.marketplace.controller;
 
-import com.wise.resource.professionals.marketplace.component.ListBox;
-import com.wise.resource.professionals.marketplace.component.LoanModal;
-import com.wise.resource.professionals.marketplace.component.LoanableResourceListBox;
-import com.wise.resource.professionals.marketplace.component.NavbarButton;
-import com.wise.resource.professionals.marketplace.constant.BandingEnum;
-import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
-import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import com.wise.resource.professionals.marketplace.component.*;
 import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
@@ -16,10 +10,8 @@ import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
@@ -95,8 +87,10 @@ public class ProjectManagerController implements MainView {
         }
 
         mainSkeleton.getController().setMainContent(listView.getView().get());
-
         mainSkeleton.getController().removeSubtitle();
+
+        loanSearch.getController().setListView(listView);
+        returnSearch.getController().setListView(listView);
 
         loanNavbarButton = mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/handshake.png")));
         returnNavbarButton = mainSkeleton.getController().addNavbarButton(Objects.requireNonNull(getClass().getResource("../images/return.png")));
@@ -142,8 +136,11 @@ public class ProjectManagerController implements MainView {
         returnNavbarButton.setActive(false);
 
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
+        loanSearch.getController().populateAllLoanables();
 
-        populateAllLoanables();
+        for (Node node : listView.getController().getChildren()) {
+            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
+        }
     }
 
     @SneakyThrows
@@ -155,84 +152,51 @@ public class ProjectManagerController implements MainView {
         mainSkeleton.getController().setRightContent(returnSearch.getView().get());
         returnSearch.getView().get().setAlignment(Pos.TOP_CENTER);
 
+        mainSkeleton.getController().setTitle("Return a Resource");
+
         listView.getController().clearAllChildren();
 
         loanNavbarButton.setActive(false);
         returnNavbarButton.setActive(true);
-        
-        mainSkeleton.getController().setTitle("Return a Resource");
+
+        returnSearch.getController().getApplyButton().setOnMouseClicked(this::returnSearchClicked);
+        returnSearch.getController().populateAllReturnables();
+
+        for (Node node : listView.getController().getChildren()) {
+            node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
+        }
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {
-        populatePredicateLoanables();
-    }
+        loanSearch.getController().populatePredicateLoanables();
 
-    private void populatePredicateLoanables() {
-        BandingEnum banding = BandingEnum.valueToEnum(loanSearch.getController().getBandField().getValue());
-        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(loanSearch.getController().getMainRoleField().getValue());
-
-        String subRoleString = loanSearch.getController().getSubRoleField().getValue();
-        SubRoleEnum subRole = null;
-        if (subRoleString != null) {
-            subRole = SubRoleEnum.valueToEnum(subRoleString);
+        for (Node node : listView.getController().getChildren()) {
+            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
         }
+    }
 
-        String costPerHourString = loanSearch.getController().getCostPerHourField().getText();
-        BigDecimal costPerHour = null;
-        if (!costPerHourString.isEmpty()) {
-            try {
-                costPerHour = new BigDecimal(loanSearch.getController().getCostPerHourField().getText());
-            } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(loanSearch.getController().getCostPerHourField(), "negative-control");
-                return;
-            }
+    private void returnSearchClicked(MouseEvent mouseEvent) {
+        // TODO: This...
+
+        for (Node node : listView.getController().getChildren()) {
+            node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
         }
-
-        LoanSearchTO loanSearchTO = new LoanSearchTO();
-        loanSearchTO.setBanding(banding);
-        loanSearchTO.setMainRole(mainRole);
-        loanSearchTO.setSubRole(subRole);
-        loanSearchTO.setCostPerHour(costPerHour);
-
-        applyLoanSearch(loanSearchTO);
     }
 
-    private void populateAllLoanables() {
-        List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(rawResourceCollections);
-
-        populateLoanables(resourceCollections);
-    }
-
-    private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
-        listView.getController().clearAllChildren();
-
-        int totalResources = 0;
-
-        for (ResourceCollectionTO resourceCollection : resourceCollections) {
-            totalResources += resourceCollection.getQuantity();
-
-            ListBox approval = createLoanableResourceListBox(resourceCollection);
-            listView.getController().addChild(approval);
-        }
-
-        loanSearch.getController().getTitle().setText(
-                resourceCollections.size() + " collections found\n" + totalResources + " loanable resources found");
-    }
-
-    private LoanableResourceListBox createLoanableResourceListBox(ResourceCollectionTO resourceCollection) {
-        LoanableResourceListBox listBox = new LoanableResourceListBox(resourceCollection);
-        listBox.setOnMouseClicked(e -> loanableResourceClicked(listBox));
-
-        return listBox;
-    }
-
-    private void loanableResourceClicked(LoanableResourceListBox listBox) {
+    private void loanableResourceClicked(LoanResourceListBox listBox) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
 
         LoanModal dialog = new LoanModal(listBox.getResourceCollection());
         dialog.setBlurNodes(nodes);
         dialog.getLoanButton().setOnMouseClicked(e -> this.loanButtonClicked(dialog));
+        dialog.showAndWait();
+    }
+
+    private void returnableResourceClicked(ReturnResourceListBox listBox) {
+        Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
+
+        ReturnModal dialog = new ReturnModal();
+        dialog.setBlurNodes(nodes);
         dialog.showAndWait();
     }
 
@@ -279,21 +243,12 @@ public class ProjectManagerController implements MainView {
             resourceRepository.save(resourceEntity);
         }
 
-        populatePredicateLoanables();
+        loanSearch.getController().populatePredicateLoanables();
+
+        for (Node node : listView.getController().getChildren()) {
+            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
+        }
 
         loanModal.closeDialog();
-    }
-
-    private void applyLoanSearch(LoanSearchTO loanSearchTO) {
-        List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
-                enumUtil.bandingToEntity(loanSearchTO.getBanding()),
-                enumUtil.mainRoleToEntity(loanSearchTO.getMainRole()),
-                enumUtil.subRoleToEntity(loanSearchTO.getSubRole()),
-                loanSearchTO.getCostPerHour()
-        );
-
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(foundLoanables);
-
-        populateLoanables(resourceCollections);
     }
 }

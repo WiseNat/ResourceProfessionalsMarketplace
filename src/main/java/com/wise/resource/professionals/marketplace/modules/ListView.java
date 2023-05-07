@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.modules;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.layout.VBox;
@@ -24,5 +25,9 @@ public class ListView {
 
     public void addChild(Node node) {
         body.getChildren().add(node);
+    }
+
+    public ObservableList<Node> getChildren() {
+        return body.getChildren();
     }
 }

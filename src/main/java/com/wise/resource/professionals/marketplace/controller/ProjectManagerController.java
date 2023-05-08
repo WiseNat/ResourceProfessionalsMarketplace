@@ -30,6 +30,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.*;
 
 @Component
@@ -92,6 +93,9 @@ public class ProjectManagerController implements MainView {
         loanNavbarButton.setOnMouseClicked(this::loanNavbarButtonClicked);
         returnNavbarButton.setOnMouseClicked(this::returnNavbarButtonClicked);
 
+        loanSearch.getController().resetFields();
+        returnSearch.getController().resetFields();
+
         initialiseLoansView();
     }
 
@@ -141,7 +145,7 @@ public class ProjectManagerController implements MainView {
         returnNavbarButton.setActive(false);
 
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
-        loanSearch.getController().populateAllLoanables();
+        loanSearch.getController().populatePredicateLoanables();
 
         applyMouseClickedEventToLoanableResources();
     }
@@ -163,7 +167,7 @@ public class ProjectManagerController implements MainView {
         returnNavbarButton.setActive(true);
 
         returnSearch.getController().getApplyButton().setOnMouseClicked(this::returnSearchClicked);
-        returnSearch.getController().populateAllReturnables();
+        returnSearch.getController().populatePredicateReturnables();
 
         applyMouseClickedEventToReturnableResources();
     }
@@ -202,11 +206,13 @@ public class ProjectManagerController implements MainView {
         LoanTO loanTO = new LoanTO();
         loanTO.setAmount(loanModal.getAmountField().getValue());
         loanTO.setClientName(loanModal.getClientField().getText());
+        loanTO.setAvailabilityDate(Date.from(loanModal.getDateField().getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 
         Set<ConstraintViolation<LoanTO>> violations = validator.validate(loanTO);
         HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
             put("clientName", loanModal.getClientField());
-            put("amount", loanModal.getAmountField());
+            put("amount", loanModal.getAmountField().getEditor());
+            put("availabilityDate", loanModal.getDateField().getEditor());
         }};
 
         validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
@@ -225,17 +231,12 @@ public class ProjectManagerController implements MainView {
 
         Collections.shuffle(resources);
 
-        List<ResourceEntity> selectedResources = resources.subList(0, loanModal.getAmountField().getValue());
+        List<ResourceEntity> selectedResources = resources.subList(0, loanTO.getAmount());
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(new Date(System.currentTimeMillis()));
-        cal.add(Calendar.YEAR, 1);
-        Date availabilityDate = cal.getTime();
-
-        String client = loanModal.getClientField().getText();
+        String client = loanTO.getClientName();
 
         for (ResourceEntity resourceEntity : selectedResources) {
-            resourceEntity.setAvailabilityDate(availabilityDate);
+            resourceEntity.setAvailabilityDate(loanTO.getAvailabilityDate());
             resourceEntity.setLoanedClient(client);
 
             resourceRepository.save(resourceEntity);

@@ -10,8 +10,6 @@ import java.util.List;
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     AccountEntity findByEmailAndAccountType(String email, AccountTypeEntity accountType);
 
-    AccountEntity findByResource(ResourceEntity resource);
-
     @Query("SELECT a " +
             "FROM AccountEntity a " +
             "WHERE (:firstName is null OR a.firstName LIKE CONCAT('%',:firstName,'%')) " +

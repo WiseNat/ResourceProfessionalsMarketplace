@@ -95,7 +95,7 @@ public class ReturnSearch {
         resetFields();
     }
 
-    private void resetFields() {
+    public void resetFields() {
         bandField.setTooltip(new Tooltip("Band"));
         mainRoleField.setTooltip(new Tooltip("Main Role"));
         subRoleField.setTooltip(new Tooltip("Sub Role"));
@@ -168,17 +168,6 @@ public class ReturnSearch {
         );
 
         populateReturnables(resources);
-    }
-
-    public void populateAllReturnables() {
-        List<ResourceEntity> returnableResourceEntities = resourceRepository.findByLoanedClientIsNotNull();
-
-        ArrayList<AccountEntity> returnableAccountEntities = new ArrayList<>();
-        for (ResourceEntity returnableResourceEntity : returnableResourceEntities) {
-            returnableAccountEntities.add(accountRepository.findByResource(returnableResourceEntity));
-        }
-
-        populateReturnables(returnableAccountEntities);
     }
 
     private void populateReturnables(List<AccountEntity> accountEntities) {

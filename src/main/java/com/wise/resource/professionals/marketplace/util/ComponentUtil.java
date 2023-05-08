@@ -8,6 +8,9 @@ import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Component
 public class ComponentUtil {
     public void safeAddStyleClass(Node node, String styleClass) {
@@ -34,5 +37,9 @@ public class ComponentUtil {
 
     public void removeNode(Node node) {
         ((Pane) node.getParent()).getChildren().remove(node);
+    }
+
+    public String formatBigDecimal(BigDecimal bigDecimal) {
+        return String.format("%,.2f", bigDecimal.setScale(2, RoundingMode.HALF_EVEN));
     }
 }

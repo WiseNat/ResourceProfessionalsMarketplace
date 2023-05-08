@@ -16,6 +16,7 @@ import com.wise.resource.professionals.marketplace.repository.ResourceRepository
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -52,6 +53,9 @@ public class AdminController implements MainView {
     private AccountRepository accountRepository;
     @Autowired
     private EnumUtil enumUtil;
+
+    @Autowired
+    private ResourceUtil resourceUtil;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -172,8 +176,8 @@ public class AdminController implements MainView {
         if (AccountTypeEnum.valueToEnum(account.getAccountType().getName()) == AccountTypeEnum.Resource) {
             ResourceTO resourceTO = new ResourceTO();
             resourceTO.setLoanedClient(null);
-            resourceTO.setDailyLateFee(100.0);
             resourceTO.setCostPerHour(new BigDecimal("10.0"));
+            resourceTO.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTO.getCostPerHour()));
             resourceTO.setAvailabilityDate(null);
 
             ResourceEntity resourceEntity = new ResourceEntity();

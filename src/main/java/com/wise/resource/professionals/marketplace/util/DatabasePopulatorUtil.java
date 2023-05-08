@@ -52,6 +52,8 @@ public class DatabasePopulatorUtil {
     @Autowired
     private CreateAccountUtil createAccountUtil;
 
+    @Autowired
+    private ResourceUtil resourceUtil;
 
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
@@ -145,8 +147,8 @@ public class DatabasePopulatorUtil {
             resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandFive));
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
-            resourceEntity.setDailyLateFee(100.0);
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
+            resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
 
             resourceRepository.save(resourceEntity);
@@ -210,8 +212,8 @@ public class DatabasePopulatorUtil {
         for (int i = 0; i < amount; i++) {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
             MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
-            Double dailyLateFee = faker.number().randomDouble(2, 1, 1000);
             BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
+            BigDecimal dailyLateFee = resourceUtil.costPerHourToDailyLateFee(costPerHour);
 
             SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
             SubRoleEnum subRole = null;

@@ -31,8 +31,8 @@ public class ResourceEntity {
 
     private String loanedClient;
 
-    @Column(nullable = false, columnDefinition = "DECIMAL(7,2)")
-    private Double dailyLateFee;
+    @Column(nullable = false, columnDefinition = "DECIMAL(6,2)")
+    private BigDecimal dailyLateFee;
 
     @Column(nullable = false, columnDefinition = "DECIMAL(5,2)")
     private BigDecimal costPerHour;

@@ -25,7 +25,9 @@ public class ResourceTO {
     private String loanedClient;
 
     @NotNull
-    private Double dailyLateFee;
+    @Digits(integer = 6, fraction = 2)
+    @DecimalMin(value = "0.0", inclusive = false)
+    private BigDecimal dailyLateFee;
 
     @NotNull
     @Digits(integer = 5, fraction = 2)

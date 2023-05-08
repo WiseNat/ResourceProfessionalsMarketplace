@@ -5,6 +5,6 @@
 
 <VBox alignment="BOTTOM_CENTER" spacing="40.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
-      <Button fx:id="returnButton" mnemonicParsing="false" text="Return Early" />
+      <Button fx:id="returnButton" mnemonicParsing="false" text="Return" />
     </children>
 </VBox>

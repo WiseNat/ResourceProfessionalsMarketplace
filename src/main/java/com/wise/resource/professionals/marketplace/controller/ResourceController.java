@@ -13,6 +13,7 @@ import com.wise.resource.professionals.marketplace.repository.ResourceRepository
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import com.wise.resource.professionals.marketplace.util.UpdateDetailsUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
@@ -60,6 +61,10 @@ public class ResourceController implements MainView {
     private UpdateDetailsUtil updateDetailsUtil;
     @Autowired
     private EnumUtil enumUtil;
+
+    @Autowired
+    private ResourceUtil resourceUtil;
+
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
 
@@ -151,6 +156,7 @@ public class ResourceController implements MainView {
         resourceEntity.setSubRole(subRoleEntity);
         resourceEntity.setBanding(enumUtil.bandingToEntity(resourceTo.getBanding()));
         resourceEntity.setCostPerHour(resourceTo.getCostPerHour());
+        resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTo.getCostPerHour()));
 
         resourceRepository.save(resourceEntity);
     }

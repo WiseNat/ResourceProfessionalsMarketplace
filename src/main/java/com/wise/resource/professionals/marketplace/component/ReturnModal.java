@@ -63,7 +63,7 @@ public class ReturnModal extends Modal {
         String costPerHour = "£" + accountEntity.getResource().getCostPerHour().toPlainString() + " per Hour";
         String client = accountEntity.getResource().getLoanedClient();
         String role = accountEntity.getResource().getMainRole().getName();
-        BigDecimal dailyLateFee = BigDecimal.valueOf(accountEntity.getResource().getDailyLateFee());
+        BigDecimal dailyLateFee = accountEntity.getResource().getDailyLateFee();
 
         SubRoleEntity subRole = accountEntity.getResource().getSubRole();
         if (subRole != null) {
@@ -80,24 +80,21 @@ public class ReturnModal extends Modal {
             BigDecimal daysLate = new BigDecimal(ChronoUnit.DAYS.between(dueDate.toInstant(), today.toInstant()));
             BigDecimal lateFee = dailyLateFee.multiply(daysLate);
 
-            String lateFeeString = String.format("%,.2f", lateFee.setScale(2, RoundingMode.HALF_EVEN));
-
             middleText.setText("Loaned to " + client);
-            bottomText.setText("Overdue since " + dueDateString + "\nLate fee for " + client + " is £" + lateFeeString);
-
-            System.out.println(dailyLateFee);
-            System.out.println(daysLate);
-            System.out.println(lateFee);
+            bottomText.setText("Overdue since " + dueDateString + "\nLate fee for " + client + " is £"
+                    + componentUtil.formatBigDecimal(lateFee));
 
             componentUtil.safeAddStyleClass(bottomText, "negative-label");
         } else {
             componentUtil.removeNode(middleText);
             bottomText.setText("Loaned to " + client + "\nAvailable " + dueDateString);
+
+            returnButton.setText("Return early");
         }
 
         this.setInnerTitle(name);
         topText.setText(role + "\n" + band + "\n" + costPerHour + "\nDaily late fee £" +
-                String.format("%,.2f", dailyLateFee.setScale(2, RoundingMode.HALF_EVEN)));
+                componentUtil.formatBigDecimal(dailyLateFee));
 
     }
 

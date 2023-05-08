@@ -113,6 +113,19 @@ public class ProjectManagerController implements MainView {
         }
     }
 
+    private void applyMouseClickedEventToLoanableResources() {
+        for (Node node : listView.getChildren()) {
+            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
+        }
+    }
+
+    private void applyMouseClickedEventToReturnableResources() {
+        for (Node node : listView.getChildren()) {
+            node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
+        }
+    }
+
+
     @SneakyThrows
     private void initialiseLoansView() {
         if (!(loanSearch.getView().isPresent())) {
@@ -130,9 +143,7 @@ public class ProjectManagerController implements MainView {
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
         loanSearch.getController().populateAllLoanables();
 
-        for (Node node : listView.getChildren()) {
-            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
-        }
+        applyMouseClickedEventToLoanableResources();
     }
 
     @SneakyThrows
@@ -154,25 +165,19 @@ public class ProjectManagerController implements MainView {
         returnSearch.getController().getApplyButton().setOnMouseClicked(this::returnSearchClicked);
         returnSearch.getController().populateAllReturnables();
 
-        for (Node node : listView.getChildren()) {
-            node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
-        }
+        applyMouseClickedEventToReturnableResources();
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {
         loanSearch.getController().populatePredicateLoanables();
 
-        for (Node node : listView.getChildren()) {
-            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
-        }
+        applyMouseClickedEventToLoanableResources();
     }
 
     private void returnSearchClicked(MouseEvent mouseEvent) {
         returnSearch.getController().populatePredicateReturnables();
 
-        for (Node node : listView.getChildren()) {
-            node.setOnMouseClicked(e -> returnableResourceClicked((ReturnResourceListBox) node));
-        }
+        applyMouseClickedEventToReturnableResources();
     }
 
     private void loanableResourceClicked(LoanResourceListBox listBox) {
@@ -188,6 +193,7 @@ public class ProjectManagerController implements MainView {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
 
         ReturnModal dialog = new ReturnModal(listBox.getAccountEntity());
+        dialog.getReturnButton().setOnMouseClicked(e -> this.returnButtonClicked(dialog));
         dialog.setBlurNodes(nodes);
         dialog.showAndWait();
     }
@@ -237,10 +243,23 @@ public class ProjectManagerController implements MainView {
 
         loanSearch.getController().populatePredicateLoanables();
 
-        for (Node node : listView.getChildren()) {
-            node.setOnMouseClicked(e -> loanableResourceClicked((LoanResourceListBox) node));
-        }
+        applyMouseClickedEventToLoanableResources();
 
         loanModal.closeDialog();
     }
+
+    private void returnButtonClicked(ReturnModal returnModal) {
+        ResourceEntity resourceEntity = returnModal.getAccountEntity().getResource();
+        resourceEntity.setLoanedClient(null);
+        resourceEntity.setAvailabilityDate(null);
+
+        resourceRepository.save(resourceEntity);
+
+        returnSearch.getController().populatePredicateReturnables();
+
+        applyMouseClickedEventToReturnableResources();
+
+        returnModal.closeDialog();
+    }
+
 }

@@ -16,9 +16,8 @@
 /* Root */
 
 .root {
-    -fx-font-size: 20;
-    -fx-font-family: "Roboto";
 	rpmWhite: #FBF9FA;
+	rpmLighterGrey: #F9F9F9;
 	rpmLightGrey: #F2F2F2;
 	rpmGrey: #B5B5B5;
 	rpmDarkGrey: #727272;
@@ -28,8 +27,11 @@
 	rpmAzure: #265A6C;
 	rpmGreen: #119C79;
 	rpmDarkGreen: #20725C;
+	rpmLightRed: #EA6976;
 	rpmRed: #DC3545;
 	rpmDarkRed: #A03E48;
+    -fx-font-size: 20;
+    -fx-font-family: "Roboto";
 }
 
 
@@ -50,6 +52,7 @@
 
 .spinner {
     -fx-background-radius: 0.4em;
+	-fx-background-insets: 0;
 }
 
 .spinner > .text-field {
@@ -158,6 +161,91 @@
 	-fx-shape: "m 43.546627,68.556357 4.38154,-4.38154 c 0.01021,-0.01021 0.02666,-0.01022 0.03688,0 l 58.178713,58.178703 c 0.0102,0.0102 0.0102,0.0267 1e-5,0.0369 l -4.38154,4.38154 c -0.0102,0.0102 -0.0267,0.0102 -0.0369,-1e-5 L 43.546625,68.593237 c -0.01021,-0.01021 -0.01022,-0.02666 0,-0.03688 z";
 }
 
+.date-picker {
+    -fx-background-radius: 0.4em;
+    -fx-background-insets: 0;
+}
+
+.date-picker > .date-picker-display-node {
+    -fx-background-radius: 0.4em 0em 0em 0.4em;
+}
+
+.date-picker > .arrow-button {
+    -fx-background-radius: 0em 0.4em 0.4em 0em;
+    -fx-background-insets: 0, 1;
+    -fx-background-color: rpmGrey, rpmWhite;
+}
+
+.date-picker > .arrow-button > .arrow {
+    -fx-background-color: rpmDarkerGrey;
+}
+
+.date-picker-popup {
+    -fx-background-radius: 0.4em;
+    -fx-background-color: rpmGrey, rpmWhite;
+}
+
+.date-picker-popup > * > .spinner > .button {
+    -fx-background-color: transparent, transparent;
+}
+
+.date-picker-popup > * > .spinner > .button > * {
+    -fx-background-color: rpmGrey;
+}
+
+.date-picker-popup > * > .spinner > .button > *:hover {
+    -fx-background-color: rpmDarkerGrey;
+}
+
+.date-picker-popup > .calendar-grid,
+.date-picker-popup > * > .day-name-cell,
+.date-picker-popup > * > .week-number-cell {
+    -fx-padding: 0.4em;
+    -fx-background-color: rpmLightGrey;
+    -fx-border-color: transparent;
+    -fx-text-fill: rpmGunMetal;
+}
+
+.date-picker-popup > .month-year-pane,
+.date-picker-popup > .calendar-grid {
+    -fx-background-color: rpmLightGrey;
+}
+
+.date-picker-popup > * > .selected,
+.date-picker-popup > * > .previous-month.selected,
+.date-picker-popup > * > .next-month.selected,
+.date-picker-popup > * > .day-cell:focused:hover,
+.date-picker-popup > * > .today:focused:hover,
+.date-picker-popup > * > .selected:focused,
+.date-picker-popup > * > .today.selected:focused,
+.date-picker-popup > * > .day-cell:focused,
+.date-picker-popup > * > .today:focused {
+    -fx-background-color: rpmDarkGreen;
+    -fx-border-color: rpmDarkGreen;
+    -fx-text-fill: rpmWhite;
+}
+
+.date-picker-popup > * > .day-cell:hover {
+    -fx-background-color: rpmGreen;
+    -fx-border-color: rpmGreen;
+}
+
+.date-picker-popup > * > .previous-month:hover,
+.date-picker-popup > * > .next-month:hover {
+    -fx-background-color: rpmDarkGreen;
+    -fx-border-color: rpmDarkGreen;
+    -fx-text-fill: rpmWhite;
+}
+
+.date-picker-popup > * > .previous-month,
+.date-picker-popup > * > .next-month {
+    -fx-background: rpmLightGrey;
+}
+
+.date-picker-popup > * > .today {
+    -fx-background-insets: 0em;
+}
+
 /* Custom Classes */
 
 .h1 {
@@ -207,6 +295,13 @@
 
 .negative-label {
     -fx-text-fill: rpmRed;
+}
+
+.negative-date-picker-day-cell {
+    -fx-border-color: rpmLightRed;
+    -fx-background-color: rpmGrey;
+    -fx-border-color: rpmLightGrey;
+    -fx-text-fill: rpmBlack;
 }
 
 .navbar {

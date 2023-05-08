@@ -95,7 +95,7 @@ public class LoanSearch {
         resetFields();
     }
 
-    private void resetFields() {
+    public void resetFields() {
         bandField.setTooltip(new Tooltip("Band"));
         mainRoleField.setTooltip(new Tooltip("Main Role"));
         subRoleField.setTooltip(new Tooltip("Sub Role"));
@@ -170,13 +170,6 @@ public class LoanSearch {
         );
 
         List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(foundLoanables);
-
-        populateLoanables(resourceCollections);
-    }
-
-    public void populateAllLoanables() {
-        List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(rawResourceCollections);
 
         populateLoanables(resourceCollections);
     }

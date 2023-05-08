@@ -14,14 +14,6 @@ import java.util.Optional;
 
 public interface ResourceRepository extends JpaRepository<ResourceEntity, Long> {
 
-    List<ResourceEntity> findByLoanedClientIsNotNull();
-
-    @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
-            "FROM ResourceEntity r LEFT JOIN r.subRole " +
-            "WHERE r.loanedClient is null " +
-            "GROUP BY r.banding, r.subRole, r.mainRole, r.costPerHour")
-    List<IResourceCollection> findAllByCollection();
-
     @Query("SELECT COUNT(r) AS count, r.banding AS banding, r.subRole AS subRole, r.mainRole AS mainRole, r.costPerHour AS costPerHour " +
             "FROM ResourceEntity r LEFT JOIN r.subRole " +
             "WHERE r.loanedClient is null " +

@@ -3,12 +3,16 @@ package com.wise.resource.professionals.marketplace.component;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.util.Callback;
 import lombok.Getter;
 import lombok.SneakyThrows;
+
+import java.time.LocalDate;
 
 @Getter
 public class LoanModal extends Modal {
@@ -26,6 +30,9 @@ public class LoanModal extends Modal {
 
     @FXML
     private Spinner<Integer> amountField;
+
+    @FXML
+    private DatePicker dateField;
 
     @FXML
     private Button loanButton;
@@ -71,6 +78,30 @@ public class LoanModal extends Modal {
         bottomText.setText(quantity + " available");
 
         ((SpinnerValueFactory.IntegerSpinnerValueFactory) amountField.getValueFactory()).setMax(Math.toIntExact(quantity));
+
+        dateField.setShowWeekNumbers(false);
+
+        ComponentUtil componentUtil = new ComponentUtil();
+        final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker datePicker) {
+                return new DateCell() {
+
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty);
+
+                        if (item.isBefore(LocalDate.now())) {
+                            setDisable(true);
+                            componentUtil.safeAddStyleClass(this, "negative-date-picker-day-cell");
+//                            setStyle("-fx-background-color: rpmLightRed;");
+                        }
+                    }
+                };
+            }
+        };
+
+        dateField.setDayCellFactory(dayCellFactory);
     }
 
 }

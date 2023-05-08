@@ -11,7 +11,6 @@ import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
-import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,9 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
 import lombok.Getter;
-import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -64,9 +61,6 @@ public class ReturnSearch {
 
     @FXML
     private Button resetButton;
-
-    @Autowired
-    private ComponentUtil componentUtil;
 
     @Autowired
     private ResourceRepository resourceRepository;
@@ -164,7 +158,6 @@ public class ReturnSearch {
     }
 
     private void applyReturnSearch(ReturnSearchTO returnSearchTO) {
-        // TODO: Call SQL here...
         List<AccountEntity> resources = accountRepository.findAllWithPredicates(
                 returnSearchTO.getFirstName(),
                 returnSearchTO.getLastName(),
@@ -174,7 +167,6 @@ public class ReturnSearch {
                 enumUtil.subRoleToEntity(returnSearchTO.getSubRole())
         );
 
-        // TODO: Pass result here...
         populateReturnables(resources);
     }
 

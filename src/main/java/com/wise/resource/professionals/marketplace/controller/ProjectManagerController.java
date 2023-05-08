@@ -5,7 +5,6 @@ import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
-import com.wise.resource.professionals.marketplace.component.ListView;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
@@ -188,7 +187,7 @@ public class ProjectManagerController implements MainView {
     private void returnableResourceClicked(ReturnResourceListBox listBox) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
 
-        ReturnModal dialog = new ReturnModal();
+        ReturnModal dialog = new ReturnModal(listBox.getAccountEntity());
         dialog.setBlurNodes(nodes);
         dialog.showAndWait();
     }

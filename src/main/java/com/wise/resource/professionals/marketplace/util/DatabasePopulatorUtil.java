@@ -210,7 +210,7 @@ public class DatabasePopulatorUtil {
         for (int i = 0; i < amount; i++) {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
             MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
-            Double dailyLateFee = faker.number().randomDouble(5, 1, 5000);
+            Double dailyLateFee = faker.number().randomDouble(2, 1, 1000);
             BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
 
             SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);

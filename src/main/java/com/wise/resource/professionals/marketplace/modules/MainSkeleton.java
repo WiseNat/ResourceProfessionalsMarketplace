@@ -3,6 +3,7 @@ package com.wise.resource.professionals.marketplace.modules;
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.controller.LogInController;
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -25,6 +26,9 @@ public class MainSkeleton extends BorderPane {
 
     @Autowired
     private StageHandler stageHandler;
+
+    @Autowired
+    private ComponentUtil componentUtil;
 
     @FXML
     private VBox topNavbar;
@@ -72,11 +76,11 @@ public class MainSkeleton extends BorderPane {
     }
 
     public void removeSubtitle() {
-        ((VBox) subtext.getParent()).getChildren().remove(subtext);
+        componentUtil.removeNode(subtext);
     }
 
     public void removeRightContent() {
-        ((BorderPane) rightContent.getParent()).getChildren().remove(rightContent);
+        componentUtil.removeNode(rightContent);
     }
 
     public NavbarButton addNavbarButton(URL url) {

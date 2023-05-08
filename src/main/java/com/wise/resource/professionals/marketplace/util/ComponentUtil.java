@@ -5,6 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SkinBase;
+import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -29,5 +30,9 @@ public class ComponentUtil {
                 }
             }
         });
+    }
+
+    public void removeNode(Node node) {
+        ((Pane) node.getParent()).getChildren().remove(node);
     }
 }

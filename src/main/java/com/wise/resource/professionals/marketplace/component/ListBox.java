@@ -1,12 +1,12 @@
 package com.wise.resource.professionals.marketplace.component;
 
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
@@ -55,6 +55,7 @@ public class ListBox extends BorderPane {
     }
 
     public void removeImage() {
-        ((HBox) image.getParent()).getChildren().remove(image);
+        ComponentUtil componentUtil = new ComponentUtil();
+        componentUtil.removeNode(image);
     }
 }

@@ -17,9 +17,7 @@ import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
@@ -54,6 +52,8 @@ public class DatabasePopulatorUtil {
     @Autowired
     private CreateAccountUtil createAccountUtil;
 
+    @Autowired
+    private ResourceUtil resourceUtil;
 
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
@@ -70,7 +70,8 @@ public class DatabasePopulatorUtil {
             log.info("Populating tables with fake data");
             this.populateDevAccounts();
             this.populateFakeUnapprovedAccounts(20);
-            this.populateFakeAvailableResources(1000);
+            this.populateFakeAvailableResources(20);
+            this.populateFakeLoanedResources(20);
         }
     }
 
@@ -146,8 +147,8 @@ public class DatabasePopulatorUtil {
             resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandFive));
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
-            resourceEntity.setDailyLateFee(100.0);
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
+            resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
 
             resourceRepository.save(resourceEntity);
@@ -211,8 +212,8 @@ public class DatabasePopulatorUtil {
         for (int i = 0; i < amount; i++) {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
             MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
-            Double dailyLateFee = faker.number().randomDouble(5, 1, 5000);
             BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
+            BigDecimal dailyLateFee = resourceUtil.costPerHourToDailyLateFee(costPerHour);
 
             SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
             SubRoleEnum subRole = null;
@@ -250,6 +251,33 @@ public class DatabasePopulatorUtil {
             accountEntity.setIsApproved(true);
 
             accountRepository.save(accountEntity);
+        }
+    }
+
+    private void populateFakeLoanedResources(int amount) {
+        Random random = new Random();
+        Faker faker = new Faker(new Locale("en-GB"));
+
+        this.populateFakeAvailableResources(amount);
+
+        List<ResourceEntity> resourceEntities = resourceRepository.findAll();
+        List<ResourceEntity> loanedResourceEntities = resourceEntities.subList(0, amount);
+
+        for (ResourceEntity resourceEntity : loanedResourceEntities) {
+            resourceEntity.setLoanedClient(faker.company().name());
+
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(new Date(System.currentTimeMillis()));
+
+            cal.add(Calendar.YEAR, -5);
+            Date beforeDate = cal.getTime();
+
+            cal.add(Calendar.YEAR, 10);
+            Date afterDate = cal.getTime();
+
+            resourceEntity.setAvailabilityDate(faker.date().between(beforeDate, afterDate));
+
+            resourceRepository.save(resourceEntity);
         }
     }
 

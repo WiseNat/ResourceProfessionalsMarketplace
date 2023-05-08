@@ -1,9 +1,6 @@
 package com.wise.resource.professionals.marketplace.controller;
 
-import com.wise.resource.professionals.marketplace.component.ApprovalListBox;
-import com.wise.resource.professionals.marketplace.component.ApprovalModal;
-import com.wise.resource.professionals.marketplace.component.ListBox;
-import com.wise.resource.professionals.marketplace.component.NavbarButton;
+import com.wise.resource.professionals.marketplace.component.*;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -12,7 +9,6 @@ import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
-import com.wise.resource.professionals.marketplace.modules.ListView;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
@@ -20,6 +16,7 @@ import com.wise.resource.professionals.marketplace.repository.ResourceRepository
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -44,7 +41,7 @@ public class AdminController implements MainView {
 
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final FxControllerAndView<ListView, VBox> approvals;
+    private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private ApprovalRepository approvalRepository;
@@ -57,14 +54,15 @@ public class AdminController implements MainView {
     @Autowired
     private EnumUtil enumUtil;
 
+    @Autowired
+    private ResourceUtil resourceUtil;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
-            FxControllerAndView<ListView, VBox> approvals,
             FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch) {
         this.mainSkeleton = mainSkeleton;
-        this.approvals = approvals;
         this.approvalsSearch = approvalsSearch;
+        this.listView = new ListView();
 
         this.mainSkeleton.getController().initialize();
     }
@@ -76,11 +74,11 @@ public class AdminController implements MainView {
     @FXML
     @SneakyThrows
     private void initialize() {
-        if (!(approvals.getView().isPresent() && approvalsSearch.getView().isPresent())) {
+        if (!(approvalsSearch.getView().isPresent())) {
             throw new IllegalAccessException("A necessary view was not found");
         }
 
-        mainSkeleton.getController().setMainContent(approvals.getView().get());
+        mainSkeleton.getController().setMainContent(listView);
 
         mainSkeleton.getController().setRightContent(approvalsSearch.getView().get());
         approvalsSearch.getView().get().setAlignment(Pos.TOP_CENTER);
@@ -107,13 +105,13 @@ public class AdminController implements MainView {
     }
 
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
-        approvals.getController().clearAllChildren();
+        listView.clearAllChildren();
 
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
             ListBox approval = createApprovalListBox(pendingApproval);
-            approvals.getController().addChild(approval);
+            listView.addChild(approval);
         }
     }
 
@@ -178,8 +176,8 @@ public class AdminController implements MainView {
         if (AccountTypeEnum.valueToEnum(account.getAccountType().getName()) == AccountTypeEnum.Resource) {
             ResourceTO resourceTO = new ResourceTO();
             resourceTO.setLoanedClient(null);
-            resourceTO.setDailyLateFee(100.0);
             resourceTO.setCostPerHour(new BigDecimal("10.0"));
+            resourceTO.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTO.getCostPerHour()));
             resourceTO.setAvailabilityDate(null);
 
             ResourceEntity resourceEntity = new ResourceEntity();

@@ -205,6 +205,10 @@
     -fx-background-color: rpmRed, rpmWhite;
 }
 
+.negative-label {
+    -fx-text-fill: rpmRed;
+}
+
 .navbar {
 	-fx-background-color: rpmBlack;
 }

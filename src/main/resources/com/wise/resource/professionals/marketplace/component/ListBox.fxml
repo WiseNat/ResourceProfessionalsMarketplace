@@ -1,31 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.*?>
-<fx:root xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity"
-         minWidth="-Infinity" prefWidth="500.0" styleClass="text-field" type="BorderPane"
-         xmlns="http://javafx.com/javafx/8">
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefWidth="500.0" styleClass="text-field" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <right>
         <VBox alignment="CENTER_RIGHT" BorderPane.alignment="CENTER">
             <children>
-                <Label fx:id="rightSubtext" styleClass="h5" text="Label"/>
+                <Label fx:id="rightSubtext" styleClass="h5" text="Label" textAlignment="RIGHT" />
             </children>
         </VBox>
     </right>
     <padding>
-        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0"/>
+        <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
     </padding>
     <left>
         <HBox spacing="20.0" BorderPane.alignment="CENTER">
             <children>
-                <ImageView fx:id="image" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true"/>
+                <ImageView fx:id="image" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" />
                 <VBox alignment="CENTER_LEFT">
                     <children>
-                        <Label fx:id="title" styleClass="h4" text="Label"/>
-                        <Label fx:id="leftSubtext" styleClass="h5" text="Label"/>
+                        <Label fx:id="title" styleClass="h4" text="Label" />
+                        <Label fx:id="leftSubtext" styleClass="h5" text="Label" />
                     </children>
                 </VBox>
             </children>

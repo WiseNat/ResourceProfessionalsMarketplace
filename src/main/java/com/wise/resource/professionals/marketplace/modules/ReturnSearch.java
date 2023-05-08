@@ -2,17 +2,16 @@ package com.wise.resource.professionals.marketplace.modules;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.ListView;
-import com.wise.resource.professionals.marketplace.component.LoanResourceListBox;
+import com.wise.resource.professionals.marketplace.component.ReturnResourceListBox;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import com.wise.resource.professionals.marketplace.entity.AccountEntity;
+import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
+import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
-import com.wise.resource.professionals.marketplace.util.ComponentUtil;
+import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.LoanUtil;
-import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,7 +23,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,10 +32,20 @@ import static com.wise.resource.professionals.marketplace.constant.RoleMapping.R
 
 @Component
 @Getter
-@FxmlView("LoanSearch.fxml")
-public class LoanSearch {
+@FxmlView("ReturnSearch.fxml")
+public class ReturnSearch {
+
     @FXML
     private Label title;
+
+    @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField clientField;
 
     @FXML
     private ChoiceBox<String> mainRoleField;
@@ -48,28 +57,19 @@ public class LoanSearch {
     private ChoiceBox<String> bandField;
 
     @FXML
-    private TextField costPerHourField;
-
-    @FXML
     private Button applyButton;
 
     @FXML
     private Button resetButton;
 
     @Autowired
-    private ComponentUtil componentUtil;
-
-    @Autowired
-    private EnumUtil enumUtil;
-
-    @Autowired
     private ResourceRepository resourceRepository;
 
     @Autowired
-    private ValidatorUtil validatorUtil;
+    private AccountRepository accountRepository;
 
     @Autowired
-    private LoanUtil loanUtil;
+    private EnumUtil enumUtil;
 
     private ListView listView;
 
@@ -100,11 +100,13 @@ public class LoanSearch {
         mainRoleField.setTooltip(new Tooltip("Main Role"));
         subRoleField.setTooltip(new Tooltip("Sub Role"));
 
+        firstNameField.setText("");
+        lastNameField.setText("");
+        clientField.setText("");
         mainRoleField.setValue(null);
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
         bandField.setValue(null);
-        costPerHourField.setText("");
     }
 
     private void updateSubRoles() {
@@ -131,7 +133,10 @@ public class LoanSearch {
         }
     }
 
-    public void populatePredicateLoanables() {
+    public void populatePredicateReturnables() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String client = clientField.getText();
         BandingEnum banding = BandingEnum.valueToEnum(bandField.getValue());
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleField.getValue());
 
@@ -141,62 +146,54 @@ public class LoanSearch {
             subRole = SubRoleEnum.valueToEnum(subRoleString);
         }
 
-        String costPerHourString = costPerHourField.getText();
-        BigDecimal costPerHour = null;
-        if (!costPerHourString.isEmpty()) {
-            try {
-                costPerHour = new BigDecimal(costPerHourField.getText());
-            } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(costPerHourField, "negative-control");
-                return;
-            }
-        }
+        ReturnSearchTO returnSearchTO = new ReturnSearchTO();
+        returnSearchTO.setFirstName(firstName);
+        returnSearchTO.setLastName(lastName);
+        returnSearchTO.setClient(client);
+        returnSearchTO.setSubRole(subRole);
+        returnSearchTO.setMainRole(mainRole);
+        returnSearchTO.setBanding(banding);
 
-        LoanSearchTO loanSearchTO = new LoanSearchTO();
-        loanSearchTO.setBanding(banding);
-        loanSearchTO.setMainRole(mainRole);
-        loanSearchTO.setSubRole(subRole);
-        loanSearchTO.setCostPerHour(costPerHour);
-
-        applyLoanSearch(loanSearchTO);
+        applyReturnSearch(returnSearchTO);
     }
 
-    private void applyLoanSearch(LoanSearchTO loanSearchTO) {
-        List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
-                enumUtil.bandingToEntity(loanSearchTO.getBanding()),
-                enumUtil.mainRoleToEntity(loanSearchTO.getMainRole()),
-                enumUtil.subRoleToEntity(loanSearchTO.getSubRole()),
-                loanSearchTO.getCostPerHour()
+    private void applyReturnSearch(ReturnSearchTO returnSearchTO) {
+        List<AccountEntity> resources = accountRepository.findAllWithPredicates(
+                returnSearchTO.getFirstName(),
+                returnSearchTO.getLastName(),
+                returnSearchTO.getClient(),
+                enumUtil.bandingToEntity(returnSearchTO.getBanding()),
+                enumUtil.mainRoleToEntity(returnSearchTO.getMainRole()),
+                enumUtil.subRoleToEntity(returnSearchTO.getSubRole())
         );
 
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(foundLoanables);
-
-        populateLoanables(resourceCollections);
+        populateReturnables(resources);
     }
 
-    public void populateAllLoanables() {
-        List<ResourceRepository.IResourceCollection> rawResourceCollections = resourceRepository.findAllByCollection();
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(rawResourceCollections);
+    public void populateAllReturnables() {
+        List<ResourceEntity> returnableResourceEntities = resourceRepository.findByLoanedClientIsNotNull();
 
-        populateLoanables(resourceCollections);
-    }
-
-    private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
-        listView.clearAllChildren();
-
-        int totalResources = 0;
-
-        for (ResourceCollectionTO resourceCollection : resourceCollections) {
-            totalResources += resourceCollection.getQuantity();
-
-            ListBox loanableResourceListBox = new LoanResourceListBox(resourceCollection);
-            listView.addChild(loanableResourceListBox);
+        ArrayList<AccountEntity> returnableAccountEntities = new ArrayList<>();
+        for (ResourceEntity returnableResourceEntity : returnableResourceEntities) {
+            returnableAccountEntities.add(accountRepository.findByResource(returnableResourceEntity));
         }
 
-        title.setText(resourceCollections.size() + " collections found\n" + totalResources + " loanable resources found");
+        populateReturnables(returnableAccountEntities);
+    }
+
+    private void populateReturnables(List<AccountEntity> accountEntities) {
+        listView.clearAllChildren();
+
+        for (AccountEntity accountEntity : accountEntities) {
+            ListBox returnableResourceListBox = new ReturnResourceListBox(accountEntity);
+            listView.addChild(returnableResourceListBox);
+        }
+
+        title.setText(accountEntities.size() + " loaned resources found");
     }
 
     public void setListView(ListView listView) {
         this.listView = listView;
     }
+
 }

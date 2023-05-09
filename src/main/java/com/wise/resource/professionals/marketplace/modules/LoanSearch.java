@@ -183,6 +183,7 @@ public class LoanSearch {
             totalResources += resourceCollection.getQuantity();
 
             ListBox loanableResourceListBox = new LoanResourceListBox(resourceCollection);
+
             listView.addChild(loanableResourceListBox);
         }
 

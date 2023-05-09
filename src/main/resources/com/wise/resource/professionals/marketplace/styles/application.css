@@ -281,6 +281,14 @@
     -fx-text-fill: rpmBlack;
 }
 
+.secondary-button {
+	-fx-background-color: rpmDarkGrey;
+}
+
+.secondary-button: hover {
+	-fx-background-color: rpmDarkerGrey;
+}
+
 .negative-button {
 	-fx-background-color: rpmRed;
 }

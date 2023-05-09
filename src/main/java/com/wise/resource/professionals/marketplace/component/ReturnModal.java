@@ -33,6 +33,9 @@ public class ReturnModal extends Modal {
     @FXML
     private Button returnButton;
 
+    @FXML
+    private Button saveToFileButton;
+
     @SneakyThrows
     public ReturnModal(AccountEntity accountEntity) {
         super();

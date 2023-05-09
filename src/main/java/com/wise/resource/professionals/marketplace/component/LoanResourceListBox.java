@@ -48,7 +48,6 @@ public class LoanResourceListBox extends ListBox {
         this.setRightSubtext(quantity + " available");
 
         if (MAIN_ROLE_ICON_MAPPING.containsKey(mainRoleEnum)) {
-            System.out.println(mainRoleEnum.value + ", " + MAIN_ROLE_ICON_MAPPING.get(mainRoleEnum).value);
             this.setMainImageUrl(MAIN_ROLE_ICON_MAPPING.get(mainRoleEnum).value);
         }
     }

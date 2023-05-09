@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -36,6 +37,9 @@ public class LoanModal extends Modal {
 
     @FXML
     private Button loanButton;
+
+    @FXML
+    private Button saveToFileButton;
 
     @SneakyThrows
     public LoanModal(ResourceCollectionTO resourceCollectionTO) {
@@ -94,7 +98,6 @@ public class LoanModal extends Modal {
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
                             componentUtil.safeAddStyleClass(this, "negative-date-picker-day-cell");
-//                            setStyle("-fx-background-color: rpmLightRed;");
                         }
                     }
                 };
@@ -102,6 +105,32 @@ public class LoanModal extends Modal {
         };
 
         dateField.setDayCellFactory(dayCellFactory);
+
+        saveToFileButton.setOnMouseClicked(this::saveToFileButtonPressed);
+    }
+
+    private void saveToFileButtonPressed(MouseEvent mouseEvent) {
+        StringBuilder content = new StringBuilder();
+        content
+                .append("Main role: ")
+                .append(resourceCollectionTO.getResource().getMainRole().value);
+
+        if (resourceCollectionTO.getResource().getSubRole() != null) {
+            content
+                    .append("\nSub Role: ")
+                    .append(resourceCollectionTO.getResource().getSubRole().value);
+
+        }
+
+        content
+                .append("\nBand: ")
+                .append(resourceCollectionTO.getResource().getBanding().value)
+                .append("\nCost Per Hour: £")
+                .append(resourceCollectionTO.getResource().getCostPerHour())
+                .append("\n\nAvailable copies: ")
+                .append(resourceCollectionTO.getQuantity());
+
+        saveDetailsToFile(this.getScene().getWindow(), content.toString());
     }
 
 }

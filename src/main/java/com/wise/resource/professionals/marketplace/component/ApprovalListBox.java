@@ -32,6 +32,7 @@ public class ApprovalListBox extends ListBox {
         this.setLeftSubtext(name + "\n" + email);
         this.setRightSubtext(date);
 
-        this.removeImage();
+        this.removeMainImage();
+        this.removeSubImage();
     }
 }

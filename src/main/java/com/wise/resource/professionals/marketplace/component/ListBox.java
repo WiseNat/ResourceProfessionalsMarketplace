@@ -25,7 +25,10 @@ public class ListBox extends BorderPane {
     private Label rightSubtext;
 
     @FXML
-    private ImageView image;
+    private ImageView mainImage;
+
+    @FXML
+    private ImageView subImage;
 
     @SneakyThrows
     public ListBox() {
@@ -49,13 +52,32 @@ public class ListBox extends BorderPane {
     }
 
     @SneakyThrows
-    public void setImageUrl(URL url) {
+    public void setMainImageUrl(URL url) {
+        setImageUrl(mainImage, url);
+    }
+
+    @SneakyThrows
+    public void setSubImageUrl(URL url) {
+        setImageUrl(subImage, url);
+    }
+
+    @SneakyThrows
+    private void setImageUrl(ImageView image, URL url) {
         Image innerImage = new Image(url.toString());
         image.setImage(innerImage);
     }
 
-    public void removeImage() {
+    public void removeMainImage() {
+        removeImage(mainImage);
+    }
+
+    public void removeSubImage() {
+        removeImage(subImage);
+    }
+
+    private void removeImage(ImageView image) {
         ComponentUtil componentUtil = new ComponentUtil();
         componentUtil.removeNode(image);
     }
+
 }

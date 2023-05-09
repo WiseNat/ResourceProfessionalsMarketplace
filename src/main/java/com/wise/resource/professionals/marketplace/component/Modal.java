@@ -12,9 +12,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import lombok.SneakyThrows;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Objects;
 
 import static javafx.scene.paint.Color.TRANSPARENT;
@@ -97,6 +102,23 @@ public class Modal extends DialogPane {
 
         for (Node node : blurNodes) {
             node.setEffect(null);
+        }
+    }
+
+    @SneakyThrows
+    protected void saveDetailsToFile(Window window, String content) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setInitialFileName("output.txt");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+                new FileChooser.ExtensionFilter("All Files", "*.*"));
+
+        File selectedFile = fileChooser.showSaveDialog(window);
+
+        if (selectedFile != null) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(selectedFile))) {
+                writer.write(content);
+            }
         }
     }
 }

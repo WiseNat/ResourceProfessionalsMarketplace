@@ -56,6 +56,7 @@ public class ReturnResourceListBox extends ListBox {
         this.setLeftSubtext(role + "\n" + band);
         this.setRightSubtext(rightSubText);
 
-        this.removeImage();
+        this.removeMainImage();
+        this.removeSubImage();
     }
 }

@@ -68,9 +68,10 @@ public class LogInController {
 
         if (isAuthenticated) {
             MainView sceneController = accountUtil.getAccountViewController(loginAccount.getAccountType());
+            Scene scene = new Scene(stageHandler.getFxWeaver().loadView(sceneController.getClass()));
+
             sceneController.setAccountTO(loginAccount);
 
-            Scene scene = new Scene(stageHandler.getFxWeaver().loadView(sceneController.getClass()));
             stageHandler.swapScene(scene);
         } else {
             validatorUtil.markControlNegative(emailField, NegativeControl.value);

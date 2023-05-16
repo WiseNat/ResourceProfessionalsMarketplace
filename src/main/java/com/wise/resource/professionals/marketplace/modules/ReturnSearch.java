@@ -10,6 +10,7 @@ import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +23,7 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
 @Component
 @Getter
@@ -69,6 +66,9 @@ public class ReturnSearch {
     @Autowired
     private EnumUtil enumUtil;
 
+    @Autowired
+    private ComponentUtil componentUtil;
+
     private ListView listView;
 
     @FXML
@@ -109,26 +109,7 @@ public class ReturnSearch {
 
     private void updateSubRoles() {
         String mainRoleString = mainRoleField.getValue();
-        subRoleField.setValue(null);
-
-        if (mainRoleString == null) {
-            subRoleField.setDisable(true);
-            return;
-        }
-
-        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleString);
-        SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
-
-        if (subRoles.length == 0) {
-            subRoleField.setDisable(true);
-        } else {
-            subRoleField.setDisable(false);
-
-            ObservableList<String> subRoleItems = FXCollections.observableArrayList(
-                    Arrays.stream(subRoles).map(e -> e.value).collect(Collectors.toList()));
-
-            subRoleField.setItems(subRoleItems);
-        }
+        componentUtil.updateNullableSubRoles(subRoleField, mainRoleString);
     }
 
     public void populatePredicateReturnables() {

@@ -148,7 +148,7 @@ public class DatabasePopulatorUtil {
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
-            resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceEntity.getCostPerHour()));
+            resourceEntity.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
 
             resourceRepository.save(resourceEntity);
@@ -213,7 +213,7 @@ public class DatabasePopulatorUtil {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
             MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
             BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
-            BigDecimal dailyLateFee = resourceUtil.costPerHourToDailyLateFee(costPerHour);
+            BigDecimal dailyLateFee = resourceUtil.calculateDailyLateFee(costPerHour);
 
             SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
             SubRoleEnum subRole = null;

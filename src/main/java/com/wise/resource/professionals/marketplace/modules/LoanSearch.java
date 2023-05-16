@@ -25,11 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
 
 @Component
@@ -110,26 +107,7 @@ public class LoanSearch {
 
     private void updateSubRoles() {
         String mainRoleString = mainRoleField.getValue();
-        subRoleField.setValue(null);
-
-        if (mainRoleString == null) {
-            subRoleField.setDisable(true);
-            return;
-        }
-
-        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleString);
-        SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
-
-        if (subRoles.length == 0) {
-            subRoleField.setDisable(true);
-        } else {
-            subRoleField.setDisable(false);
-
-            ObservableList<String> subRoleItems = FXCollections.observableArrayList(
-                    Arrays.stream(subRoles).map(e -> e.value).collect(Collectors.toList()));
-
-            subRoleField.setItems(subRoleItems);
-        }
+        componentUtil.updateNullableSubRoles(subRoleField, mainRoleString);
     }
 
     public void populatePredicateLoanables() {

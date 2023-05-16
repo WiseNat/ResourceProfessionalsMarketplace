@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Validator;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
@@ -90,7 +89,6 @@ public class CreateAnAccountController {
         String[] negativeFields = createAnAccountUtil.createAccount(accountTO);
 
         if (negativeFields.length > 0) {
-            System.out.println(Arrays.toString(negativeFields));
             markTextFields(negativeFields);
             return;
         }

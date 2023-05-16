@@ -74,7 +74,7 @@ public class AdminUtil {
             ResourceTO resourceTO = new ResourceTO();
             resourceTO.setLoanedClient(null);
             resourceTO.setCostPerHour(new BigDecimal("10.0"));
-            resourceTO.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTO.getCostPerHour()));
+            resourceTO.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceTO.getCostPerHour()));
             resourceTO.setAvailabilityDate(null);
 
             ResourceEntity resourceEntity = new ResourceEntity();

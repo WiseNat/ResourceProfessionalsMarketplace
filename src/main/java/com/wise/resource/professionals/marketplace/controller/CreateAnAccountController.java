@@ -87,11 +87,11 @@ public class CreateAnAccountController {
         accountTO.setPassword(passwordField.getText());
         accountTO.setAccountType(AccountTypeEnum.valueToEnum(accountTypeField.getValue()));
 
-        String[] fields = createAnAccountUtil.createAccount(accountTO);
+        String[] negativeFields = createAnAccountUtil.createAccount(accountTO);
 
-        if (fields.length > 0) {
-            System.out.println(Arrays.toString(fields));
-            markTextFields(fields);
+        if (negativeFields.length > 0) {
+            System.out.println(Arrays.toString(negativeFields));
+            markTextFields(negativeFields);
             return;
         }
 

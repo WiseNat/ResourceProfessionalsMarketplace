@@ -1,6 +1,7 @@
 package com.wise.resource.professionals.marketplace.util;
 
 import javafx.scene.control.Control;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.validation.ConstraintViolation;
@@ -10,14 +11,16 @@ import java.util.Set;
 
 @Component
 public class ValidatorUtil {
+
+    @Autowired
+    ComponentUtil componentUtil;
+
     public <T> String getFieldFromConstraintViolation(ConstraintViolation<T> constraintViolation) {
         return constraintViolation.getPropertyPath().toString();
     }
 
     public void markControlNegative(Control control, String negativeStyleClass) {
-        if (!control.getStyleClass().contains(negativeStyleClass)) {
-            control.getStyleClass().add(negativeStyleClass);
-        }
+        componentUtil.safeAddStyleClass(control, negativeStyleClass);
     }
 
     public void markControlPositive(Control control, String negativeStyleClass) {

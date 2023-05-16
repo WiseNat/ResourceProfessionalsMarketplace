@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
 
 @Component
 @Getter
@@ -147,7 +148,7 @@ public class LoanSearch {
             try {
                 costPerHour = new BigDecimal(costPerHourField.getText());
             } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(costPerHourField, "negative-control");
+                validatorUtil.markControlNegative(costPerHourField, NegativeControl.value);
                 return;
             }
         }

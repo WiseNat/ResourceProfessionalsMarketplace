@@ -15,6 +15,8 @@ import lombok.SneakyThrows;
 
 import java.time.LocalDate;
 
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeDatePickerDayCell;
+
 @Getter
 public class LoanModal extends Modal {
 
@@ -97,7 +99,7 @@ public class LoanModal extends Modal {
 
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
-                            componentUtil.safeAddStyleClass(this, "negative-date-picker-day-cell");
+                            componentUtil.safeAddStyleClass(this, NegativeDatePickerDayCell.value);
                         }
                     }
                 };

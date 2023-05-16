@@ -33,6 +33,8 @@ import java.math.BigDecimal;
 import java.time.ZoneId;
 import java.util.*;
 
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+
 @Component
 @FxmlView("ProjectManagerView.fxml")
 public class ProjectManagerController implements MainView {
@@ -215,7 +217,7 @@ public class ProjectManagerController implements MainView {
             put("availabilityDate", loanModal.getDateField().getEditor());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, NegativeControl.value);
 
         if (violations.size() > 0) {
             return;

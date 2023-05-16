@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
 
 @Component
 @FxmlView("ResourceView.fxml")
@@ -136,7 +137,7 @@ public class ResourceController implements MainView {
         try {
             resourceTo = updateDetailsUtil.createResourceTO(banding, subRole, mainRole, costPerHour, resourceEntity);
         } catch (NumberFormatException e) {
-            validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), "negative-control");
+            validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), NegativeControl.value);
             return;
         }
 
@@ -168,7 +169,7 @@ public class ResourceController implements MainView {
             put("costPerHour", updateDetails.getController().getCostPerHourField());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, NegativeControl.value);
     }
 
     private void mainRoleFieldChanged(ActionEvent actionEvent) {

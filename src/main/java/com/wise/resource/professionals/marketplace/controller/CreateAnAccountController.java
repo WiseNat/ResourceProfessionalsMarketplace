@@ -24,6 +24,8 @@ import javax.validation.Validator;
 import java.util.HashMap;
 import java.util.Set;
 
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+
 @Component
 @FxmlView("CreateAnAccount.fxml")
 public class CreateAnAccountController {
@@ -92,10 +94,10 @@ public class CreateAnAccountController {
         accountTO.setAccountType(AccountTypeEnum.valueToEnum(accountTypeField.getValue()));
 
         if (accountTO.getAccountType() == AccountTypeEnum.Admin) {
-            validatorUtil.markControlNegative(accountTypeField, "negative-control");
+            validatorUtil.markControlNegative(accountTypeField, NegativeControl.value);
             return;
         } else {
-            validatorUtil.markControlPositive(accountTypeField, "negative-control");
+            validatorUtil.markControlPositive(accountTypeField, NegativeControl.value);
         }
 
         Set<ConstraintViolation<CreateAccountTO>> violations = validator.validate(accountTO);
@@ -129,6 +131,6 @@ public class CreateAnAccountController {
             put("password", passwordField);
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, NegativeControl.value);
     }
 }

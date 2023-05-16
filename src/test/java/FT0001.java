@@ -15,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class FT0001 {
@@ -39,7 +39,7 @@ public class FT0001 {
 
         logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
 
-        doReturn(new AccountTypeEntity()).when(accountTypeRepository).findByName(any());
+        when(accountTypeRepository.findByName(any())).thenReturn(new AccountTypeEntity());
     }
 
     @Test
@@ -48,7 +48,7 @@ public class FT0001 {
         account.setIsApproved(true);
         account.setEncodedPassword(accountUtil.hashPassword(logInAccountTO.getPlaintextPassword()));
 
-        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(account);
 
         assertTrue(accountUtil.authenticate(logInAccountTO));
     }
@@ -59,7 +59,7 @@ public class FT0001 {
         account.setIsApproved(true);
         account.setEncodedPassword("some random password; this definitely won't match");
 
-        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(account);
 
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }
@@ -69,14 +69,14 @@ public class FT0001 {
         AccountEntity account = new AccountEntity();
         account.setIsApproved(false);
 
-        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(account);
 
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }
 
     @Test
     public void testAuthenticateWithNoAccount() {
-        doReturn(null).when(accountRepository).findByEmailAndAccountType(any(), any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
 
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }

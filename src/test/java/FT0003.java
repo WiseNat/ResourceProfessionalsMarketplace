@@ -19,7 +19,6 @@ import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 @ExtendWith(MockitoExtension.class)
 public class FT0003 {
@@ -52,14 +51,14 @@ public class FT0003 {
         createAccountTO.setPassword("PASSWORD");
         createAccountTO.setAccountType(AccountTypeEnum.Resource);
 
-        doReturn(new HashSet<>()).when(validator).validate(any());
-        doReturn(new AccountTypeEntity()).when(enumUtil).accountTypeToEntity(any());
+        when(validator.validate(any())).thenReturn(new HashSet<>());
+        when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
     }
 
     @Test
     public void testTerminateFlowIfAccountExists() {
-        doReturn(new AccountEntity()).when(accountRepository).findByEmailAndAccountType(any(), any());
-        doReturn(new String[]{}).when(reflectionUtil).getFields(any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(new AccountEntity());
+        when(reflectionUtil.getFields(any())).thenReturn(new String[]{});
 
         createAnAccountUtil.createAccount(createAccountTO);
 
@@ -68,7 +67,8 @@ public class FT0003 {
 
     @Test
     public void testContinueFlowIfAccountDoesNotExist() {
-        doReturn(null).when(accountRepository).findByEmailAndAccountType(any(), any());
+        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
+
         doNothing().when(createAnAccountUtil).persistAccountAndApproval(any());
 
         createAnAccountUtil.createAccount(createAccountTO);

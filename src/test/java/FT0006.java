@@ -58,9 +58,9 @@ public class FT0006 {
     public void testApprovingApprovalWithResourceAccountType() {
         approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.Resource.value);
 
-        doReturn(new BigDecimal("15.0")).when(resourceUtil).costPerHourToDailyLateFee(any());
-        doReturn(new MainRoleEntity()).when(enumUtil).mainRoleToEntity(any());
-        doReturn(new BandingEntity()).when(enumUtil).bandingToEntity(any());
+        when(resourceUtil.costPerHourToDailyLateFee(any())).thenReturn(new BigDecimal("15.0"));
+        when(enumUtil.mainRoleToEntity(any())).thenReturn(new MainRoleEntity());
+        when(enumUtil.bandingToEntity(any())).thenReturn(new BandingEntity());
 
         adminUtil.approveApproval(approvalEntity);
 

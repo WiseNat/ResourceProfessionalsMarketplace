@@ -1,6 +1,5 @@
 package com.wise.resource.professionals.marketplace.util;
 
-import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import javafx.scene.control.Control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +25,7 @@ public class ValidatorUtil {
             fields[i] = getFieldFromConstraintViolation(constraintViolation);
         }
 
-        return  fields;
+        return fields;
     }
 
     public <T> String getFieldFromConstraintViolation(ConstraintViolation<T> constraintViolation) {

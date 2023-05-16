@@ -1,17 +1,15 @@
 package com.wise.resource.professionals.marketplace.controller;
 
-import com.wise.resource.professionals.marketplace.component.*;
+import com.wise.resource.professionals.marketplace.component.ApprovalListBox;
+import com.wise.resource.professionals.marketplace.component.ApprovalModal;
+import com.wise.resource.professionals.marketplace.component.ListView;
+import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
-import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ApprovalSearchTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.AdminUtil;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -31,12 +29,11 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
-    @Autowired
-    private AdminUtil adminUtil;
-
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
+    @Autowired
+    private AdminUtil adminUtil;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -119,6 +116,7 @@ public class AdminController implements MainView {
         dialog.getDenyButton().setOnMouseClicked(e -> this.denyButtonClicked(dialog));
         dialog.showAndWait();
     }
+
     private void approveButtonClicked(ApprovalModal approvalModal) {
         adminUtil.approveApproval(approvalModal.getApproval());
 

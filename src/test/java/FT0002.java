@@ -1,5 +1,4 @@
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
-import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
@@ -60,9 +59,9 @@ public class FT0002 {
     class PositiveFlow {
         @BeforeEach
         public void init() {
-            doReturn(new HashSet<>()).when(validator).validate(any());
-            doReturn(new AccountTypeEntity()).when(enumUtil).accountTypeToEntity(any());
-            doReturn(null).when(accountRepository).findByEmailAndAccountType(any(), any());
+            when(validator.validate(any())).thenReturn(new HashSet<>());
+            when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
+            when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
 
             doNothing().when(createAnAccountUtil).persistAccountAndApproval(any());
         }

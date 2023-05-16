@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.util;
 
+import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import javafx.scene.control.Control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,19 @@ public class ValidatorUtil {
     @Autowired
     ComponentUtil componentUtil;
 
+    public <T> String[] getFieldsFromConstraintViolations(Set<ConstraintViolation<T>> constraintViolations) {
+        String[] fields = new String[constraintViolations.size()];
+
+        int i = -1;
+        for (ConstraintViolation<T> constraintViolation : constraintViolations) {
+            i++;
+
+            fields[i] = getFieldFromConstraintViolation(constraintViolation);
+        }
+
+        return  fields;
+    }
+
     public <T> String getFieldFromConstraintViolation(ConstraintViolation<T> constraintViolation) {
         return constraintViolation.getPropertyPath().toString();
     }
@@ -29,16 +43,16 @@ public class ValidatorUtil {
 
     public <TO> void markControlAgainstValidatedTO(
             Set<ConstraintViolation<TO>> violations,
-            HashMap<String, Control> toFieldToControl,
+            HashMap<String, Control> fieldToControl,
             String negativeStyleClass) {
 
-        Collection<Control> validControls = toFieldToControl.values();
+        Collection<Control> validControls = fieldToControl.values();
 
         for (ConstraintViolation<TO> violation : violations) {
             String field = getFieldFromConstraintViolation(violation);
 
-            if (toFieldToControl.containsKey(field)) {
-                Control control = toFieldToControl.get(field);
+            if (fieldToControl.containsKey(field)) {
+                Control control = fieldToControl.get(field);
 
                 markControlNegative(control, negativeStyleClass);
                 validControls.remove(control);
@@ -47,7 +61,27 @@ public class ValidatorUtil {
 
         for (Control control : validControls) {
             markControlPositive(control, negativeStyleClass);
+        }
+    }
 
+    public void markControlAgainstValidatedTO(
+            String[] fields,
+            HashMap<String, Control> fieldToControl,
+            String negativeStyleClass) {
+
+        Collection<Control> validControls = fieldToControl.values();
+
+        for (String field : fields) {
+            if (fieldToControl.containsKey(field)) {
+                Control control = fieldToControl.get(field);
+
+                markControlNegative(control, negativeStyleClass);
+                validControls.remove(control);
+            }
+        }
+
+        for (Control control : validControls) {
+            markControlPositive(control, negativeStyleClass);
         }
     }
 }

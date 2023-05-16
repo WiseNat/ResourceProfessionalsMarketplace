@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.util;
 
+import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
@@ -12,10 +13,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.util.Date;
+import java.util.Set;
 
 @Component
-public class CreateAccountUtil {
+public class CreateAnAccountUtil {
+
+    @Autowired
+    private Validator validator;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -29,6 +36,39 @@ public class CreateAccountUtil {
     @Autowired
     private EnumUtil enumUtil;
 
+    @Autowired
+    private ValidatorUtil validatorUtil;
+
+    @Autowired
+    private ReflectionUtil reflectionUtil;
+
+    @Autowired
+    private AccountUtil accountUtil;
+
+    public String[] createAccount(CreateAccountTO createAccountTO) {
+        if (createAccountTO.getAccountType() == AccountTypeEnum.Admin) {
+            return new String[]{"accountType"};
+        }
+
+        Set<ConstraintViolation<CreateAccountTO>> violations = validator.validate(createAccountTO);
+
+        if (violations.size() > 0) {
+            return validatorUtil.getFieldsFromConstraintViolations(violations);
+        }
+
+        AccountEntity existingAccountEntity = accountRepository.findByEmailAndAccountType(
+                createAccountTO.getEmail(), enumUtil.accountTypeToEntity(createAccountTO.getAccountType()));
+
+        if (existingAccountEntity != null) {
+            System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
+            return reflectionUtil.getFields(createAccountTO);
+        }
+
+        persistAccountAndApproval(createAccountTO);
+
+        return new String[]{};
+    }
+
     public void persistAccountAndApproval(CreateAccountTO createAccountTO) {
         persistAccount(createAccountTO);
 
@@ -39,12 +79,15 @@ public class CreateAccountUtil {
         persistApproval(approvalTO);
     }
 
-    public void persistAccount(CreateAccountTO accountTO) {
+    public void persistAccount(CreateAccountTO createAccountTO) {
+        createAccountTO.setIsApproved(false);
+        createAccountTO.setEncodedPassword(accountUtil.hashPassword(createAccountTO.getPassword()));
+
         AccountEntity accountEntity = new AccountEntity();
-        BeanUtils.copyProperties(accountTO, accountEntity, "resource, accountType");
+        BeanUtils.copyProperties(createAccountTO, accountEntity, "resource, accountType");
 
         accountEntity.setResource(null);
-        accountEntity.setAccountType(enumUtil.accountTypeToEntity(accountTO.getAccountType()));
+        accountEntity.setAccountType(enumUtil.accountTypeToEntity(createAccountTO.getAccountType()));
 
         accountRepository.save(accountEntity);
     }

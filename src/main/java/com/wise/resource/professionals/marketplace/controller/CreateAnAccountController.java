@@ -2,11 +2,9 @@ package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
-import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.util.AccountUtil;
-import com.wise.resource.professionals.marketplace.util.CreateAccountUtil;
+import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
@@ -15,14 +13,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
+import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
 
@@ -40,10 +38,7 @@ public class CreateAnAccountController {
     private AccountRepository accountRepository;
 
     @Autowired
-    private AccountUtil accountUtil;
-
-    @Autowired
-    private CreateAccountUtil createAccountUtil;
+    private CreateAnAccountUtil createAnAccountUtil;
 
     @Autowired
     private ValidatorUtil validatorUtil;
@@ -82,55 +77,36 @@ public class CreateAnAccountController {
     }
 
     @FXML
+    @SneakyThrows
     public void onCreateAccountButtonClick() {
 
         CreateAccountTO accountTO = new CreateAccountTO();
         accountTO.setFirstName(firstNameField.getText());
         accountTO.setLastName(lastNameField.getText());
         accountTO.setEmail(emailField.getText());
-        accountTO.setIsApproved(false);
         accountTO.setPassword(passwordField.getText());
-        accountTO.setEncodedPassword(accountUtil.hashPassword(passwordField.getText()));
         accountTO.setAccountType(AccountTypeEnum.valueToEnum(accountTypeField.getValue()));
 
-        if (accountTO.getAccountType() == AccountTypeEnum.Admin) {
-            validatorUtil.markControlNegative(accountTypeField, NegativeControl.value);
-            return;
-        } else {
-            validatorUtil.markControlPositive(accountTypeField, NegativeControl.value);
-        }
+        String[] fields = createAnAccountUtil.createAccount(accountTO);
 
-        Set<ConstraintViolation<CreateAccountTO>> violations = validator.validate(accountTO);
-        this.markTextFields(violations);
-
-        if (violations.size() > 0) {
+        if (fields.length > 0) {
+            System.out.println(Arrays.toString(fields));
+            markTextFields(fields);
             return;
         }
-
-        AccountEntity existingAccountEntity = accountRepository.findByEmailAndAccountType(
-                accountTO.getEmail(), enumUtil.accountTypeToEntity(accountTO.getAccountType()));
-
-        if (existingAccountEntity != null) {
-            System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
-            return;
-        }
-
-        createAccountUtil.persistAccountAndApproval(accountTO);
 
         stageHandler.swapScene(LogInController.class);
-
-        // TODO: Indicate to user an account approval has been created
-        // TODO: Modal? Hint? Who knows. I don't atm because it's midnight and I'm tired
     }
 
-    private void markTextFields(Set<ConstraintViolation<CreateAccountTO>> violations) {
-        HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
+    private void markTextFields(String[] fields) {
+        HashMap<String, Control> fieldToControl = new HashMap<String, Control>() {{
             put("firstName", firstNameField);
             put("lastName", lastNameField);
             put("email", emailField);
             put("password", passwordField);
+            put("accountType", accountTypeField);
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, fieldToControl, NegativeControl.value);
     }
 }

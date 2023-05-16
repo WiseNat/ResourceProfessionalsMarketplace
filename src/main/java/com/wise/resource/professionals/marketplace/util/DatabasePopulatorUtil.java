@@ -50,7 +50,7 @@ public class DatabasePopulatorUtil {
     private AccountUtil accountUtil;
 
     @Autowired
-    private CreateAccountUtil createAccountUtil;
+    private CreateAnAccountUtil createAnAccountUtil;
 
     @Autowired
     private ResourceUtil resourceUtil;
@@ -193,8 +193,8 @@ public class DatabasePopulatorUtil {
             approvalTO.setAccount(createAccountTO);
             approvalTO.setDate(faker.date().birthday());
 
-            createAccountUtil.persistAccount(createAccountTO);
-            createAccountUtil.persistApproval(approvalTO);
+            createAnAccountUtil.persistAccount(createAccountTO);
+            createAnAccountUtil.persistApproval(approvalTO);
         }
     }
 

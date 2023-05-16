@@ -1,5 +1,6 @@
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
+import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
@@ -51,14 +52,14 @@ public class FT0003 {
         createAccountTO.setPassword("PASSWORD");
         createAccountTO.setAccountType(AccountTypeEnum.Resource);
 
-        when(validator.validate(any())).thenReturn(new HashSet<>());
-        when(enumUtil.accountTypeToEntity(any())).thenReturn(null);
+        doReturn(new HashSet<>()).when(validator).validate(any());
+        doReturn(new AccountTypeEntity()).when(enumUtil).accountTypeToEntity(any());
     }
 
     @Test
     public void testTerminateFlowIfAccountExists() {
-        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(new AccountEntity());
-        when(reflectionUtil.getFields(any())).thenReturn(null);
+        doReturn(new AccountEntity()).when(accountRepository).findByEmailAndAccountType(any(), any());
+        doReturn(new String[]{}).when(reflectionUtil).getFields(any());
 
         createAnAccountUtil.createAccount(createAccountTO);
 
@@ -67,7 +68,7 @@ public class FT0003 {
 
     @Test
     public void testContinueFlowIfAccountDoesNotExist() {
-        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
+        doReturn(null).when(accountRepository).findByEmailAndAccountType(any(), any());
         doNothing().when(createAnAccountUtil).persistAccountAndApproval(any());
 
         createAnAccountUtil.createAccount(createAccountTO);

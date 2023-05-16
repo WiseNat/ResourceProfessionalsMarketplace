@@ -59,8 +59,8 @@ public class FT0004 {
         approvalSearchTO.setResourceAllowed(true);
 
         List<ApprovalEntity> fakeApprovalEntities = Arrays.asList(new ApprovalEntity(), new ApprovalEntity());
-        when(approvalRepository.findApprovalsByPredicatesAndAccountType(any(), any(), any(), any())).thenReturn(fakeApprovalEntities);
-        when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
+        doReturn(fakeApprovalEntities).when(approvalRepository).findApprovalsByPredicatesAndAccountType(any(), any(), any(), any());
+        doReturn(new AccountTypeEntity()).when(enumUtil).accountTypeToEntity(any());
 
         List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
 
@@ -77,8 +77,8 @@ public class FT0004 {
         approvalSearchTO.setProjectManagerAllowed(true);
 
         List<ApprovalEntity> fakeApprovalEntities = Arrays.asList(new ApprovalEntity(), new ApprovalEntity());
-        when(approvalRepository.findApprovalsByPredicatesAndAccountType(any(), any(), any(), any())).thenReturn(fakeApprovalEntities);
-        when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
+        doReturn(fakeApprovalEntities).when(approvalRepository).findApprovalsByPredicatesAndAccountType(any(), any(), any(), any());
+        doReturn(new AccountTypeEntity()).when(enumUtil).accountTypeToEntity(any());
 
         List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
 
@@ -96,7 +96,7 @@ public class FT0004 {
         approvalSearchTO.setProjectManagerAllowed(true);
 
         List<ApprovalEntity> fakeApprovalEntities = Arrays.asList(new ApprovalEntity(), new ApprovalEntity());
-        when(approvalRepository.findAllApprovalsByPredicates(any(), any(), any())).thenReturn(fakeApprovalEntities);
+        doReturn(fakeApprovalEntities).when(approvalRepository).findAllApprovalsByPredicates(any(), any(), any());
 
         List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
 

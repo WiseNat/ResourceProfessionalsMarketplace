@@ -90,6 +90,5 @@ public class AdminUtil {
 
         approvalRepository.delete(approval);
         accountRepository.save(accountEntity);
-
     }
 }

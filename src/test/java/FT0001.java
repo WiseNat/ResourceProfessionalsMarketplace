@@ -1,9 +1,11 @@
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
+import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.AccountTypeRepository;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.util.AccountUtil;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -13,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doReturn;
 
 @ExtendWith(MockitoExtension.class)
 public class FT0001 {
@@ -27,52 +29,54 @@ public class FT0001 {
     @Mock
     private AccountRepository accountRepository;
 
-    @Test
-    public void testAuthenticateWithValidAccount() {
+    private LogInAccountTO logInAccountTO;
+
+    @BeforeEach
+    public void init() {
         String email = "My_Test.email@foo.com";
         String plaintextPassword = "S0me_%$P4ssword";
         AccountTypeEnum accountType = AccountTypeEnum.Resource;
 
-        LogInAccountTO logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
+        logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
 
+        doReturn(new AccountTypeEntity()).when(accountTypeRepository).findByName(any());
+    }
+
+    @Test
+    public void testAuthenticateWithValidAccount() {
         AccountEntity account = new AccountEntity();
         account.setIsApproved(true);
-        account.setEncodedPassword(accountUtil.hashPassword(plaintextPassword));
+        account.setEncodedPassword(accountUtil.hashPassword(logInAccountTO.getPlaintextPassword()));
 
-        when(accountTypeRepository.findByName(any())).thenReturn(null);
-        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(account);
+        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
 
         assertTrue(accountUtil.authenticate(logInAccountTO));
     }
 
     @Test
-    public void testAuthenticateWithNoAccount() {
-        String email = "My_Test.email@foo.com";
-        String plaintextPassword = "S0me_%$P4ssword";
-        AccountTypeEnum accountType = AccountTypeEnum.Resource;
+    public void testAuthenticateWithInvalidPassword() {
+        AccountEntity account = new AccountEntity();
+        account.setIsApproved(true);
+        account.setEncodedPassword("some random password; this definitely won't match");
 
-        LogInAccountTO logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
-
-        when(accountTypeRepository.findByName(any())).thenReturn(null);
-        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
+        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
 
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }
 
     @Test
     public void testAuthenticateWithUnapprovedAccount() {
-        String email = "My_Test.email@foo.com";
-        String plaintextPassword = "S0me_%$P4ssword";
-        AccountTypeEnum accountType = AccountTypeEnum.Resource;
-
-        LogInAccountTO logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
-
         AccountEntity account = new AccountEntity();
         account.setIsApproved(false);
-        account.setEncodedPassword(accountUtil.hashPassword(plaintextPassword));
 
-        when(accountTypeRepository.findByName(any())).thenReturn(null);
-        when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(account);
+        doReturn(account).when(accountRepository).findByEmailAndAccountType(any(), any());
+
+        assertFalse(accountUtil.authenticate(logInAccountTO));
+    }
+
+    @Test
+    public void testAuthenticateWithNoAccount() {
+        doReturn(null).when(accountRepository).findByEmailAndAccountType(any(), any());
 
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }

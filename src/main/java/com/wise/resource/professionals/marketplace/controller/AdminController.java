@@ -1,20 +1,15 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.*;
-import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
-import com.wise.resource.professionals.marketplace.constant.BandingEnum;
-import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
-import com.wise.resource.professionals.marketplace.entity.AccountEntity;
-import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
-import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.to.ApprovalSearchTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.AdminUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import javafx.fxml.FXML;
@@ -26,12 +21,9 @@ import javafx.scene.layout.VBox;
 import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxControllerAndView;
 import net.rgielen.fxweaver.core.FxmlView;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,23 +31,12 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
+    @Autowired
+    private AdminUtil adminUtil;
 
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
-    @Autowired
-    private ApprovalRepository approvalRepository;
-
-    @Autowired
-    private ResourceRepository resourceRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
-    @Autowired
-    private EnumUtil enumUtil;
-
-    @Autowired
-    private ResourceUtil resourceUtil;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -92,16 +73,28 @@ public class AdminController implements MainView {
 
         approvalsSearch.getController().getApplyButton().setOnMouseClicked(this::searchClicked);
 
-        populateAllApprovals();
+        populatePredicateApprovals();
     }
 
     private void searchClicked(MouseEvent mouseEvent) {
-        applySearch();
+        populatePredicateApprovals();
     }
 
-    private void populateAllApprovals() {
-        List<ApprovalEntity> pendingApprovals = approvalRepository.findAll();
-        populateApprovals(pendingApprovals);
+    private void populatePredicateApprovals() {
+        ApprovalsSearch controller = approvalsSearch.getController();
+
+        String firstName = controller.getFirstNameField().getText();
+        String lastName = controller.getLastNameField().getText();
+        String email = controller.getEmailField().getText();
+        boolean isResourceAllowed = controller.getResourceBox().isSelected();
+        boolean isProjectManagerAllowed = controller.getProjectManagerBox().isSelected();
+
+        ApprovalSearchTO approvalSearchTO = new ApprovalSearchTO(
+                isResourceAllowed, isProjectManagerAllowed, firstName, lastName, email);
+
+        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+
+        populateApprovals(foundApprovals);
     }
 
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
@@ -110,16 +103,11 @@ public class AdminController implements MainView {
         approvalsSearch.getController().getTitle().setText(pendingApprovals.size() + " approval requests found");
 
         for (ApprovalEntity pendingApproval : pendingApprovals) {
-            ListBox approval = createApprovalListBox(pendingApproval);
-            listView.addChild(approval);
+            ApprovalListBox approvalListBox = new ApprovalListBox(pendingApproval);
+            approvalListBox.setOnMouseClicked(e -> approvalClicked(approvalListBox));
+
+            listView.addChild(approvalListBox);
         }
-    }
-
-    private ApprovalListBox createApprovalListBox(ApprovalEntity approval) {
-        ApprovalListBox listBox = new ApprovalListBox(approval);
-        listBox.setOnMouseClicked(e -> approvalClicked(listBox));
-
-        return listBox;
     }
 
     private void approvalClicked(ApprovalListBox listBox) {
@@ -131,73 +119,20 @@ public class AdminController implements MainView {
         dialog.getDenyButton().setOnMouseClicked(e -> this.denyButtonClicked(dialog));
         dialog.showAndWait();
     }
+    private void approveButtonClicked(ApprovalModal approvalModal) {
+        adminUtil.approveApproval(approvalModal.getApproval());
 
-    private void applySearch() {
-        ApprovalsSearch controller = approvalsSearch.getController();
+        populatePredicateApprovals();
 
-        String firstName = controller.getFirstNameField().getText();
-        String lastName = controller.getLastNameField().getText();
-        String email = controller.getEmailField().getText();
-        boolean isResourceAllowed = controller.getResourceBox().isSelected();
-        boolean isProjectManagerAllowed = controller.getProjectManagerBox().isSelected();
-
-        List<ApprovalEntity> foundApprovals;
-
-        if (isResourceAllowed && isProjectManagerAllowed) {
-            foundApprovals = approvalRepository.findAllApprovalsByPredicates(firstName, lastName, email);
-        } else if (isProjectManagerAllowed) {
-            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager);
-            foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(firstName, lastName, email, accountType);
-        } else if (isResourceAllowed) {
-            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.Resource);
-            foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(firstName, lastName, email, accountType);
-        } else {
-            foundApprovals = new ArrayList<>();
-        }
-
-        populateApprovals(foundApprovals);
+        approvalModal.closeDialog();
     }
 
     private void denyButtonClicked(ApprovalModal approvalModal) {
-        AccountEntity account = approvalModal.getApproval().getAccount();
+        adminUtil.denyApproval(approvalModal.getApproval());
 
-        approvalRepository.delete(approvalModal.getApproval());
-        accountRepository.delete(account);
-
-        applySearch();
+        populatePredicateApprovals();
 
         approvalModal.closeDialog();
     }
-
-    private void approveButtonClicked(ApprovalModal approvalModal) {
-        AccountEntity account = approvalModal.getApproval().getAccount();
-        account.setIsApproved(true);
-
-        if (AccountTypeEnum.valueToEnum(account.getAccountType().getName()) == AccountTypeEnum.Resource) {
-            ResourceTO resourceTO = new ResourceTO();
-            resourceTO.setLoanedClient(null);
-            resourceTO.setCostPerHour(new BigDecimal("10.0"));
-            resourceTO.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTO.getCostPerHour()));
-            resourceTO.setAvailabilityDate(null);
-
-            ResourceEntity resourceEntity = new ResourceEntity();
-            BeanUtils.copyProperties(resourceTO, resourceEntity, "banding, subrole, mainRole");
-
-            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BusinessAnalyst));
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandOne));
-
-            resourceRepository.save(resourceEntity);
-
-            account.setResource(resourceEntity);
-        }
-
-        approvalRepository.delete(approvalModal.getApproval());
-        accountRepository.save(account);
-
-        applySearch();
-
-        approvalModal.closeDialog();
-    }
-
 
 }

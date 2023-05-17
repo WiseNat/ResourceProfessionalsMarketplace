@@ -154,6 +154,7 @@ public class FT0007 {
             assertEquals(resourceTO.getLoanedClient(), resourceEntity.getLoanedClient());
             assertThat(resourceTO.getDailyLateFee(), Matchers.comparesEqualTo(expectedDailyLateFee));
             assertEquals(resourceTO.getCostPerHour().toPlainString(), updateResourceTO.getCostPerHour());
-            assertEquals(resourceTO.getAvailabilityDate(), resourceEntity.getAvailabilityDate());        }
+            assertEquals(resourceTO.getAvailabilityDate(), resourceEntity.getAvailabilityDate());
+        }
     }
 }

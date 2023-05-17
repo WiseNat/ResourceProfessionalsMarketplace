@@ -1,9 +1,8 @@
 package com.wise.resource.professionals.marketplace.to;
 
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
-import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
-import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Digits;
@@ -12,15 +11,11 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class ResourceTO {
+@EqualsAndHashCode(callSuper = true)
+public class ResourceTO extends RolesContainer {
 
     @NotNull
     private BandingEnum banding;
-
-    private SubRoleEnum subRole;
-
-    @NotNull
-    private MainRoleEnum mainRole;
 
     private String loanedClient;
 

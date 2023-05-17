@@ -7,7 +7,6 @@ import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
@@ -31,7 +30,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.validation.Validator;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -45,10 +43,7 @@ public class ResourceController implements MainView {
     private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
-    @Autowired
-    private ResourceRepository resourceRepository;
-    @Autowired
-    private Validator validator;
+
     @Autowired
     private ValidatorUtil validatorUtil;
 

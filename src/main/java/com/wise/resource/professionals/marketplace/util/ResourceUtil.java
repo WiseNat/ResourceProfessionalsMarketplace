@@ -79,11 +79,11 @@ public class ResourceUtil {
 
         if (violations.size() > 0) {
             output.setInvalidFields(validatorUtil.getFieldsFromConstraintViolations(violations));
+            output.setData(null);
         } else {
             output.setInvalidFields(new String[]{});
+            output.setData(resourceTo);
         }
-
-        output.setData(resourceTo);
 
         return output;
     }

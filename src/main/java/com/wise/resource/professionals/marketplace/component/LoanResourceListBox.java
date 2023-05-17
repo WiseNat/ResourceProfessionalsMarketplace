@@ -38,7 +38,7 @@ public class LoanResourceListBox extends ListBox {
             subRole = resourceCollection.getResource().getSubRole().value + ", ";
 
             if (SUB_ROLE_ICON_MAPPING.containsKey(subRoleEnum)) {
-                this.setSubImageUrl(SUB_ROLE_ICON_MAPPING.get(subRoleEnum).value);
+                this.setSubImage(SUB_ROLE_ICON_MAPPING.get(subRoleEnum));
             }
         }
 
@@ -48,7 +48,7 @@ public class LoanResourceListBox extends ListBox {
         this.setRightSubtext(quantity + " available");
 
         if (MAIN_ROLE_ICON_MAPPING.containsKey(mainRoleEnum)) {
-            this.setMainImageUrl(MAIN_ROLE_ICON_MAPPING.get(mainRoleEnum).value);
+            this.setMainImage(MAIN_ROLE_ICON_MAPPING.get(mainRoleEnum));
         }
     }
 }

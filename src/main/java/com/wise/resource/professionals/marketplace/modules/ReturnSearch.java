@@ -7,11 +7,9 @@ import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
-import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ReturnUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -58,13 +56,7 @@ public class ReturnSearch {
     private Button resetButton;
 
     @Autowired
-    private ResourceRepository resourceRepository;
-
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private EnumUtil enumUtil;
+    private ReturnUtil returnUtil;
 
     @Autowired
     private ComponentUtil componentUtil;
@@ -133,20 +125,9 @@ public class ReturnSearch {
         returnSearchTO.setMainRole(mainRole);
         returnSearchTO.setBanding(banding);
 
-        applyReturnSearch(returnSearchTO);
-    }
+        List<AccountEntity> foundReturnables = returnUtil.getReturnables(returnSearchTO);
 
-    private void applyReturnSearch(ReturnSearchTO returnSearchTO) {
-        List<AccountEntity> resources = accountRepository.findAllWithPredicates(
-                returnSearchTO.getFirstName(),
-                returnSearchTO.getLastName(),
-                returnSearchTO.getClient(),
-                enumUtil.bandingToEntity(returnSearchTO.getBanding()),
-                enumUtil.mainRoleToEntity(returnSearchTO.getMainRole()),
-                enumUtil.subRoleToEntity(returnSearchTO.getSubRole())
-        );
-
-        populateReturnables(resources);
+        populateReturnables(foundReturnables);
     }
 
     private void populateReturnables(List<AccountEntity> accountEntities) {

@@ -5,7 +5,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 @Data
-public class UpdateResourceTO {
+public class RawResourceTO {
 
     @NonNull
     private ResourceEntity resourceEntity;

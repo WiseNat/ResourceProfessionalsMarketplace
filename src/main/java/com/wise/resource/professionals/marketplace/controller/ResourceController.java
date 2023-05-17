@@ -10,7 +10,7 @@ import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
-import com.wise.resource.professionals.marketplace.to.UpdateResourceTO;
+import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
@@ -122,9 +122,9 @@ public class ResourceController implements MainView {
         String mainRole = updateDetails.getController().getMainRoleField().getValue();
         String costPerHour = updateDetails.getController().getCostPerHourField().getText();
 
-        UpdateResourceTO updateResourceTO = new UpdateResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
+        RawResourceTO rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
 
-        InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceUtil.createResourceTo(updateResourceTO);
+        InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceUtil.createResourceTo(rawResourceTO);
 
         if (convertedTO.getInvalidFields().length > 0) {
             markTextFields(convertedTO.getInvalidFields());

@@ -6,11 +6,9 @@ import com.wise.resource.professionals.marketplace.component.LoanResourceListBox
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
@@ -55,19 +53,13 @@ public class LoanSearch {
     private Button resetButton;
 
     @Autowired
+    private LoanUtil loanUtil;
+
+    @Autowired
     private ComponentUtil componentUtil;
 
     @Autowired
-    private EnumUtil enumUtil;
-
-    @Autowired
-    private ResourceRepository resourceRepository;
-
-    @Autowired
     private ValidatorUtil validatorUtil;
-
-    @Autowired
-    private LoanUtil loanUtil;
 
     private ListView listView;
 
@@ -137,20 +129,9 @@ public class LoanSearch {
         loanSearchTO.setSubRole(subRole);
         loanSearchTO.setCostPerHour(costPerHour);
 
-        applyLoanSearch(loanSearchTO);
-    }
+        List<ResourceCollectionTO> foundLoanables = loanUtil.getLoanables(loanSearchTO);
 
-    private void applyLoanSearch(LoanSearchTO loanSearchTO) {
-        List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
-                enumUtil.bandingToEntity(loanSearchTO.getBanding()),
-                enumUtil.mainRoleToEntity(loanSearchTO.getMainRole()),
-                enumUtil.subRoleToEntity(loanSearchTO.getSubRole()),
-                loanSearchTO.getCostPerHour()
-        );
-
-        List<ResourceCollectionTO> resourceCollections = loanUtil.iResourceCollectionToResourceCollectionTO(foundLoanables);
-
-        populateLoanables(resourceCollections);
+        populateLoanables(foundLoanables);
     }
 
     private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
@@ -162,7 +143,6 @@ public class LoanSearch {
             totalResources += resourceCollection.getQuantity();
 
             ListBox loanableResourceListBox = new LoanResourceListBox(resourceCollection);
-
             listView.addChild(loanableResourceListBox);
         }
 

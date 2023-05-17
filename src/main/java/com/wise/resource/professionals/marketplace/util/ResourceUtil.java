@@ -8,7 +8,7 @@ import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
-import com.wise.resource.professionals.marketplace.to.UpdateResourceTO;
+import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -44,14 +44,12 @@ public class ResourceUtil {
         return costPerHour.multiply(new BigDecimal("40"));
     }
 
-    public InvalidFieldsAndDataTO<ResourceTO> createResourceTo(UpdateResourceTO updateResourceTO) {
-        InvalidFieldsAndDataTO<ResourceTO> output = new InvalidFieldsAndDataTO<>();
+    public InvalidFieldsAndDataTO<ResourceTO> createResourceTo(RawResourceTO rawResourceTO) {
+        ResourceEntity resourceEntity = rawResourceTO.getResourceEntity();
 
-        ResourceEntity resourceEntity = updateResourceTO.getResourceEntity();
-
-        BandingEnum banding = BandingEnum.valueToEnum(updateResourceTO.getBanding());
-        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(updateResourceTO.getMainRole());
-        SubRoleEnum subRole = SubRoleEnum.valueToEnum(updateResourceTO.getSubRole());
+        BandingEnum banding = BandingEnum.valueToEnum(rawResourceTO.getBanding());
+        MainRoleEnum mainRole = MainRoleEnum.valueToEnum(rawResourceTO.getMainRole());
+        SubRoleEnum subRole = SubRoleEnum.valueToEnum(rawResourceTO.getSubRole());
         String loanedClient = resourceEntity.getLoanedClient();
         BigDecimal dailyLateFee = resourceEntity.getDailyLateFee();
         Date availabilityDate = resourceEntity.getAvailabilityDate();
@@ -68,7 +66,7 @@ public class ResourceUtil {
 
         if (resourceEntity.getLoanedClient() == null) {
             try {
-                resourceTo.setCostPerHour(new BigDecimal(updateResourceTO.getCostPerHour()));
+                resourceTo.setCostPerHour(new BigDecimal(rawResourceTO.getCostPerHour()));
                 resourceTo.setDailyLateFee(calculateDailyLateFee(resourceTo.getCostPerHour()));
             } catch (NumberFormatException e) {
                 resourceTo.setCostPerHour(null);
@@ -77,15 +75,7 @@ public class ResourceUtil {
 
         Set<ConstraintViolation<ResourceTO>> violations = validator.validate(resourceTo);
 
-        if (violations.size() > 0) {
-            output.setInvalidFields(validatorUtil.getFieldsFromConstraintViolations(violations));
-            output.setData(null);
-        } else {
-            output.setInvalidFields(new String[]{});
-            output.setData(resourceTo);
-        }
-
-        return output;
+        return validatorUtil.populateInvalidFieldsAndDataTO(violations, resourceTo);
     }
 
     public void updateResourceDetails(ResourceEntity resourceEntity, ResourceTO resourceTo) {

@@ -1,5 +1,6 @@
 package com.wise.resource.professionals.marketplace.util;
 
+import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import javafx.scene.control.Control;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -82,5 +83,20 @@ public class ValidatorUtil {
         for (Control control : validControls) {
             markControlPositive(control, negativeStyleClass);
         }
+    }
+
+    public <T> InvalidFieldsAndDataTO<T> populateInvalidFieldsAndDataTO(Set<ConstraintViolation<T>> violations, T data) {
+        InvalidFieldsAndDataTO<T> output = new InvalidFieldsAndDataTO<>();
+
+        if (violations.size() > 0) {
+            output.setInvalidFields(getFieldsFromConstraintViolations(violations));
+            output.setData(null);
+        } else {
+            output.setInvalidFields(new String[]{});
+
+            output.setData(data);
+        }
+
+        return output;
     }
 }

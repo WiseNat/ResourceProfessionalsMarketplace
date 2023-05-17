@@ -3,7 +3,7 @@ import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
-import com.wise.resource.professionals.marketplace.to.UpdateResourceTO;
+import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import org.hamcrest.Matchers;
@@ -54,7 +54,7 @@ public class FT0007 {
     @Nested
     class CreateResourceTO {
 
-        private UpdateResourceTO updateResourceTO;
+        private RawResourceTO rawResourceTO;
 
         private ResourceEntity resourceEntity;
 
@@ -75,35 +75,35 @@ public class FT0007 {
             String banding = BandingEnum.BandTwo.value;
             String costPerHour = "10.5";
 
-            updateResourceTO = new UpdateResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
+            rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
 
-            expectedDailyLateFee = new BigDecimal("40.0").multiply(new BigDecimal(updateResourceTO.getCostPerHour()));
+            expectedDailyLateFee = new BigDecimal("40.0").multiply(new BigDecimal(rawResourceTO.getCostPerHour()));
         }
 
         @Test
         public void testCreateResourceToWithValidUpdateResourceTO() {
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(updateResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
 
             assertNotNull(resourceTO);
-            assertEquals(resourceTO.getBanding().value, updateResourceTO.getBanding());
-            assertEquals(resourceTO.getSubRole().value, updateResourceTO.getSubRole());
-            assertEquals(resourceTO.getMainRole().value, updateResourceTO.getMainRole());
+            assertEquals(resourceTO.getBanding().value, rawResourceTO.getBanding());
+            assertEquals(resourceTO.getSubRole().value, rawResourceTO.getSubRole());
+            assertEquals(resourceTO.getMainRole().value, rawResourceTO.getMainRole());
             assertEquals(resourceTO.getLoanedClient(), resourceEntity.getLoanedClient());
             assertThat(resourceTO.getDailyLateFee(), Matchers.comparesEqualTo(expectedDailyLateFee));
-            assertEquals(resourceTO.getCostPerHour().toPlainString(), updateResourceTO.getCostPerHour());
+            assertEquals(resourceTO.getCostPerHour().toPlainString(), rawResourceTO.getCostPerHour());
             assertEquals(resourceTO.getAvailabilityDate(), resourceEntity.getAvailabilityDate());
         }
 
         @Test
         public void testCreateResourceToWithEmptyUpdateResourceTO() {
-            updateResourceTO.setMainRole("");
-            updateResourceTO.setSubRole("");
-            updateResourceTO.setBanding("");
-            updateResourceTO.setCostPerHour("");
+            rawResourceTO.setMainRole("");
+            rawResourceTO.setSubRole("");
+            rawResourceTO.setBanding("");
+            rawResourceTO.setCostPerHour("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(updateResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -114,9 +114,9 @@ public class FT0007 {
 
         @Test
         public void testCreateResourceToWithEmptyMainRoleInUpdateResourceTO() {
-            updateResourceTO.setMainRole("");
+            rawResourceTO.setMainRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(updateResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -127,9 +127,9 @@ public class FT0007 {
 
         @Test
         public void testCreateResourceToWithEmptyButRequiredSubRoleInUpdateResourceTO() {
-            updateResourceTO.setSubRole("");
+            rawResourceTO.setSubRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(updateResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -140,20 +140,20 @@ public class FT0007 {
 
         @Test
         public void testCreateResourceToWithEmptyButUnwantedSubRoleInUpdateResourceTO() {
-            updateResourceTO.setMainRole(MainRoleEnum.UXDesigner.value);
-            updateResourceTO.setSubRole("");
+            rawResourceTO.setMainRole(MainRoleEnum.UXDesigner.value);
+            rawResourceTO.setSubRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(updateResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
 
             assertNotNull(resourceTO);
-            assertEquals(resourceTO.getBanding().value, updateResourceTO.getBanding());
+            assertEquals(resourceTO.getBanding().value, rawResourceTO.getBanding());
             assertNull(resourceTO.getSubRole());
-            assertEquals(resourceTO.getMainRole().value, updateResourceTO.getMainRole());
+            assertEquals(resourceTO.getMainRole().value, rawResourceTO.getMainRole());
             assertEquals(resourceTO.getLoanedClient(), resourceEntity.getLoanedClient());
             assertThat(resourceTO.getDailyLateFee(), Matchers.comparesEqualTo(expectedDailyLateFee));
-            assertEquals(resourceTO.getCostPerHour().toPlainString(), updateResourceTO.getCostPerHour());
+            assertEquals(resourceTO.getCostPerHour().toPlainString(), rawResourceTO.getCostPerHour());
             assertEquals(resourceTO.getAvailabilityDate(), resourceEntity.getAvailabilityDate());
         }
     }

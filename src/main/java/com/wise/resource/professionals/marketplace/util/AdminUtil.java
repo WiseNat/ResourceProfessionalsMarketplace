@@ -66,8 +66,8 @@ public class AdminUtil {
         accountRepository.delete(accountEntity);
     }
 
-    public void approveApproval(ApprovalEntity approval) {
-        AccountEntity accountEntity = approval.getAccount();
+    public void approveApproval(ApprovalEntity approvalEntity) {
+        AccountEntity accountEntity = approvalEntity.getAccount();
         accountEntity.setIsApproved(true);
 
         if (AccountTypeEnum.valueToEnum(accountEntity.getAccountType().getName()) == AccountTypeEnum.Resource) {
@@ -88,7 +88,7 @@ public class AdminUtil {
             accountEntity.setResource(resourceEntity);
         }
 
-        approvalRepository.delete(approval);
+        approvalRepository.delete(approvalEntity);
         accountRepository.save(accountEntity);
     }
 }

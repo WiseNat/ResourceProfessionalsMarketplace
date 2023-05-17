@@ -71,7 +71,7 @@ public class DatabasePopulatorUtil {
             this.populateDevAccounts();
             this.populateFakeUnapprovedAccounts(5);
             this.populateFakeAvailableResources(100);
-            this.populateFakeLoanedResources(5);
+            this.populateFakeLoanedResources(100);
         }
     }
 

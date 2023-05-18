@@ -21,10 +21,13 @@ import java.util.Optional;
 public class LoanUtil {
 
     @Autowired
-    ResourceRepository resourceRepository;
+    private ResourceRepository resourceRepository;
 
     @Autowired
-    EnumUtil enumUtil;
+    private EnumUtil enumUtil;
+
+    @Autowired
+    private ResourceUtil resourceUtil;
 
 
     public List<ResourceCollectionTO> getLoanables(LoanSearchTO loanSearchTO) {
@@ -47,6 +50,7 @@ public class LoanUtil {
             resourceTO.setBanding(BandingEnum.valueToEnum(iResourceCollection.getBanding().getName()));
             resourceTO.setMainRole(MainRoleEnum.valueToEnum(iResourceCollection.getMainRole().getName()));
             resourceTO.setCostPerHour(iResourceCollection.getCostPerHour());
+            resourceTO.setDailyLateFee(resourceUtil.calculateDailyLateFee(iResourceCollection.getCostPerHour()));
 
             Optional<SubRoleEntity> subRole = iResourceCollection.getSubRole();
             subRole.ifPresent(subRoleEntity -> resourceTO.setSubRole(SubRoleEnum.valueToEnum(subRoleEntity.getName())));

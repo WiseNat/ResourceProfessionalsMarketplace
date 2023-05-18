@@ -35,7 +35,7 @@ public class FT0007 {
     private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
     @Spy
-    private ValidatorUtil validatorUtil = new ValidatorUtil();
+    private ValidatorUtil validatorUtil;
 
     @BeforeEach
     public void init() {

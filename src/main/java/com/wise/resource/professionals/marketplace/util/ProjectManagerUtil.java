@@ -5,7 +5,10 @@ import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.to.*;
+import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
+import com.wise.resource.professionals.marketplace.to.LoanTO;
+import com.wise.resource.professionals.marketplace.to.RawLoanTO;
+import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -61,7 +64,13 @@ public class ProjectManagerUtil {
 
         Collections.shuffle(resources);
 
-        List<ResourceEntity> selectedResources = resources.subList(0, loanTO.getAmount());
+        int amountToLoan = loanTO.getAmount();
+
+        if (amountToLoan > resources.size()) {
+            amountToLoan = resources.size();
+        }
+
+        List<ResourceEntity> selectedResources = resources.subList(0, amountToLoan);
 
         String client = loanTO.getClientName();
 

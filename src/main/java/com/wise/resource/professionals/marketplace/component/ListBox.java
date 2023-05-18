@@ -10,8 +10,6 @@ import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.net.URL;
-
 @Getter
 public class ListBox extends BorderPane {
 

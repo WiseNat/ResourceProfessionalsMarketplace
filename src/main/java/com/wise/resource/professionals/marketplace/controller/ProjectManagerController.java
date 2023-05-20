@@ -28,6 +28,9 @@ import java.util.Objects;
 @FxmlView("ProjectManagerView.fxml")
 public class ProjectManagerController implements MainView {
 
+    @Autowired
+    private ProjectManagerUtil projectManagerUtil;
+
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<LoanSearch, VBox> loanSearch;
     private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
@@ -35,9 +38,6 @@ public class ProjectManagerController implements MainView {
     private final ListView listView;
     private NavbarButton loanNavbarButton;
     private NavbarButton returnNavbarButton;
-
-    @Autowired
-    private ProjectManagerUtil projectManagerUtil;
 
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,

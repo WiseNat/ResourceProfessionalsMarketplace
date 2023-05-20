@@ -19,16 +19,16 @@ import org.springframework.stereotype.Component;
 public class EnumUtil {
 
     @Autowired
-    AccountTypeRepository accountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     @Autowired
-    BandingRepository bandingRepository;
+    private BandingRepository bandingRepository;
 
     @Autowired
-    MainRoleRepository mainRoleRepository;
+    private MainRoleRepository mainRoleRepository;
 
     @Autowired
-    SubRoleRepository subRoleRepository;
+    private SubRoleRepository subRoleRepository;
 
     public AccountTypeEntity accountTypeToEntity(AccountTypeEnum accountTypeEnum) {
         if (accountTypeEnum == null) {

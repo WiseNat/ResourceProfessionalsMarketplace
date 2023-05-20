@@ -29,11 +29,12 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
+    @Autowired
+    private AdminUtil adminUtil;
+
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
-    @Autowired
-    private AdminUtil adminUtil;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,

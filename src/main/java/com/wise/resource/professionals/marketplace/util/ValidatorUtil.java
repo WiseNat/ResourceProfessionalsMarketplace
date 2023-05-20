@@ -14,7 +14,7 @@ import java.util.Set;
 public class ValidatorUtil {
 
     @Autowired
-    ComponentUtil componentUtil;
+    private ComponentUtil componentUtil;
 
     public <T> String[] getFieldsFromConstraintViolations(Set<ConstraintViolation<T>> constraintViolations) {
         String[] fields = new String[constraintViolations.size()];

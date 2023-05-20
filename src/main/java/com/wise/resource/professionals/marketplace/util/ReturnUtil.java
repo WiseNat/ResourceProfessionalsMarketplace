@@ -12,10 +12,10 @@ import java.util.List;
 public class ReturnUtil {
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    EnumUtil enumUtil;
+    private EnumUtil enumUtil;
 
     public List<AccountEntity> getReturnables(ReturnSearchTO returnSearchTO) {
         return accountRepository.findAllWithPredicates(

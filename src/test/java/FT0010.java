@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
 public class FT0010 {
 
     @Captor
-    ArgumentCaptor<ResourceEntity> resourceEntityCaptor;
+    private ArgumentCaptor<ResourceEntity> resourceEntityCaptor;
     @InjectMocks
     private ProjectManagerUtil projectManagerUtil;
     @InjectMocks

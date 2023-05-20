@@ -18,6 +18,10 @@ import java.math.BigDecimal;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Approving an approval through AdminUtil always deletes the approval and approves the unapproved account record. If
+ * the approval entity pointed to a resource account type, then a resource record is also created for that account.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0006 {
 

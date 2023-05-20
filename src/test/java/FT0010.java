@@ -30,6 +30,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
+/**
+ * Loaning a resource through ProjectManagerUtil loans out a random resource to a given client until a set time.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0010 {
 

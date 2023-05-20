@@ -29,6 +29,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+/**
+ * A list of loanable resource entities is found based on the given search predicates.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0009 {
 

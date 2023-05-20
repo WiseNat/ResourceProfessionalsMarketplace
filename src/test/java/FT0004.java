@@ -20,6 +20,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * A list of approval entities is found based on the given search predicates.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0004 {
 

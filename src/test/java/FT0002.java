@@ -19,6 +19,10 @@ import java.util.HashSet;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Admin account types are ignored when trying to create one. Other account types (resource and project manager) are
+ * acknowledged and can be created.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0002 {
 

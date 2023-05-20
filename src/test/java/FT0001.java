@@ -17,6 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+/**
+ * AccountUtil only authenticates valid LogInAccountTO instances. Valid LogInAccountTOs follow these rules:
+ * <ul>
+ *     <li>An approved account with the provided details exists in the database.</li>
+ *     <li>The given password matches the encoded password in the database.</li>
+ * </ul>
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0001 {
 

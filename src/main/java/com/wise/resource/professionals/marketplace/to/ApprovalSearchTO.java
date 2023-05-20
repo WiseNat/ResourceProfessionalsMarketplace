@@ -3,6 +3,12 @@ package com.wise.resource.professionals.marketplace.to;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * A POJO for an Approval Search
+ *
+ * @see com.wise.resource.professionals.marketplace.controller.AdminController#populatePredicateApprovals
+ * @see com.wise.resource.professionals.marketplace.service.AdminService#getApprovals
+ */
 @Data
 public class ApprovalSearchTO {
 

@@ -2,13 +2,10 @@ package com.wise.resource.professionals.marketplace.util;
 
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.SkinBase;
 import javafx.scene.layout.Pane;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +25,7 @@ public class ComponentUtil {
     /**
      * Adds a style class to the given node if the node doesn't have the style class already.
      *
-     * @param node the node to have the style class added to
+     * @param node       the node to have the style class added to
      * @param styleClass the style class to add to the node
      */
     public void safeAddStyleClass(Node node, String styleClass) {
@@ -61,7 +58,7 @@ public class ComponentUtil {
      * {@code subRoleField} value to a non-null value if sub roles exist for it.
      *
      * @param subRoleField the {@link ChoiceBox} sub role field to be updated
-     * @param mainRole the {@link MainRoleEnum} to use when finding sub roles.
+     * @param mainRole     the {@link MainRoleEnum} to use when finding sub roles.
      */
     public void updateSubRoles(ChoiceBox<String> subRoleField, MainRoleEnum mainRole) {
         updateSubRoles(subRoleField, mainRole, true);
@@ -72,7 +69,7 @@ public class ComponentUtil {
      * {@code subRoleField} value to a null value, even if sub roles exist for it.
      *
      * @param subRoleField the {@link ChoiceBox} sub role field to be updated
-     * @param mainRole a String which is converted to a {@link MainRoleEnum} to use when finding sub roles.
+     * @param mainRole     a String which is converted to a {@link MainRoleEnum} to use when finding sub roles.
      */
     public void updateNullableSubRoles(ChoiceBox<String> subRoleField, String mainRole) {
         subRoleField.setValue(null);
@@ -92,7 +89,7 @@ public class ComponentUtil {
      * {@code subRoleField} value to a null value, even if sub roles exist for it.
      *
      * @param subRoleField the {@link ChoiceBox} sub role field to be updated
-     * @param mainRole a {@link MainRoleEnum} to use when finding sub roles.
+     * @param mainRole     a {@link MainRoleEnum} to use when finding sub roles.
      */
     public void updateNullableSubRoles(ChoiceBox<String> subRoleField, MainRoleEnum mainRole) {
         updateSubRoles(subRoleField, mainRole, false);
@@ -107,7 +104,7 @@ public class ComponentUtil {
      * If {@code updateSubRoleFieldValue} is false, then the subRoleField will only have the list of items changed.
      *
      * @param subRoleField the {@link ChoiceBox} sub role field to be updated
-     * @param mainRole a String which is converted to a {@link MainRoleEnum} to use when finding sub roles.
+     * @param mainRole     a String which is converted to a {@link MainRoleEnum} to use when finding sub roles.
      */
     public void updateSubRoles(ChoiceBox<String> subRoleField, MainRoleEnum mainRole, boolean updateSubRoleFieldValue) {
         SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);

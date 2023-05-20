@@ -51,7 +51,7 @@ public class ValidatorUtil {
     /**
      * Marks a control as negative; setting the given {@code negativeStyleClass}
      *
-     * @param control the control to be impacted
+     * @param control            the control to be impacted
      * @param negativeStyleClass the style class to have set
      */
     public void markControlNegative(Control control, String negativeStyleClass) {
@@ -61,7 +61,7 @@ public class ValidatorUtil {
     /**
      * Marks a control as positive; removing the given {@code negativeStyleClass}
      *
-     * @param control the control to be impacted
+     * @param control            the control to be impacted
      * @param negativeStyleClass the style class to have removed
      */
     public void markControlPositive(Control control, String negativeStyleClass) {
@@ -75,8 +75,8 @@ public class ValidatorUtil {
      * Marks all violating fields from {@code fields} as negative. Any fields not marked as negative that exist only in
      * {@code fieldToControl} are marked as positive.
      *
-     * @param fields the offending fields
-     * @param fieldToControl a mapping of a field to a given JavaFX control
+     * @param fields             the offending fields
+     * @param fieldToControl     a mapping of a field to a given JavaFX control
      * @param negativeStyleClass the negative style class
      */
     public void markControlAgainstValidatedTO(
@@ -112,7 +112,7 @@ public class ValidatorUtil {
      * array and the {@link InvalidFieldsAndDataTO#data} is set to the given {@code data}.
      *
      * @param violations a set of violations from Javax
-     * @param data the data to be set if no violations are present
+     * @param data       the data to be set if no violations are present
      * @return the generated {@link InvalidFieldsAndDataTO} object
      */
     public <T> InvalidFieldsAndDataTO<T> populateInvalidFieldsAndDataTO(Set<ConstraintViolation<T>> violations, T data) {

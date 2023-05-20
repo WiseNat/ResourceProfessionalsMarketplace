@@ -1,16 +1,15 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import com.wise.resource.professionals.marketplace.component.ListBox;
 import com.wise.resource.professionals.marketplace.component.ListView;
-import com.wise.resource.professionals.marketplace.component.LoanResourceListBox;
+import com.wise.resource.professionals.marketplace.component.ReturnResourceListBox;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import com.wise.resource.professionals.marketplace.service.LoanService;
-import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.entity.AccountEntity;
+import com.wise.resource.professionals.marketplace.service.ReturnService;
+import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
-import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,17 +21,24 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 import java.util.List;
-
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
 @Component
 @Getter
-@FxmlView("LoanSearch.fxml")
-public class LoanSearch {
+@FxmlView("ReturnSearch.fxml")
+public class ReturnSearch {
+
     @FXML
     private Label title;
+
+    @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
+
+    @FXML
+    private TextField clientField;
 
     @FXML
     private ChoiceBox<String> mainRoleField;
@@ -44,22 +50,16 @@ public class LoanSearch {
     private ChoiceBox<String> bandField;
 
     @FXML
-    private TextField costPerHourField;
-
-    @FXML
     private Button applyButton;
 
     @FXML
     private Button resetButton;
 
     @Autowired
-    private LoanService loanService;
+    private ReturnService returnService;
 
     @Autowired
     private ComponentUtil componentUtil;
-
-    @Autowired
-    private ValidatorUtil validatorUtil;
 
     private ListView listView;
 
@@ -90,11 +90,13 @@ public class LoanSearch {
         mainRoleField.setTooltip(new Tooltip("Main Role"));
         subRoleField.setTooltip(new Tooltip("Sub Role"));
 
+        firstNameField.setText("");
+        lastNameField.setText("");
+        clientField.setText("");
         mainRoleField.setValue(null);
         subRoleField.setValue(null);
         subRoleField.setDisable(true);
         bandField.setValue(null);
-        costPerHourField.setText("");
     }
 
     private void updateSubRoles() {
@@ -102,7 +104,10 @@ public class LoanSearch {
         componentUtil.updateNullableSubRoles(subRoleField, mainRoleString);
     }
 
-    public void populatePredicateLoanables() {
+    public void populatePredicateReturnables() {
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
+        String client = clientField.getText();
         BandingEnum banding = BandingEnum.valueToEnum(bandField.getValue());
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleField.getValue());
 
@@ -112,44 +117,32 @@ public class LoanSearch {
             subRole = SubRoleEnum.valueToEnum(subRoleString);
         }
 
-        String costPerHourString = costPerHourField.getText();
-        BigDecimal costPerHour = null;
-        if (!costPerHourString.isEmpty()) {
-            try {
-                costPerHour = new BigDecimal(costPerHourField.getText());
-            } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(costPerHourField, NEGATIVE_CONTROL.value);
-                return;
-            }
-        }
+        ReturnSearchTO returnSearchTO = new ReturnSearchTO();
+        returnSearchTO.setFirstName(firstName);
+        returnSearchTO.setLastName(lastName);
+        returnSearchTO.setClient(client);
+        returnSearchTO.setSubRole(subRole);
+        returnSearchTO.setMainRole(mainRole);
+        returnSearchTO.setBanding(banding);
 
-        LoanSearchTO loanSearchTO = new LoanSearchTO();
-        loanSearchTO.setBanding(banding);
-        loanSearchTO.setMainRole(mainRole);
-        loanSearchTO.setSubRole(subRole);
-        loanSearchTO.setCostPerHour(costPerHour);
+        List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
-        List<ResourceCollectionTO> foundLoanables = loanService.getLoanables(loanSearchTO);
-
-        populateLoanables(foundLoanables);
+        populateReturnables(foundReturnables);
     }
 
-    private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
+    private void populateReturnables(List<AccountEntity> accountEntities) {
         listView.clearAllChildren();
 
-        int totalResources = 0;
-
-        for (ResourceCollectionTO resourceCollection : resourceCollections) {
-            totalResources += resourceCollection.getQuantity();
-
-            ListBox loanableResourceListBox = new LoanResourceListBox(resourceCollection);
-            listView.addChild(loanableResourceListBox);
+        for (AccountEntity accountEntity : accountEntities) {
+            ListBox returnableResourceListBox = new ReturnResourceListBox(accountEntity);
+            listView.addChild(returnableResourceListBox);
         }
 
-        title.setText(resourceCollections.size() + " collections found\n" + totalResources + " loanable resources found");
+        title.setText(accountEntities.size() + " loaned resources found");
     }
 
     public void setListView(ListView listView) {
         this.listView = listView;
     }
+
 }

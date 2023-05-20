@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.component.NavbarButton;

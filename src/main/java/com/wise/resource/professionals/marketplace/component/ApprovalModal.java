@@ -47,12 +47,12 @@ public class ApprovalModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ApprovalModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ApprovalModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ApprovalModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ApprovalModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);

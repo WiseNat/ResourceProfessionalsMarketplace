@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;

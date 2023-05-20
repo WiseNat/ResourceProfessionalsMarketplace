@@ -2,7 +2,6 @@ package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -58,12 +57,12 @@ public class ReturnModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ReturnModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ReturnModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ReturnModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ReturnModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);

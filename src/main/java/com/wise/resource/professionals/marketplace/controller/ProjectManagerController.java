@@ -1,9 +1,9 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.*;
-import com.wise.resource.professionals.marketplace.modules.LoanSearch;
-import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
-import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
+import com.wise.resource.professionals.marketplace.module.LoanSearch;
+import com.wise.resource.professionals.marketplace.module.MainSkeleton;
+import com.wise.resource.professionals.marketplace.module.ReturnSearch;
 import com.wise.resource.professionals.marketplace.service.ProjectManagerService;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;

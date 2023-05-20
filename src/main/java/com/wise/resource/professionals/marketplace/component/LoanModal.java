@@ -62,12 +62,12 @@ public class LoanModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/LoanModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/LoanModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/LoanModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/LoanModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);

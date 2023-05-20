@@ -11,6 +11,12 @@ import java.util.Arrays;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
+/**
+ * Validator logic for {@link Roles}.
+ * <p>
+ * This checks whether the combination of the {@link RolesContainer#mainRole} and {@link RolesContainer#subRole} values
+ * is valid.
+ */
 public class RolesValidator implements ConstraintValidator<Roles, RolesContainer> {
 
     @Override

@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

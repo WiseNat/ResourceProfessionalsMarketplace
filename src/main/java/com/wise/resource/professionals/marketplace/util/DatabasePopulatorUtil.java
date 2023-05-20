@@ -50,7 +50,7 @@ public class DatabasePopulatorUtil {
     private AccountUtil accountUtil;
 
     @Autowired
-    private CreateAccountUtil createAccountUtil;
+    private CreateAnAccountUtil createAnAccountUtil;
 
     @Autowired
     private ResourceUtil resourceUtil;
@@ -71,7 +71,7 @@ public class DatabasePopulatorUtil {
             this.populateDevAccounts();
             this.populateFakeUnapprovedAccounts(5);
             this.populateFakeAvailableResources(100);
-            this.populateFakeLoanedResources(5);
+            this.populateFakeLoanedResources(100);
         }
     }
 
@@ -148,7 +148,7 @@ public class DatabasePopulatorUtil {
             resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
             resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
-            resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceEntity.getCostPerHour()));
+            resourceEntity.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
 
             resourceRepository.save(resourceEntity);
@@ -193,8 +193,8 @@ public class DatabasePopulatorUtil {
             approvalTO.setAccount(createAccountTO);
             approvalTO.setDate(faker.date().birthday());
 
-            createAccountUtil.persistAccount(createAccountTO);
-            createAccountUtil.persistApproval(approvalTO);
+            createAnAccountUtil.persistAccount(createAccountTO);
+            createAnAccountUtil.persistApproval(approvalTO);
         }
     }
 
@@ -213,7 +213,7 @@ public class DatabasePopulatorUtil {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
             MainRoleEnum mainRole = MainRoleEnum.values()[random.nextInt(MainRoleEnum.values().length)];
             BigDecimal costPerHour = validBigDecimals[random.nextInt(validBigDecimals.length)];
-            BigDecimal dailyLateFee = resourceUtil.costPerHourToDailyLateFee(costPerHour);
+            BigDecimal dailyLateFee = resourceUtil.calculateDailyLateFee(costPerHour);
 
             SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
             SubRoleEnum subRole = null;

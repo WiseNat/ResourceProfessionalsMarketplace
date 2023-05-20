@@ -1,23 +1,17 @@
 package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.*;
-import com.wise.resource.professionals.marketplace.entity.BandingEntity;
-import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
-import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
-import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.LoanUtil;
-import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
+import com.wise.resource.professionals.marketplace.to.RawLoanTO;
+import com.wise.resource.professionals.marketplace.util.ProjectManagerUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Control;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -27,11 +21,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.math.BigDecimal;
-import java.time.ZoneId;
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Objects;
 
 @Component
 @FxmlView("ProjectManagerView.fxml")
@@ -46,19 +37,7 @@ public class ProjectManagerController implements MainView {
     private NavbarButton returnNavbarButton;
 
     @Autowired
-    private ResourceRepository resourceRepository;
-
-    @Autowired
-    private LoanUtil loanUtil;
-
-    @Autowired
-    private EnumUtil enumUtil;
-
-    @Autowired
-    private ValidatorUtil validatorUtil;
-
-    @Autowired
-    private Validator validator;
+    private ProjectManagerUtil projectManagerUtil;
 
     public ProjectManagerController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -129,6 +108,15 @@ public class ProjectManagerController implements MainView {
         }
     }
 
+    private void populatePredicateLoanables() {
+        loanSearch.getController().populatePredicateLoanables();
+        applyMouseClickedEventToLoanableResources();
+    }
+
+    private void populatePredicateReturnables() {
+        returnSearch.getController().populatePredicateReturnables();
+        applyMouseClickedEventToReturnableResources();
+    }
 
     @SneakyThrows
     private void initialiseLoansView() {
@@ -145,9 +133,8 @@ public class ProjectManagerController implements MainView {
         returnNavbarButton.setActive(false);
 
         loanSearch.getController().getApplyButton().setOnMouseClicked(this::loanSearchClicked);
-        loanSearch.getController().populatePredicateLoanables();
 
-        applyMouseClickedEventToLoanableResources();
+        populatePredicateLoanables();
     }
 
     @SneakyThrows
@@ -167,21 +154,16 @@ public class ProjectManagerController implements MainView {
         returnNavbarButton.setActive(true);
 
         returnSearch.getController().getApplyButton().setOnMouseClicked(this::returnSearchClicked);
-        returnSearch.getController().populatePredicateReturnables();
 
-        applyMouseClickedEventToReturnableResources();
+        populatePredicateReturnables();
     }
 
     private void loanSearchClicked(MouseEvent mouseEvent) {
-        loanSearch.getController().populatePredicateLoanables();
-
-        applyMouseClickedEventToLoanableResources();
+        populatePredicateLoanables();
     }
 
     private void returnSearchClicked(MouseEvent mouseEvent) {
-        returnSearch.getController().populatePredicateReturnables();
-
-        applyMouseClickedEventToReturnableResources();
+        populatePredicateReturnables();
     }
 
     private void loanableResourceClicked(LoanResourceListBox listBox) {
@@ -203,64 +185,31 @@ public class ProjectManagerController implements MainView {
     }
 
     private void loanButtonClicked(LoanModal loanModal) {
-        LoanTO loanTO = new LoanTO();
-        loanTO.setAmount(loanModal.getAmountField().getValue());
-        loanTO.setClientName(loanModal.getClientField().getText());
-        loanTO.setAvailabilityDate(Date.from(loanModal.getDateField().getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        String clientName = loanModal.getClientField().getText();
+        Integer amount = loanModal.getAmountField().getValue();
+        LocalDate availabilityDate = loanModal.getDateField().getValue();
 
-        Set<ConstraintViolation<LoanTO>> violations = validator.validate(loanTO);
-        HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
-            put("clientName", loanModal.getClientField());
-            put("amount", loanModal.getAmountField().getEditor());
-            put("availabilityDate", loanModal.getDateField().getEditor());
-        }};
+        RawLoanTO rawLoanTO = new RawLoanTO(loanModal.getResourceCollectionTO(), clientName, amount, availabilityDate);
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+        InvalidFieldsAndDataTO<LoanTO> convertedTO = projectManagerUtil.createLoanTo(rawLoanTO);
 
-        if (violations.size() > 0) {
+        if (convertedTO.getInvalidFields().length > 0) {
+            loanModal.markTextFields(convertedTO.getInvalidFields());
             return;
         }
 
-        BandingEntity banding = enumUtil.bandingToEntity(loanModal.getResourceCollectionTO().getResource().getBanding());
-        MainRoleEntity mainRole = enumUtil.mainRoleToEntity(loanModal.getResourceCollectionTO().getResource().getMainRole());
-        SubRoleEntity subRole = enumUtil.subRoleToEntity(loanModal.getResourceCollectionTO().getResource().getSubRole());
-        BigDecimal costPerHour = loanModal.getResourceCollectionTO().getResource().getCostPerHour();
+        projectManagerUtil.loanResource(convertedTO.getData());
 
-        List<ResourceEntity> resources = resourceRepository.findByBandingAndMainRoleAndSubRoleAndCostPerHour(
-                banding, mainRole, subRole, costPerHour);
-
-        Collections.shuffle(resources);
-
-        List<ResourceEntity> selectedResources = resources.subList(0, loanTO.getAmount());
-
-        String client = loanTO.getClientName();
-
-        for (ResourceEntity resourceEntity : selectedResources) {
-            resourceEntity.setAvailabilityDate(loanTO.getAvailabilityDate());
-            resourceEntity.setLoanedClient(client);
-
-            resourceRepository.save(resourceEntity);
-        }
-
-        loanSearch.getController().populatePredicateLoanables();
-
-        applyMouseClickedEventToLoanableResources();
+        populatePredicateLoanables();
 
         loanModal.closeDialog();
     }
 
     private void returnButtonClicked(ReturnModal returnModal) {
-        ResourceEntity resourceEntity = returnModal.getAccountEntity().getResource();
-        resourceEntity.setLoanedClient(null);
-        resourceEntity.setAvailabilityDate(null);
+        projectManagerUtil.returnResource(returnModal.getAccountEntity().getResource());
 
-        resourceRepository.save(resourceEntity);
-
-        returnSearch.getController().populatePredicateReturnables();
-
-        applyMouseClickedEventToReturnableResources();
+        populatePredicateReturnables();
 
         returnModal.closeDialog();
     }
-
 }

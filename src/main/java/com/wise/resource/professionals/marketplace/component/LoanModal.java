@@ -4,6 +4,7 @@ import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
+import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -14,6 +15,10 @@ import lombok.Getter;
 import lombok.SneakyThrows;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeDatePickerDayCell;
 
 @Getter
 public class LoanModal extends Modal {
@@ -97,7 +102,7 @@ public class LoanModal extends Modal {
 
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
-                            componentUtil.safeAddStyleClass(this, "negative-date-picker-day-cell");
+                            componentUtil.safeAddStyleClass(this, NegativeDatePickerDayCell.value);
                         }
                     }
                 };
@@ -133,4 +138,15 @@ public class LoanModal extends Modal {
         saveDetailsToFile(this.getScene().getWindow(), content.toString());
     }
 
+    public void markTextFields(String[] fields) {
+        ValidatorUtil validatorUtil = new ValidatorUtil();
+
+        HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
+            put("clientName", clientField);
+            put("amount", amountField.getEditor());
+            put("availabilityDate", dateField.getEditor());
+        }};
+
+        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NegativeControl.value);
+    }
 }

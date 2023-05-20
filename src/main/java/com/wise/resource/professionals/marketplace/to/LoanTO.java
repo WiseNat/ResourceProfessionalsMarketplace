@@ -12,6 +12,9 @@ import java.util.Date;
 public class LoanTO {
 
     @NotNull
+    private ResourceCollectionTO resourceCollectionTO;
+
+    @NotNull
     @NotEmpty
     private String clientName;
 

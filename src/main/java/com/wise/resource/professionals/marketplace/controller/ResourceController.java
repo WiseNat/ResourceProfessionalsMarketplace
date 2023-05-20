@@ -2,22 +2,19 @@ package com.wise.resource.professionals.marketplace.controller;
 
 import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
-import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
-import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
+import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
-import com.wise.resource.professionals.marketplace.util.UpdateDetailsUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.scene.control.Control;
@@ -33,15 +30,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
 
 @Component
 @FxmlView("ResourceView.fxml")
@@ -51,19 +43,18 @@ public class ResourceController implements MainView {
     private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
-    @Autowired
-    private ResourceRepository resourceRepository;
-    @Autowired
-    private Validator validator;
+
     @Autowired
     private ValidatorUtil validatorUtil;
-    @Autowired
-    private UpdateDetailsUtil updateDetailsUtil;
+
     @Autowired
     private EnumUtil enumUtil;
 
     @Autowired
     private ResourceUtil resourceUtil;
+
+    @Autowired
+    private ComponentUtil componentUtil;
 
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
@@ -131,44 +122,26 @@ public class ResourceController implements MainView {
         String mainRole = updateDetails.getController().getMainRoleField().getValue();
         String costPerHour = updateDetails.getController().getCostPerHourField().getText();
 
-        ResourceTO resourceTo;
+        RawResourceTO rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
 
-        try {
-            resourceTo = updateDetailsUtil.createResourceTO(banding, subRole, mainRole, costPerHour, resourceEntity);
-        } catch (NumberFormatException e) {
-            validatorUtil.markControlNegative(updateDetails.getController().getCostPerHourField(), "negative-control");
+        InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceUtil.createResourceTo(rawResourceTO);
+
+        if (convertedTO.getInvalidFields().length > 0) {
+            markTextFields(convertedTO.getInvalidFields());
             return;
         }
 
-        Set<ConstraintViolation<ResourceTO>> violations = validator.validate(resourceTo);
-        this.markTextFields(violations);
-
-        if (violations.size() > 0) {
-            return;
-        }
-
-        SubRoleEntity subRoleEntity = null;
-        if (resourceTo.getSubRole() != null) {
-            subRoleEntity = enumUtil.subRoleToEntity(resourceTo.getSubRole());
-        }
-
-        resourceEntity.setMainRole(enumUtil.mainRoleToEntity(resourceTo.getMainRole()));
-        resourceEntity.setSubRole(subRoleEntity);
-        resourceEntity.setBanding(enumUtil.bandingToEntity(resourceTo.getBanding()));
-        resourceEntity.setCostPerHour(resourceTo.getCostPerHour());
-        resourceEntity.setDailyLateFee(resourceUtil.costPerHourToDailyLateFee(resourceTo.getCostPerHour()));
-
-        resourceRepository.save(resourceEntity);
+        resourceUtil.updateResourceDetails(resourceEntity, convertedTO.getData());
     }
 
-    private void markTextFields(Set<ConstraintViolation<ResourceTO>> violations) {
+    private void markTextFields(String[] fields) {
         HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
             put("banding", updateDetails.getController().getBandField());
             put("subRole", updateDetails.getController().getSubRoleField());
             put("costPerHour", updateDetails.getController().getCostPerHourField());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(violations, toFieldToControl, "negative-control");
+        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NegativeControl.value);
     }
 
     private void mainRoleFieldChanged(ActionEvent actionEvent) {
@@ -177,18 +150,7 @@ public class ResourceController implements MainView {
 
     private void updateSubRoles() {
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(updateDetails.getController().getMainRoleField().getValue());
-        SubRoleEnum[] subRoles = ROLE_MAPPING.get(mainRole);
 
-        if (subRoles.length == 0) {
-            updateDetails.getController().getSubRoleField().setDisable(true);
-            updateDetails.getController().getSubRoleField().setValue(null);
-        } else {
-            updateDetails.getController().getSubRoleField().setDisable(false);
-
-            ObservableList<String> subRoleItems = FXCollections.observableArrayList(
-                    Arrays.stream(subRoles).map(e -> e.value).collect(Collectors.toList()));
-            updateDetails.getController().getSubRoleField().setItems(subRoleItems);
-            updateDetails.getController().getSubRoleField().setValue(subRoleItems.get(0));
-        }
+        componentUtil.updateSubRoles(updateDetails.getController().getSubRoleField(), mainRole);
     }
 }

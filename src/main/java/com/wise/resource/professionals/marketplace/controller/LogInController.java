@@ -16,6 +16,8 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
@@ -53,6 +55,10 @@ public class LogInController {
 
     @FXML
     public void onLogInButtonClick() {
+        this.login();
+    }
+
+    private void login() {
         String email = emailField.getText();
         String password = passwordField.getText();
         String accountType = accountTypeField.getValue();
@@ -68,12 +74,12 @@ public class LogInController {
 
             stageHandler.swapScene(scene);
         } else {
-            validatorUtil.markControlNegative(emailField, "negative-control");
-            validatorUtil.markControlNegative(passwordField, "negative-control");
-            validatorUtil.markControlNegative(accountTypeField, "negative-control");
+            validatorUtil.markControlNegative(emailField, NegativeControl.value);
+            validatorUtil.markControlNegative(accountTypeField, NegativeControl.value);
+            validatorUtil.markControlNegative(passwordField, NegativeControl.value);
+
             System.out.println("Invalid email or password");
         }
-
     }
 
     @FXML

@@ -19,4 +19,5 @@ public class ReturnSearchTO {
     private MainRoleEnum mainRole;
 
     private BandingEnum banding;
+
 }

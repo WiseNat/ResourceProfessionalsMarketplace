@@ -10,8 +10,6 @@ import javafx.scene.layout.BorderPane;
 import lombok.Getter;
 import lombok.SneakyThrows;
 
-import java.net.URL;
-
 @Getter
 public class ListBox extends BorderPane {
 
@@ -51,20 +49,12 @@ public class ListBox extends BorderPane {
         rightSubtext.setText(text);
     }
 
-    @SneakyThrows
-    public void setMainImageUrl(URL url) {
-        setImageUrl(mainImage, url);
+    public void setMainImage(Image image) {
+        mainImage.setImage(image);
     }
 
-    @SneakyThrows
-    public void setSubImageUrl(URL url) {
-        setImageUrl(subImage, url);
-    }
-
-    @SneakyThrows
-    private void setImageUrl(ImageView image, URL url) {
-        Image innerImage = new Image(url.toString());
-        image.setImage(innerImage);
+    public void setSubImage(Image image) {
+        subImage.setImage(image);
     }
 
     public void removeMainImage() {

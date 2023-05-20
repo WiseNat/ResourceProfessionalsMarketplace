@@ -26,6 +26,12 @@ import static com.wise.resource.professionals.marketplace.constant.RoleMapping.R
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Creating a resourceTO from the given user input values and the provided resource entity is performed correctly. If
+ * successfully validated, the invalidFields TO will be an empty string array with a returned resourceTO. If
+ * unsuccessfully validated, any invalid fields will be included in invalidFields in the returned TO with the data
+ * being set to null.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0007 {
 

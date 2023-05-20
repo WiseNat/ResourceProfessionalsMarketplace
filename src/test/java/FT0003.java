@@ -20,6 +20,10 @@ import java.util.HashSet;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * When creating an account, if an existing account entity is found the flow is terminated. Otherwise, the flow
+ * continues.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0003 {
 

@@ -13,6 +13,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.mockito.Mockito.verify;
 
+/**
+ * Updating a resource’s details through a given resourceTO takes null sub roles into account and saves the details in
+ * the database.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0008 {
 

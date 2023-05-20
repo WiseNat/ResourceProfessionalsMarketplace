@@ -12,6 +12,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+/**
+ * Denying an approval through AdminUtil always deletes the approval and deletes the unapproved account records.
+ */
 @ExtendWith(MockitoExtension.class)
 public class FT0005 {
 

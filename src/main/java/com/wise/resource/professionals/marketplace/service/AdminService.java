@@ -47,11 +47,11 @@ public class AdminService {
             foundApprovals = approvalRepository.findAllApprovalsByPredicates(
                     approvalSearchTO.getFirstName(), approvalSearchTO.getLastName(), approvalSearchTO.getEmail());
         } else if (approvalSearchTO.isProjectManagerAllowed()) {
-            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager);
+            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER);
             foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(
                     approvalSearchTO.getFirstName(), approvalSearchTO.getLastName(), approvalSearchTO.getEmail(), accountType);
         } else if (approvalSearchTO.isResourceAllowed()) {
-            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.Resource);
+            AccountTypeEntity accountType = enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE);
             foundApprovals = approvalRepository.findApprovalsByPredicatesAndAccountType(
                     approvalSearchTO.getFirstName(), approvalSearchTO.getLastName(), approvalSearchTO.getEmail(), accountType);
         } else {
@@ -72,7 +72,7 @@ public class AdminService {
         AccountEntity accountEntity = approvalEntity.getAccount();
         accountEntity.setIsApproved(true);
 
-        if (AccountTypeEnum.valueToEnum(accountEntity.getAccountType().getName()) == AccountTypeEnum.Resource) {
+        if (AccountTypeEnum.valueToEnum(accountEntity.getAccountType().getName()) == AccountTypeEnum.RESOURCE) {
             ResourceTO resourceTO = new ResourceTO();
             resourceTO.setLoanedClient(null);
             resourceTO.setCostPerHour(new BigDecimal("10.0"));
@@ -82,8 +82,8 @@ public class AdminService {
             ResourceEntity resourceEntity = new ResourceEntity();
             BeanUtils.copyProperties(resourceTO, resourceEntity, "banding, subrole, mainRole");
 
-            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BusinessAnalyst));
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandOne));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.BUSINESS_ANALYST));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BAND_ONE));
 
             resourceRepository.save(resourceEntity);
 

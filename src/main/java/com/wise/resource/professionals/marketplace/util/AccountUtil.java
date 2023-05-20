@@ -67,11 +67,11 @@ public class AccountUtil {
     @SneakyThrows
     public MainView getAccountViewController(AccountTypeEnum accountType) {
         switch (accountType) {
-            case Admin:
+            case ADMIN:
                 return adminController;
-            case ProjectManager:
+            case PROJECT_MANAGER:
                 return projectManagerController;
-            case Resource:
+            case RESOURCE:
                 return resourceController;
             default:
                 throw new IllegalArgumentException("No view exists for this Account Type!");

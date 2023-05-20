@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.Objects;
 
+import static com.wise.resource.professionals.marketplace.constant.ApplicationEnum.DEFAULT_STYLESHEET_PATH;
 import static javafx.scene.paint.Color.TRANSPARENT;
 
 public class Modal extends DialogPane {
@@ -49,9 +50,7 @@ public class Modal extends DialogPane {
         dialog.initStyle(StageStyle.TRANSPARENT);
         dialog.setDialogPane(this);
 
-        this.getScene().getStylesheets().add(
-                Objects.requireNonNull(getClass().getResource("../styles/application.css")).toExternalForm()
-        );
+        this.getScene().getStylesheets().add(DEFAULT_STYLESHEET_PATH.value);
 
         this.getScene().setFill(TRANSPARENT);
 

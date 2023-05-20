@@ -33,7 +33,7 @@ import org.springframework.util.StringUtils;
 import java.util.HashMap;
 import java.util.Objects;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
 @Component
 @FxmlView("ResourceView.fxml")
@@ -136,7 +136,7 @@ public class ResourceController implements MainView {
             put("costPerHour", updateDetails.getController().getCostPerHourField());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NEGATIVE_CONTROL.value);
     }
 
     private void mainRoleFieldChanged(ActionEvent actionEvent) {

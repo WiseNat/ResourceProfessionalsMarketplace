@@ -120,7 +120,7 @@ public class DatabasePopulatorUtil {
         { // Admin
             accountEntity = new AccountEntity();
             accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Project Manager");
             accountEntity.setEmail("dev@account");
@@ -133,7 +133,7 @@ public class DatabasePopulatorUtil {
         { // Admin
             accountEntity = new AccountEntity();
             accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Admin));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ADMIN));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Admin");
             accountEntity.setEmail("dev@account");
@@ -145,9 +145,9 @@ public class DatabasePopulatorUtil {
 
         { // Resource
             ResourceEntity resourceEntity = new ResourceEntity();
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandFive));
-            resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
-            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BAND_FIVE));
+            resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BACKEND_DEVELOPER));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.DEVELOPER));
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
             resourceEntity.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
@@ -156,7 +156,7 @@ public class DatabasePopulatorUtil {
 
             accountEntity = new AccountEntity();
             accountEntity.setResource(resourceEntity);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Resource));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Resource");
             accountEntity.setEmail("dev@account");
@@ -170,7 +170,7 @@ public class DatabasePopulatorUtil {
     private void populateFakeUnapprovedAccounts(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
-        AccountTypeEnum[] validAccountTypes = new AccountTypeEnum[]{AccountTypeEnum.ProjectManager, AccountTypeEnum.Resource};
+        AccountTypeEnum[] validAccountTypes = new AccountTypeEnum[]{AccountTypeEnum.PROJECT_MANAGER, AccountTypeEnum.RESOURCE};
 
         for (int i = 0; i < amount; i++) {
             AccountTypeEnum accountType = validAccountTypes[random.nextInt(validAccountTypes.length)];
@@ -236,7 +236,7 @@ public class DatabasePopulatorUtil {
 
             resourceRepository.save(resourceEntity);
 
-            AccountTypeEnum accountType = AccountTypeEnum.Resource;
+            AccountTypeEnum accountType = AccountTypeEnum.RESOURCE;
             String firstName = faker.name().firstName();
             String lastName = faker.name().lastName();
             String email = faker.internet().emailAddress(firstName + "." + lastName);

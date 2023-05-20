@@ -35,7 +35,7 @@ public class FT0001 {
     public void init() {
         String email = "My_Test.email@foo.com";
         String plaintextPassword = "S0me_%$P4ssword";
-        AccountTypeEnum accountType = AccountTypeEnum.Resource;
+        AccountTypeEnum accountType = AccountTypeEnum.RESOURCE;
 
         logInAccountTO = new LogInAccountTO(email, plaintextPassword, accountType);
 

@@ -4,21 +4,21 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public enum SubRoleEnum {
-    WebDeveloper("Web Developer"),
-    FrontendDeveloper("Frontend Developer"),
-    BackendDeveloper("Backend Developer"),
-    FullStackDeveloper("Full Stack Developer"),
-    MobileDeveloper("Mobile Developer"),
-    SoftwareDeveloper("Software Developer"),
-    GameDeveloper("Game Developer"),
-    SystemArchitect("System Architect"),
-    SolutionArchitect("Solution Architect"),
-    SecurityArchitect("Security Architect"),
-    DataArchitect("Data Architect"),
-    TestAnalyst("Test Analyst"),
-    AutomationTester("Automation Tester"),
-    ManualTester("Manual Tester"),
-    PerformanceTester("Performance Tester");
+    WEB_DEVELOPER("Web Developer"),
+    FRONTEND_DEVELOPER("Frontend Developer"),
+    BACKEND_DEVELOPER("Backend Developer"),
+    FULL_STACK_DEVELOPER("Full Stack Developer"),
+    MOBILE_DEVELOPER("Mobile Developer"),
+    SOFTWARE_DEVELOPER("Software Developer"),
+    GAME_DEVELOPER("Game Developer"),
+    SYSTEM_ARCHITECT("System Architect"),
+    SOLUTION_ARCHITECT("Solution Architect"),
+    SECURITY_ARCHITECT("Security Architect"),
+    DATA_ARCHITECT("Data Architect"),
+    TEST_ANALYST("Test Analyst"),
+    AUTOMATION_TESTER("Automation Tester"),
+    MANUAL_TESTER("Manual Tester"),
+    PERFORMANCE_TESTER("Performance Tester");
 
     private static final LinkedHashMap<String, SubRoleEnum> cache = new LinkedHashMap<>();
 

@@ -25,7 +25,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
 @Component
 @Getter
@@ -118,7 +118,7 @@ public class LoanSearch {
             try {
                 costPerHour = new BigDecimal(costPerHourField.getText());
             } catch (NumberFormatException e) {
-                validatorUtil.markControlNegative(costPerHourField, NegativeControl.value);
+                validatorUtil.markControlNegative(costPerHourField, NEGATIVE_CONTROL.value);
                 return;
             }
         }

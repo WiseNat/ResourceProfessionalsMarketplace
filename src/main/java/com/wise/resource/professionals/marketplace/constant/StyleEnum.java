@@ -4,10 +4,10 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public enum StyleEnum {
-    NavbarButtonActive("navbar-button-active"),
-    NegativeControl("negative-control"),
-    NegativeLabel("negative-label"),
-    NegativeDatePickerDayCell("negative-date-picker-day-cell");
+    NAVBAR_BUTTON_ACTIVE("navbar-button-active"),
+    NEGATIVE_CONTROL("negative-control"),
+    NEGATIVE_LABEL("negative-label"),
+    NEGATIVE_DATE_PICKER_DAY_CELL("negative-date-picker-day-cell");
 
     private static final LinkedHashMap<String, StyleEnum> cache = new LinkedHashMap<>();
 

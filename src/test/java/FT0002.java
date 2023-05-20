@@ -49,7 +49,7 @@ public class FT0002 {
 
     @Test
     public void testIgnoreAdminAccountCreation() {
-        createAccountTO.setAccountType(AccountTypeEnum.Admin);
+        createAccountTO.setAccountType(AccountTypeEnum.ADMIN);
 
         createAnAccountService.createAccount(createAccountTO);
         verify(createAnAccountService, never()).persistAccountAndApproval(any());
@@ -68,7 +68,7 @@ public class FT0002 {
 
         @Test
         public void testAcknowledgeResourceAccountCreation() {
-            createAccountTO.setAccountType(AccountTypeEnum.Resource);
+            createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
 
             createAnAccountService.createAccount(createAccountTO);
 
@@ -77,7 +77,7 @@ public class FT0002 {
 
         @Test
         public void testAcknowledgeProjectManagerAccountCreation() {
-            createAccountTO.setAccountType(AccountTypeEnum.Resource);
+            createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
 
             createAnAccountService.createAccount(createAccountTO);
 

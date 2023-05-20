@@ -49,7 +49,7 @@ public class FT0003 {
         createAccountTO.setLastName("LASTNAME");
         createAccountTO.setEmail("EMAIL");
         createAccountTO.setPassword("PASSWORD");
-        createAccountTO.setAccountType(AccountTypeEnum.Resource);
+        createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
 
         when(validator.validate(any())).thenReturn(new HashSet<>());
         when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());

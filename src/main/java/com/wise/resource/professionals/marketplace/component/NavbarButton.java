@@ -11,7 +11,7 @@ import lombok.SneakyThrows;
 
 import java.net.URL;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NavbarButtonActive;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NAVBAR_BUTTON_ACTIVE;
 
 @Getter
 public class NavbarButton extends Button {
@@ -46,9 +46,9 @@ public class NavbarButton extends Button {
         this.isActive = isActive;
 
         if (isActive) {
-            componentUtil.safeAddStyleClass(this, NavbarButtonActive.value);
+            componentUtil.safeAddStyleClass(this, NAVBAR_BUTTON_ACTIVE.value);
         } else {
-            this.getStyleClass().remove(NavbarButtonActive.value);
+            this.getStyleClass().remove(NAVBAR_BUTTON_ACTIVE.value);
         }
     }
 }

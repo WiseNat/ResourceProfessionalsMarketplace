@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeLabel;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
 @Getter
 public class ReturnModal extends Modal {
@@ -89,7 +89,7 @@ public class ReturnModal extends Modal {
             bottomText.setText("Overdue since " + dueDateString + "\nLate fee for " + client + " is £"
                     + componentUtil.formatBigDecimal(lateFee));
 
-            componentUtil.safeAddStyleClass(bottomText, NegativeLabel.value);
+            componentUtil.safeAddStyleClass(bottomText, NEGATIVE_LABEL.value);
         } else {
             componentUtil.removeNode(middleText);
             bottomText.setText("Loaned to " + client + "\nAvailable " + dueDateString);

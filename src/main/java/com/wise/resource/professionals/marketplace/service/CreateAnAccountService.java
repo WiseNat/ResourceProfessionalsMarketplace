@@ -50,7 +50,7 @@ public class CreateAnAccountService {
     private AccountUtil accountUtil;
 
     public String[] createAccount(CreateAccountTO createAccountTO) {
-        if (createAccountTO.getAccountType() == AccountTypeEnum.Admin) {
+        if (createAccountTO.getAccountType() == AccountTypeEnum.ADMIN) {
             return new String[]{"accountType"};
         }
 

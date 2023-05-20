@@ -58,9 +58,9 @@ public class FT0010 {
         int resourcesToLoan = 2;
 
         BloatedLoanTO bloatedLoanTO = new BloatedLoanTO(
-                BandingEnum.BandOne,
-                MainRoleEnum.Developer,
-                SubRoleEnum.FrontendDeveloper,
+                BandingEnum.BAND_ONE,
+                MainRoleEnum.DEVELOPER,
+                SubRoleEnum.FRONTEND_DEVELOPER,
                 new BigDecimal("15.5"),
                 availableResources,
                 resourcesToLoan,
@@ -91,8 +91,8 @@ public class FT0010 {
         int resourcesToLoan = 5;
 
         BloatedLoanTO bloatedLoanTO = new BloatedLoanTO(
-                BandingEnum.BandOne,
-                MainRoleEnum.Developer,
+                BandingEnum.BAND_ONE,
+                MainRoleEnum.DEVELOPER,
                 null,
                 new BigDecimal("15.5"),
                 availableResources,

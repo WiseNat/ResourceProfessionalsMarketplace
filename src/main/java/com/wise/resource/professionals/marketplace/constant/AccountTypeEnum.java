@@ -4,9 +4,9 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public enum AccountTypeEnum {
-    Admin("Admin"),
-    Resource("Resource"),
-    ProjectManager("Project Manager");
+    ADMIN("Admin"),
+    RESOURCE("Resource"),
+    PROJECT_MANAGER("Project Manager");
 
     private static final LinkedHashMap<String, AccountTypeEnum> cache = new LinkedHashMap<>();
 

@@ -4,13 +4,13 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public enum MainRoleEnum {
-    Developer("Developer"),
-    DevOps("DevOps"),
-    Architect("Architect"),
-    UXDesigner("UX Designer"),
-    Tester("Tester"),
-    BusinessAnalyst("Business Analyst"),
-    ScrumMaster("Scrum Master");
+    DEVELOPER("Developer"),
+    DEV_OPS("DevOps"),
+    ARCHITECT("Architect"),
+    UX_DESIGNER("UX Designer"),
+    TESTER("Tester"),
+    BUSINESS_ANALYST("Business Analyst"),
+    SCRUM_MASTER("Scrum Master");
 
     private static final LinkedHashMap<String, MainRoleEnum> cache = new LinkedHashMap<>();
 

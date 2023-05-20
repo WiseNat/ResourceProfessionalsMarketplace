@@ -17,8 +17,8 @@ import lombok.SneakyThrows;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeDatePickerDayCell;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_DATE_PICKER_DAY_CELL;
 
 @Getter
 public class LoanModal extends Modal {
@@ -102,7 +102,7 @@ public class LoanModal extends Modal {
 
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
-                            componentUtil.safeAddStyleClass(this, NegativeDatePickerDayCell.value);
+                            componentUtil.safeAddStyleClass(this, NEGATIVE_DATE_PICKER_DAY_CELL.value);
                         }
                     }
                 };
@@ -147,6 +147,6 @@ public class LoanModal extends Modal {
             put("availabilityDate", dateField.getEditor());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NEGATIVE_CONTROL.value);
     }
 }

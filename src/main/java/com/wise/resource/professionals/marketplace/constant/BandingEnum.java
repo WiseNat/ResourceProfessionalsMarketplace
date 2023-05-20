@@ -4,11 +4,11 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 public enum BandingEnum {
-    BandOne("B1"),
-    BandTwo("B2"),
-    BandThree("B3"),
-    BandFour("B4"),
-    BandFive("B5");
+    BAND_ONE("B1"),
+    BAND_TWO("B2"),
+    BAND_THREE("B3"),
+    BAND_FOUR("B4"),
+    BAND_FIVE("B5");
 
     private static final LinkedHashMap<String, BandingEnum> cache = new LinkedHashMap<>();
 

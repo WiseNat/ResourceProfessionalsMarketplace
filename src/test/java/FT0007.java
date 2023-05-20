@@ -72,11 +72,11 @@ public class FT0007 {
             resourceEntity.setLoanedClient(null);
             resourceEntity.setAvailabilityDate(null);
 
-            MainRoleEnum mainRoleEnum = MainRoleEnum.Developer;
+            MainRoleEnum mainRoleEnum = MainRoleEnum.DEVELOPER;
             String mainRole = mainRoleEnum.value;
             String subRole = ROLE_MAPPING.get(mainRoleEnum)[0].value;
 
-            String banding = BandingEnum.BandTwo.value;
+            String banding = BandingEnum.BAND_TWO.value;
             String costPerHour = "10.5";
 
             rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
@@ -144,7 +144,7 @@ public class FT0007 {
 
         @Test
         public void testCreateResourceToWithEmptyButUnwantedSubRoleInUpdateResourceTO() {
-            rawResourceTO.setMainRole(MainRoleEnum.UXDesigner.value);
+            rawResourceTO.setMainRole(MainRoleEnum.UX_DESIGNER.value);
             rawResourceTO.setSubRole("");
 
             InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);

@@ -46,7 +46,7 @@ public class FT0008 {
 
     @Test
     public void testUpdateDetailsWithSubRole() {
-        resourceTO.setSubRole(SubRoleEnum.BackendDeveloper);
+        resourceTO.setSubRole(SubRoleEnum.BACKEND_DEVELOPER);
 
         resourceService.updateResourceDetails(resourceEntity, resourceTO);
 

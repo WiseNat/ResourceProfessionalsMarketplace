@@ -9,7 +9,7 @@ import lombok.SneakyThrows;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeLabel;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
 // TODO: This..
 
@@ -49,7 +49,7 @@ public class ReturnResourceListBox extends ListBox {
 
         if (dueDate.before(new Date(System.currentTimeMillis()))) {
             rightSubText += "Overdue since " + dueDateString;
-            componentUtil.safeAddStyleClass(this.getRightSubtext(), NegativeLabel.value);
+            componentUtil.safeAddStyleClass(this.getRightSubtext(), NEGATIVE_LABEL.value);
         } else {
             rightSubText += "Available " + dueDateString;
         }

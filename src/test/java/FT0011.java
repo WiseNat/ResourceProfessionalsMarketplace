@@ -65,9 +65,9 @@ public class FT0011 {
         returnSearchTO.setFirstName("");
         returnSearchTO.setLastName("");
         returnSearchTO.setClient("");
-        returnSearchTO.setSubRole(SubRoleEnum.FrontendDeveloper);
-        returnSearchTO.setMainRole(MainRoleEnum.Developer);
-        returnSearchTO.setBanding(BandingEnum.BandOne);
+        returnSearchTO.setSubRole(SubRoleEnum.FRONTEND_DEVELOPER);
+        returnSearchTO.setMainRole(MainRoleEnum.DEVELOPER);
+        returnSearchTO.setBanding(BandingEnum.BAND_ONE);
 
         List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
@@ -82,9 +82,9 @@ public class FT0011 {
         returnSearchTO.setFirstName("");
         returnSearchTO.setLastName("");
         returnSearchTO.setClient("");
-        returnSearchTO.setSubRole(SubRoleEnum.FrontendDeveloper);
-        returnSearchTO.setMainRole(MainRoleEnum.Developer);
-        returnSearchTO.setBanding(BandingEnum.BandOne);
+        returnSearchTO.setSubRole(SubRoleEnum.FRONTEND_DEVELOPER);
+        returnSearchTO.setMainRole(MainRoleEnum.DEVELOPER);
+        returnSearchTO.setBanding(BandingEnum.BAND_ONE);
 
         List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 

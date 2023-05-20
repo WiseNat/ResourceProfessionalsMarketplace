@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 import javax.validation.Validator;
 import java.util.HashMap;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
 @Component
 @FxmlView("CreateAnAccount.fxml")
@@ -63,7 +63,7 @@ public class CreateAnAccountController {
     @FXML
     public void initialize() {
         ObservableList<String> values = FXCollections.observableArrayList(
-                AccountTypeEnum.ProjectManager.value, AccountTypeEnum.Resource.value
+                AccountTypeEnum.PROJECT_MANAGER.value, AccountTypeEnum.RESOURCE.value
         );
 
         accountTypeField.setItems(values);
@@ -105,6 +105,6 @@ public class CreateAnAccountController {
             put("accountType", accountTypeField);
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(fields, fieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, fieldToControl, NEGATIVE_CONTROL.value);
     }
 }

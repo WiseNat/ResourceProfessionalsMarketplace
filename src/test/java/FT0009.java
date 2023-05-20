@@ -63,9 +63,9 @@ public class FT0009 {
     @Test
     public void testGetLoanableResourcesWithOneResource() {
 
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -95,8 +95,8 @@ public class FT0009 {
     @Test
     public void testGetLoanableResourcesWithOneResourceWithNullSubRole() {
 
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.UXDesigner;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.UX_DESIGNER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -125,9 +125,9 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithAggregableResources() {
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -156,10 +156,10 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithNonAggregableResources() {
-        BandingEnum firstBanding = BandingEnum.BandOne;
-        BandingEnum secondBanding = BandingEnum.BandFive;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum firstBanding = BandingEnum.BAND_ONE;
+        BandingEnum secondBanding = BandingEnum.BAND_FIVE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Arrays.asList(
@@ -202,10 +202,10 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithVaryingAggregableResources() {
-        BandingEnum firstBanding = BandingEnum.BandOne;
-        BandingEnum secondBanding = BandingEnum.BandFive;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum firstBanding = BandingEnum.BAND_ONE;
+        BandingEnum secondBanding = BandingEnum.BAND_FIVE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Arrays.asList(

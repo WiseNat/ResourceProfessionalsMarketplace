@@ -56,7 +56,7 @@ public class FT0006 {
 
     @Test
     public void testApprovingApprovalWithResourceAccountType() {
-        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.Resource.value);
+        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.RESOURCE.value);
 
         when(resourceUtil.calculateDailyLateFee(any())).thenReturn(new BigDecimal("15.0"));
         when(enumUtil.mainRoleToEntity(any())).thenReturn(new MainRoleEntity());
@@ -71,7 +71,7 @@ public class FT0006 {
 
     @Test
     public void testApprovingApprovalWithProjectManagerAccountType() {
-        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.ProjectManager.value);
+        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.PROJECT_MANAGER.value);
 
         adminService.approveApproval(approvalEntity);
 

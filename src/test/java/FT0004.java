@@ -65,7 +65,7 @@ public class FT0004 {
 
         List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
-        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.Resource);
+        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.RESOURCE);
         verify(approvalRepository, times(1)).findApprovalsByPredicatesAndAccountType(
                 any(), any(), any(), any()
         );
@@ -84,7 +84,7 @@ public class FT0004 {
 
         List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
-        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.ProjectManager);
+        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER);
         verify(approvalRepository, times(1)).findApprovalsByPredicatesAndAccountType(
                 any(), any(), any(), any()
         );

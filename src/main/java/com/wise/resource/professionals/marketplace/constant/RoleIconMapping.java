@@ -6,30 +6,30 @@ import java.util.HashMap;
 
 public class RoleIconMapping {
     public static final HashMap<MainRoleEnum, Image> MAIN_ROLE_ICON_MAPPING = new HashMap<MainRoleEnum, Image>() {{
-        put(MainRoleEnum.Developer, new Image(RoleIconEnum.Developer.value.toString()));
-        put(MainRoleEnum.DevOps, new Image(RoleIconEnum.DevOps.value.toString()));
-        put(MainRoleEnum.Architect, new Image(RoleIconEnum.Architect.value.toString()));
-        put(MainRoleEnum.UXDesigner, new Image(RoleIconEnum.UXDesigner.value.toString()));
-        put(MainRoleEnum.Tester, new Image(RoleIconEnum.Tester.value.toString()));
-        put(MainRoleEnum.BusinessAnalyst, new Image(RoleIconEnum.BusinessAnalyst.value.toString()));
-        put(MainRoleEnum.ScrumMaster, new Image(RoleIconEnum.ScrumMaster.value.toString()));
+        put(MainRoleEnum.DEVELOPER, new Image(RoleIconEnum.DEVELOPER.value.toString()));
+        put(MainRoleEnum.DEV_OPS, new Image(RoleIconEnum.DEV_OPS.value.toString()));
+        put(MainRoleEnum.ARCHITECT, new Image(RoleIconEnum.ARCHITECT.value.toString()));
+        put(MainRoleEnum.UX_DESIGNER, new Image(RoleIconEnum.UX_DESIGNER.value.toString()));
+        put(MainRoleEnum.TESTER, new Image(RoleIconEnum.TESTER.value.toString()));
+        put(MainRoleEnum.BUSINESS_ANALYST, new Image(RoleIconEnum.BUSINESS_ANALYST.value.toString()));
+        put(MainRoleEnum.SCRUM_MASTER, new Image(RoleIconEnum.SCRUM_MASTER.value.toString()));
     }};
 
     public static final HashMap<SubRoleEnum, Image> SUB_ROLE_ICON_MAPPING = new HashMap<SubRoleEnum, Image>() {{
-        put(SubRoleEnum.WebDeveloper, new Image(RoleIconEnum.WebDeveloper.value.toString()));
-        put(SubRoleEnum.FrontendDeveloper, new Image(RoleIconEnum.FrontendDeveloper.value.toString()));
-        put(SubRoleEnum.BackendDeveloper, new Image(RoleIconEnum.BackendDeveloper.value.toString()));
-        put(SubRoleEnum.FullStackDeveloper, new Image(RoleIconEnum.FullStackDeveloper.value.toString()));
-        put(SubRoleEnum.MobileDeveloper, new Image(RoleIconEnum.MobileDeveloper.value.toString()));
-        put(SubRoleEnum.SoftwareDeveloper, new Image(RoleIconEnum.SoftwareDeveloper.value.toString()));
-        put(SubRoleEnum.GameDeveloper, new Image(RoleIconEnum.GameDeveloper.value.toString()));
-        put(SubRoleEnum.SystemArchitect, new Image(RoleIconEnum.SystemArchitect.value.toString()));
-        put(SubRoleEnum.SolutionArchitect, new Image(RoleIconEnum.SolutionArchitect.value.toString()));
-        put(SubRoleEnum.SecurityArchitect, new Image(RoleIconEnum.SecurityArchitect.value.toString()));
-        put(SubRoleEnum.DataArchitect, new Image(RoleIconEnum.DataArchitect.value.toString()));
-        put(SubRoleEnum.TestAnalyst, new Image(RoleIconEnum.TestAnalyst.value.toString()));
-        put(SubRoleEnum.AutomationTester, new Image(RoleIconEnum.AutomationTester.value.toString()));
-        put(SubRoleEnum.ManualTester, new Image(RoleIconEnum.ManualTester.value.toString()));
-        put(SubRoleEnum.PerformanceTester, new Image(RoleIconEnum.PerformanceTester.value.toString()));
+        put(SubRoleEnum.WEB_DEVELOPER, new Image(RoleIconEnum.WEB_DEVELOPER.value.toString()));
+        put(SubRoleEnum.FRONTEND_DEVELOPER, new Image(RoleIconEnum.FRONTEND_DEVELOPER.value.toString()));
+        put(SubRoleEnum.BACKEND_DEVELOPER, new Image(RoleIconEnum.BACKEND_DEVELOPER.value.toString()));
+        put(SubRoleEnum.FULL_STACK_DEVELOPER, new Image(RoleIconEnum.FULL_STACK_DEVELOPER.value.toString()));
+        put(SubRoleEnum.MOBILE_DEVELOPER, new Image(RoleIconEnum.MOBILE_DEVELOPER.value.toString()));
+        put(SubRoleEnum.SOFTWARE_DEVELOPER, new Image(RoleIconEnum.SOFTWARE_DEVELOPER.value.toString()));
+        put(SubRoleEnum.GAME_DEVELOPER, new Image(RoleIconEnum.GAME_DEVELOPER.value.toString()));
+        put(SubRoleEnum.SYSTEM_ARCHITECT, new Image(RoleIconEnum.SYSTEM_ARCHITECT.value.toString()));
+        put(SubRoleEnum.SOLUTION_ARCHITECT, new Image(RoleIconEnum.SOLUTION_ARCHITECT.value.toString()));
+        put(SubRoleEnum.SECURITY_ARCHITECT, new Image(RoleIconEnum.SECURITY_ARCHITECT.value.toString()));
+        put(SubRoleEnum.DATA_ARCHITECT, new Image(RoleIconEnum.DATA_ARCHITECT.value.toString()));
+        put(SubRoleEnum.TEST_ANALYST, new Image(RoleIconEnum.TEST_ANALYST.value.toString()));
+        put(SubRoleEnum.AUTOMATION_TESTER, new Image(RoleIconEnum.AUTOMATION_TESTER.value.toString()));
+        put(SubRoleEnum.MANUAL_TESTER, new Image(RoleIconEnum.MANUAL_TESTER.value.toString()));
+        put(SubRoleEnum.PERFORMANCE_TESTER, new Image(RoleIconEnum.PERFORMANCE_TESTER.value.toString()));
     }};
 }

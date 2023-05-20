@@ -16,19 +16,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Helper methods surrounding accounts
+ */
 @Component
 public class AccountUtil {
+
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
     private AccountRepository accountRepository;
+
     @Autowired
     private AccountTypeRepository accountTypeRepository;
+
     @Autowired
     private StageHandler stageHandler;
+
     @Autowired
     private ResourceController resourceController;
+
     @Autowired
     private AdminController adminController;
+
     @Autowired
     private ProjectManagerController projectManagerController;
 

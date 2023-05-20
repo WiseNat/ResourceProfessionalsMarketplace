@@ -2,8 +2,6 @@ package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
-import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import org.springframework.beans.factory.annotation.Autowired;

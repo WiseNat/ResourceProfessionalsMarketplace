@@ -87,7 +87,7 @@ public class ResourceService {
      * Updates a {@link ResourceEntity} with the details from a {@link ResourceTO}
      *
      * @param resourceEntity the {@link ResourceEntity} to be updated in the database
-     * @param resourceTo the details which should be used when updating the {@link ResourceEntity}
+     * @param resourceTo     the details which should be used when updating the {@link ResourceEntity}
      */
     public void updateResourceDetails(ResourceEntity resourceEntity, ResourceTO resourceTo) {
         SubRoleEntity subRoleEntity = null;

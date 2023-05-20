@@ -83,10 +83,9 @@ public class CreateAnAccountService {
     /**
      * Persists an account and creates approval to also be persisted.
      *
+     * @param createAccountTO the account to persist
      * @see CreateAnAccountService#persistAccount(CreateAccountTO)
      * @see CreateAnAccountService#persistApproval(ApprovalTO)
-     *
-     * @param createAccountTO the account to persist
      */
     public void persistAccountAndApproval(CreateAccountTO createAccountTO) {
         persistAccount(createAccountTO);

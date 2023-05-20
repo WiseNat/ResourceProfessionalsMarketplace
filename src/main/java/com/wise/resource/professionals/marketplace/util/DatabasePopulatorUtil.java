@@ -22,6 +22,9 @@ import java.util.*;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
+/**
+ * Helper methods surrounding populating the database on startup
+ */
 @Component
 @Slf4j
 public class DatabasePopulatorUtil {
@@ -59,7 +62,18 @@ public class DatabasePopulatorUtil {
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
 
+    @Value("#{new Boolean('${database-populator-util.create-fake-data}')}")
+    private Boolean createFakeData;
 
+    /**
+     * An event listener that executes once it receives a {@link ContextRefreshedEvent}. This shouldn't be manually
+     * called.
+     * <p>
+     * On application startup, this initialises the enum tables with their relevant data. It also populates the
+     * database with fake data if {@link DatabasePopulatorUtil#createFakeData} is {@code true}.
+     *
+     * @param event the {@link ContextRefreshedEvent}
+     */
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!(hbm2ddlAuto.equals("validate") || hbm2ddlAuto.equals("none") || hbm2ddlAuto.equals("update"))) {
@@ -68,14 +82,19 @@ public class DatabasePopulatorUtil {
             this.initialiseBandingTable();
             this.initialiseRoleTables();
 
-            log.info("Populating tables with fake data");
-            this.populateDevAccounts();
-            this.populateFakeUnapprovedAccounts(5);
-            this.populateFakeAvailableResources(100);
-            this.populateFakeLoanedResources(100);
+            if (createFakeData) {
+                log.info("Populating tables with fake data");
+                this.populateDevAccounts();
+                this.populateFakeUnapprovedAccounts(5);
+                this.populateFakeAvailableResources(100);
+                this.populateFakeLoanedResources(100);
+            }
         }
     }
 
+    /**
+     * Initialises the Account Type table ({@link AccountTypeRepository}) using data from {@link AccountTypeEnum}
+     */
     private void initialiseAccountTypeTable() {
         for (AccountTypeEnum accountType : AccountTypeEnum.values()) {
             AccountTypeEntity accountTypeEntity = new AccountTypeEntity();
@@ -85,6 +104,9 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Initialises the Banding table ({@link BandingRepository}) using data from {@link BandingEnum}
+     */
     private void initialiseBandingTable() {
         for (BandingEnum banding : BandingEnum.values()) {
             BandingEntity bandingEntity = new BandingEntity();
@@ -94,6 +116,10 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Initialises both of the role tables ({@link MainRoleRepository} and {@link SubRoleRepository}) using data from
+     * {@link com.wise.resource.professionals.marketplace.constant.RoleMapping#ROLE_MAPPING}
+     */
     private void initialiseRoleTables() {
         for (Map.Entry<MainRoleEnum, SubRoleEnum[]> entry : ROLE_MAPPING.entrySet()) {
             MainRoleEnum mainRole = entry.getKey();
@@ -114,6 +140,10 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with development accounts for each account type. These use {@code dev@account} for the
+     * email and {@code password} for the password.
+     */
     private void populateDevAccounts() {
         AccountEntity accountEntity;
 
@@ -167,6 +197,11 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with fake approvals and fake unapproved accounts.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeUnapprovedAccounts(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
@@ -199,6 +234,11 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with fake available resources.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeAvailableResources(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
@@ -255,8 +295,14 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with fake loaned resources. This uses
+     * {@link DatabasePopulatorUtil#populateFakeAvailableResources(int)} to create new fake resources and then selects
+     * the same amount of resources to become loaned.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeLoanedResources(int amount) {
-        Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
 
         this.populateFakeAvailableResources(amount);

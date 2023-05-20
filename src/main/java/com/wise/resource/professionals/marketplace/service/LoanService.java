@@ -55,7 +55,7 @@ public class LoanService {
      * of {@link ResourceCollectionTO} using the details from that {@code IResourceCollectionTO}.
      *
      * @param iResourceCollections a list of
-     * {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection}
+     *                             {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection}
      * @return a list of {@link ResourceCollectionTO}
      */
     public List<ResourceCollectionTO> iResourceCollectionToResourceCollectionTO(List<ResourceRepository.IResourceCollection> iResourceCollections) {

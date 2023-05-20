@@ -4,8 +4,12 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Helper methods surrounding resources
+ */
 @Component
 public class ResourceUtil {
+
     /**
      * Calculates the {@code Daily Late Fee} from the given {@code costPerHour} where
      * {@code dailyLateFee = (costPerHour * 8) * 5}

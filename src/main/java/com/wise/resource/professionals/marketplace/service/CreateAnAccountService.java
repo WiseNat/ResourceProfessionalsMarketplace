@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.util;
+package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
@@ -9,17 +9,21 @@ import com.wise.resource.professionals.marketplace.repository.ApprovalRepository
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
+import com.wise.resource.professionals.marketplace.util.AccountUtil;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ReflectionUtil;
+import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.Date;
 import java.util.Set;
 
-@Component
-public class CreateAnAccountUtil {
+@Service
+public class CreateAnAccountService {
 
     @Autowired
     private Validator validator;

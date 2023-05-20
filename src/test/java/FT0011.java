@@ -6,9 +6,9 @@ import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.ReturnService;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.ReturnUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -30,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class FT0011 {
 
     @InjectMocks
-    private ReturnUtil returnUtil;
+    private ReturnService returnService;
 
     @Mock
     private AccountRepository accountRepository;
@@ -53,7 +52,7 @@ public class FT0011 {
     public void testGetLoanedResourcesWithNoneFound() {
         when(accountRepository.findAllWithPredicates(any(), any(), any(), any(), any(), any())).thenReturn(new ArrayList<>());
 
-        List<AccountEntity> foundReturnables = returnUtil.getReturnables(returnSearchTO);
+        List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
         assertTrue(foundReturnables.isEmpty());
     }
@@ -70,7 +69,7 @@ public class FT0011 {
         returnSearchTO.setMainRole(MainRoleEnum.Developer);
         returnSearchTO.setBanding(BandingEnum.BandOne);
 
-        List<AccountEntity> foundReturnables = returnUtil.getReturnables(returnSearchTO);
+        List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
         assertTrue(foundReturnables.isEmpty());
     }
@@ -87,7 +86,7 @@ public class FT0011 {
         returnSearchTO.setMainRole(MainRoleEnum.Developer);
         returnSearchTO.setBanding(BandingEnum.BandOne);
 
-        List<AccountEntity> foundReturnables = returnUtil.getReturnables(returnSearchTO);
+        List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
         assertFalse(foundReturnables.isEmpty());
     }

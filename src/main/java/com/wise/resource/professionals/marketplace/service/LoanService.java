@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.util;
+package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -8,15 +8,17 @@ import com.wise.resource.professionals.marketplace.repository.ResourceRepository
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-public class LoanUtil {
+@Service
+public class LoanService {
 
     @Autowired
     private ResourceRepository resourceRepository;

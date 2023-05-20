@@ -4,11 +4,11 @@ import com.wise.resource.professionals.marketplace.component.*;
 import com.wise.resource.professionals.marketplace.modules.LoanSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.ReturnSearch;
+import com.wise.resource.professionals.marketplace.service.ProjectManagerService;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.RawLoanTO;
-import com.wise.resource.professionals.marketplace.util.ProjectManagerUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -28,14 +28,12 @@ import java.util.Objects;
 @FxmlView("ProjectManagerView.fxml")
 public class ProjectManagerController implements MainView {
 
-    @Autowired
-    private ProjectManagerUtil projectManagerUtil;
-
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<LoanSearch, VBox> loanSearch;
     private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
-
     private final ListView listView;
+    @Autowired
+    private ProjectManagerService projectManagerService;
     private NavbarButton loanNavbarButton;
     private NavbarButton returnNavbarButton;
 
@@ -191,14 +189,14 @@ public class ProjectManagerController implements MainView {
 
         RawLoanTO rawLoanTO = new RawLoanTO(loanModal.getResourceCollectionTO(), clientName, amount, availabilityDate);
 
-        InvalidFieldsAndDataTO<LoanTO> convertedTO = projectManagerUtil.createLoanTo(rawLoanTO);
+        InvalidFieldsAndDataTO<LoanTO> convertedTO = projectManagerService.createLoanTo(rawLoanTO);
 
         if (convertedTO.getInvalidFields().length > 0) {
             loanModal.markTextFields(convertedTO.getInvalidFields());
             return;
         }
 
-        projectManagerUtil.loanResource(convertedTO.getData());
+        projectManagerService.loanResource(convertedTO.getData());
 
         populatePredicateLoanables();
 
@@ -206,7 +204,7 @@ public class ProjectManagerController implements MainView {
     }
 
     private void returnButtonClicked(ReturnModal returnModal) {
-        projectManagerUtil.returnResource(returnModal.getAccountEntity().getResource());
+        projectManagerService.returnResource(returnModal.getAccountEntity().getResource());
 
         populatePredicateReturnables();
 

@@ -1,6 +1,7 @@
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
+import com.wise.resource.professionals.marketplace.service.ResourceService;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
@@ -29,6 +30,9 @@ import static org.junit.jupiter.api.Assertions.*;
 public class FT0007 {
 
     @InjectMocks
+    private ResourceService resourceService;
+
+    @Spy
     private ResourceUtil resourceUtil;
 
     @Spy
@@ -82,7 +86,7 @@ public class FT0007 {
 
         @Test
         public void testCreateResourceToWithValidUpdateResourceTO() {
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
 
@@ -103,7 +107,7 @@ public class FT0007 {
             rawResourceTO.setBanding("");
             rawResourceTO.setCostPerHour("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -116,7 +120,7 @@ public class FT0007 {
         public void testCreateResourceToWithEmptyMainRoleInUpdateResourceTO() {
             rawResourceTO.setMainRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -129,7 +133,7 @@ public class FT0007 {
         public void testCreateResourceToWithEmptyButRequiredSubRoleInUpdateResourceTO() {
             rawResourceTO.setSubRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
             String[] invalidFields = invalidFieldsAndDataTO.getInvalidFields();
@@ -143,7 +147,7 @@ public class FT0007 {
             rawResourceTO.setMainRole(MainRoleEnum.UXDesigner.value);
             rawResourceTO.setSubRole("");
 
-            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceUtil.createResourceTo(rawResourceTO);
+            InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
 

@@ -1,7 +1,7 @@
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
-import com.wise.resource.professionals.marketplace.util.AdminUtil;
+import com.wise.resource.professionals.marketplace.service.AdminService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import static org.mockito.Mockito.verify;
 public class FT0005 {
 
     @InjectMocks
-    private AdminUtil adminUtil;
+    private AdminService adminService;
 
     @Mock
     private ApprovalRepository approvalRepository;
@@ -33,7 +33,7 @@ public class FT0005 {
 
     @Test
     public void testDenyingApproval() {
-        adminUtil.denyApproval(approvalEntity);
+        adminService.denyApproval(approvalEntity);
 
         verify(approvalRepository, times(1)).delete(approvalEntity);
         verify(accountRepository, times(1)).delete(approvalEntity.getAccount());

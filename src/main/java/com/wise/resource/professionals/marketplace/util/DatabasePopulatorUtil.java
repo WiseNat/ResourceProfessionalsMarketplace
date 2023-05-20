@@ -7,6 +7,7 @@ import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.*;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class DatabasePopulatorUtil {
     private AccountUtil accountUtil;
 
     @Autowired
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Autowired
     private ResourceUtil resourceUtil;
@@ -193,8 +194,8 @@ public class DatabasePopulatorUtil {
             approvalTO.setAccount(createAccountTO);
             approvalTO.setDate(faker.date().birthday());
 
-            createAnAccountUtil.persistAccount(createAccountTO);
-            createAnAccountUtil.persistApproval(approvalTO);
+            createAnAccountService.persistAccount(createAccountTO);
+            createAnAccountService.persistApproval(approvalTO);
         }
     }
 

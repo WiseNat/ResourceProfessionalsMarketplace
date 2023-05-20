@@ -3,8 +3,8 @@ package com.wise.resource.professionals.marketplace.controller;
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
@@ -37,7 +37,7 @@ public class CreateAnAccountController {
     private AccountRepository accountRepository;
 
     @Autowired
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Autowired
     private ValidatorUtil validatorUtil;
@@ -86,7 +86,7 @@ public class CreateAnAccountController {
         accountTO.setPassword(passwordField.getText());
         accountTO.setAccountType(AccountTypeEnum.valueToEnum(accountTypeField.getValue()));
 
-        String[] negativeFields = createAnAccountUtil.createAccount(accountTO);
+        String[] negativeFields = createAnAccountService.createAccount(accountTO);
 
         if (negativeFields.length > 0) {
             markTextFields(negativeFields);

@@ -7,9 +7,9 @@ import com.wise.resource.professionals.marketplace.component.NavbarButton;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.modules.ApprovalsSearch;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
+import com.wise.resource.professionals.marketplace.service.AdminService;
 import com.wise.resource.professionals.marketplace.to.ApprovalSearchTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
-import com.wise.resource.professionals.marketplace.util.AdminUtil;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -29,12 +29,11 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
-    @Autowired
-    private AdminUtil adminUtil;
-
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final ListView listView;
     private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
+    @Autowired
+    private AdminService adminService;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -90,7 +89,7 @@ public class AdminController implements MainView {
         ApprovalSearchTO approvalSearchTO = new ApprovalSearchTO(
                 isResourceAllowed, isProjectManagerAllowed, firstName, lastName, email);
 
-        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+        List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
         populateApprovals(foundApprovals);
     }
@@ -119,7 +118,7 @@ public class AdminController implements MainView {
     }
 
     private void approveButtonClicked(ApprovalModal approvalModal) {
-        adminUtil.approveApproval(approvalModal.getApproval());
+        adminService.approveApproval(approvalModal.getApproval());
 
         populatePredicateApprovals();
 
@@ -127,7 +126,7 @@ public class AdminController implements MainView {
     }
 
     private void denyButtonClicked(ApprovalModal approvalModal) {
-        adminUtil.denyApproval(approvalModal.getApproval());
+        adminService.denyApproval(approvalModal.getApproval());
 
         populatePredicateApprovals();
 

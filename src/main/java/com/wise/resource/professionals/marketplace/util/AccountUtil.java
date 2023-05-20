@@ -18,7 +18,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class AccountUtil {
-
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
     @Autowired
     private AccountRepository accountRepository;
@@ -26,16 +25,12 @@ public class AccountUtil {
     private AccountTypeRepository accountTypeRepository;
     @Autowired
     private StageHandler stageHandler;
-
     @Autowired
     private ResourceController resourceController;
-
     @Autowired
     private AdminController adminController;
-
     @Autowired
     private ProjectManagerController projectManagerController;
-
 
     /**
      * Authenticates the user given their details

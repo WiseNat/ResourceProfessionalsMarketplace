@@ -5,12 +5,12 @@ import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.service.LoanService;
+import com.wise.resource.professionals.marketplace.service.ResourceService;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.LoanUtil;
-import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import lombok.Data;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 public class FT0009 {
 
     @InjectMocks
-    private LoanUtil loanUtil;
+    private LoanService loanService;
 
     @Mock
     private ResourceRepository resourceRepository;
@@ -42,7 +42,7 @@ public class FT0009 {
     private EnumUtil enumUtil;
 
     @Spy
-    private ResourceUtil resourceUtil;
+    private ResourceService resourceService;
 
     private LoanSearchTO loanSearchTO;
 
@@ -55,7 +55,7 @@ public class FT0009 {
     public void testGetLoanableResourcesWithNoneFound() {
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(new ArrayList<>());
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertTrue(foundLoanableResources.isEmpty());
     }
@@ -74,7 +74,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -105,7 +105,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -136,7 +136,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -169,7 +169,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -215,7 +215,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 

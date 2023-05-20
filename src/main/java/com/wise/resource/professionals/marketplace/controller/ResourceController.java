@@ -7,13 +7,13 @@ import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.modules.MainSkeleton;
 import com.wise.resource.professionals.marketplace.modules.UpdateDetails;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.ResourceService;
 import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LogInAccountTO;
 import com.wise.resource.professionals.marketplace.to.RawResourceTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -39,23 +39,18 @@ import static com.wise.resource.professionals.marketplace.constant.StyleEnum.Neg
 @FxmlView("ResourceView.fxml")
 public class ResourceController implements MainView {
 
-    @Autowired
-    private AccountRepository accountRepository;
-
-    @Autowired
-    private ValidatorUtil validatorUtil;
-
-    @Autowired
-    private EnumUtil enumUtil;
-
-    @Autowired
-    private ResourceUtil resourceUtil;
-
-    @Autowired
-    private ComponentUtil componentUtil;
-
     private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
     private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
+    @Autowired
+    private AccountRepository accountRepository;
+    @Autowired
+    private ValidatorUtil validatorUtil;
+    @Autowired
+    private EnumUtil enumUtil;
+    @Autowired
+    private ResourceService resourceService;
+    @Autowired
+    private ComponentUtil componentUtil;
     private AccountEntity accountEntity;
     private ResourceEntity resourceEntity;
 
@@ -124,14 +119,14 @@ public class ResourceController implements MainView {
 
         RawResourceTO rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
 
-        InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceUtil.createResourceTo(rawResourceTO);
+        InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceService.createResourceTo(rawResourceTO);
 
         if (convertedTO.getInvalidFields().length > 0) {
             markTextFields(convertedTO.getInvalidFields());
             return;
         }
 
-        resourceUtil.updateResourceDetails(resourceEntity, convertedTO.getData());
+        resourceService.updateResourceDetails(resourceEntity, convertedTO.getData());
     }
 
     private void markTextFields(String[] fields) {

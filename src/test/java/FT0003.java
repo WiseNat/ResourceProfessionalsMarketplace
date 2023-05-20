@@ -2,8 +2,8 @@ import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ReflectionUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -25,7 +25,7 @@ public class FT0003 {
 
     @Spy
     @InjectMocks
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Mock
     private Validator validator;
@@ -60,19 +60,19 @@ public class FT0003 {
         when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(new AccountEntity());
         when(reflectionUtil.getFields(any())).thenReturn(new String[]{});
 
-        createAnAccountUtil.createAccount(createAccountTO);
+        createAnAccountService.createAccount(createAccountTO);
 
-        verify(createAnAccountUtil, never()).persistAccountAndApproval(any());
+        verify(createAnAccountService, never()).persistAccountAndApproval(any());
     }
 
     @Test
     public void testContinueFlowIfAccountDoesNotExist() {
         when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
 
-        doNothing().when(createAnAccountUtil).persistAccountAndApproval(any());
+        doNothing().when(createAnAccountService).persistAccountAndApproval(any());
 
-        createAnAccountUtil.createAccount(createAccountTO);
+        createAnAccountService.createAccount(createAccountTO);
 
-        verify(createAnAccountUtil, times(1)).persistAccountAndApproval(any());
+        verify(createAnAccountService, times(1)).persistAccountAndApproval(any());
     }
 }

@@ -6,10 +6,10 @@ import com.wise.resource.professionals.marketplace.component.LoanResourceListBox
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
+import com.wise.resource.professionals.marketplace.service.LoanService;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
-import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,7 +53,7 @@ public class LoanSearch {
     private Button resetButton;
 
     @Autowired
-    private LoanUtil loanUtil;
+    private LoanService loanService;
 
     @Autowired
     private ComponentUtil componentUtil;
@@ -129,7 +129,7 @@ public class LoanSearch {
         loanSearchTO.setSubRole(subRole);
         loanSearchTO.setCostPerHour(costPerHour);
 
-        List<ResourceCollectionTO> foundLoanables = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanables = loanService.getLoanables(loanSearchTO);
 
         populateLoanables(foundLoanables);
     }

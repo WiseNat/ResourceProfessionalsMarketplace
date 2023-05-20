@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.util;
+package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
@@ -12,16 +12,18 @@ import com.wise.resource.professionals.marketplace.repository.ApprovalRepository
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
 import com.wise.resource.professionals.marketplace.to.ApprovalSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
-public class AdminUtil {
+@Service
+public class AdminService {
 
     @Autowired
     private ApprovalRepository approvalRepository;

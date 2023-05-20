@@ -7,9 +7,9 @@ import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
+import com.wise.resource.professionals.marketplace.service.ReturnService;
 import com.wise.resource.professionals.marketplace.to.ReturnSearchTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
-import com.wise.resource.professionals.marketplace.util.ReturnUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,7 +56,7 @@ public class ReturnSearch {
     private Button resetButton;
 
     @Autowired
-    private ReturnUtil returnUtil;
+    private ReturnService returnService;
 
     @Autowired
     private ComponentUtil componentUtil;
@@ -125,7 +125,7 @@ public class ReturnSearch {
         returnSearchTO.setMainRole(mainRole);
         returnSearchTO.setBanding(banding);
 
-        List<AccountEntity> foundReturnables = returnUtil.getReturnables(returnSearchTO);
+        List<AccountEntity> foundReturnables = returnService.getReturnables(returnSearchTO);
 
         populateReturnables(foundReturnables);
     }

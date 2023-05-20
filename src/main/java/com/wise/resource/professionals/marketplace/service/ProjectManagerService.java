@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.util;
+package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
@@ -9,8 +9,10 @@ import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.RawLoanTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -21,8 +23,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-@Component
-public class ProjectManagerUtil {
+@Service
+public class ProjectManagerService {
 
     @Autowired
     private Validator validator;

@@ -18,6 +18,9 @@ import org.springframework.stereotype.Component;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
+/**
+ * Controller class for LogIn.fxml
+ */
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
@@ -54,10 +57,27 @@ public class LogInController {
     }
 
     @FXML
-    public void onLogInButtonClick() {
-        this.login();
+    public void onHyperLinkClick() {
+        stageHandler.swapScene(CreateAnAccountController.class);
     }
 
+    /**
+     * Method for when the login button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link LogInController#login()}
+     */
+    @FXML
+    public void onLogInButtonClick() {
+        login();
+    }
+
+    /**
+     * Attempts to log in a user with the current user inputs.
+     * <p>
+     * Populates a {@link LogInAccountTO} with the user inputs and authenticates this with
+     * {@link AccountUtil#authenticate(LogInAccountTO)}. If the user is successfully authenticated then the scene is
+     * swapped to the scene associated with their account type; otherwise the user input fields are marked.
+     */
     private void login() {
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -80,10 +100,5 @@ public class LogInController {
 
             System.out.println("Invalid email or password");
         }
-    }
-
-    @FXML
-    public void onHyperLinkClick() {
-        stageHandler.swapScene(CreateAnAccountController.class);
     }
 }

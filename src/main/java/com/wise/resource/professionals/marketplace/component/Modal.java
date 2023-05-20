@@ -123,6 +123,8 @@ public class Modal extends DialogPane {
 
     /**
      * Method for when the close button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link Modal#closeModal()}
      */
     public void closeButtonClicked(MouseEvent mouseEvent) {
         closeModal();

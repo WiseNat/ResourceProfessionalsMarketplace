@@ -25,15 +25,21 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Controller class for AdminView.fxml which extends {@link MainView}
+ */
 @Component
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
-    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-    private final ListView listView;
-    private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
     @Autowired
     private AdminService adminService;
+
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+
+    private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
+
+    private final ListView listView;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -73,10 +79,19 @@ public class AdminController implements MainView {
         populatePredicateApprovals();
     }
 
+    /**
+     * Method for when the search button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link AdminController#populatePredicateApprovals()}
+     */
     private void searchClicked(MouseEvent mouseEvent) {
         populatePredicateApprovals();
     }
 
+
+    /**
+     * Populates approvals using the approvals found using the search field predicates.
+     */
     private void populatePredicateApprovals() {
         ApprovalsSearch controller = approvalsSearch.getController();
 
@@ -94,6 +109,12 @@ public class AdminController implements MainView {
         populateApprovals(foundApprovals);
     }
 
+    /**
+     * Populates the {@link AdminController#listView} with multiple {@link ApprovalListBox} which are created from
+     * the given list of {@link ApprovalEntity}.
+     *
+     * @param pendingApprovals each {@link ApprovalEntity} in this list is used to create an individual {@link ApprovalListBox}
+     */
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
         listView.clearAllChildren();
 
@@ -107,6 +128,12 @@ public class AdminController implements MainView {
         }
     }
 
+    /**
+     * Method for when an {@link ApprovalListBox} is clicked. This creates an {@link ApprovalModal} and calls
+     * {@link ApprovalModal#showAndWait()}
+     *
+     * @param listBox the {@link ApprovalListBox} which was clicked
+     */
     private void approvalClicked(ApprovalListBox listBox) {
         Node[] nodes = new Node[]{mainSkeleton.getController().getScrollpane().getScene().getRoot()};
 
@@ -117,6 +144,12 @@ public class AdminController implements MainView {
         dialog.showAndWait();
     }
 
+    /**
+     * Method for when an {@link ApprovalModal#approveButton} is clicked. This calls
+     * {@link AdminService#approveApproval(ApprovalEntity)}, refreshes the list of approvals, and closes the modal.
+     *
+     * @param approvalModal the {@link ApprovalModal} which contains the approve button that was clicked
+     */
     private void approveButtonClicked(ApprovalModal approvalModal) {
         adminService.approveApproval(approvalModal.getApproval());
 
@@ -125,6 +158,12 @@ public class AdminController implements MainView {
         approvalModal.closeModal();
     }
 
+    /**
+     * Method for when an {@link ApprovalModal#denyButton} is clicked. This calls
+     * {@link AdminService#denyApproval(ApprovalEntity)}, refreshes the list of approvals, and closes the modal.
+     *
+     * @param approvalModal the {@link ApprovalModal} which contains the deny button that was clicked
+     */
     private void denyButtonClicked(ApprovalModal approvalModal) {
         adminService.denyApproval(approvalModal.getApproval());
 

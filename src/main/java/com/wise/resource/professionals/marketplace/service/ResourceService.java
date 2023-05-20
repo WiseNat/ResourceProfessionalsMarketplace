@@ -21,6 +21,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Service class for {@link com.wise.resource.professionals.marketplace.controller.ResourceController}
+ */
 @Service
 public class ResourceService {
 
@@ -39,6 +42,13 @@ public class ResourceService {
     @Autowired
     private ResourceRepository resourceRepository;
 
+    /**
+     * Creates a {@link ResourceTO} from a given {@link RawResourceTO} while also performing validation.
+     *
+     * @param rawResourceTO the {@link RawResourceTO} to transform and validate
+     * @return a {@link InvalidFieldsAndDataTO} containing the {@link ResourceTO} as {@link InvalidFieldsAndDataTO#data}
+     * and any violating fields as {@link InvalidFieldsAndDataTO#invalidFields}
+     */
     public InvalidFieldsAndDataTO<ResourceTO> createResourceTo(RawResourceTO rawResourceTO) {
         ResourceEntity resourceEntity = rawResourceTO.getResourceEntity();
 
@@ -73,6 +83,12 @@ public class ResourceService {
         return validatorUtil.populateInvalidFieldsAndDataTO(violations, resourceTo);
     }
 
+    /**
+     * Updates a {@link ResourceEntity} with the details from a {@link ResourceTO}
+     *
+     * @param resourceEntity the {@link ResourceEntity} to be updated in the database
+     * @param resourceTo the details which should be used when updating the {@link ResourceEntity}
+     */
     public void updateResourceDetails(ResourceEntity resourceEntity, ResourceTO resourceTo) {
         SubRoleEntity subRoleEntity = null;
         if (resourceTo.getSubRole() != null) {

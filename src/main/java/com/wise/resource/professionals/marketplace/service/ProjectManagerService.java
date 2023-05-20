@@ -5,10 +5,7 @@ import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.to.InvalidFieldsAndDataTO;
-import com.wise.resource.professionals.marketplace.to.LoanTO;
-import com.wise.resource.professionals.marketplace.to.RawLoanTO;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
+import com.wise.resource.professionals.marketplace.to.*;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Service class for {@link com.wise.resource.professionals.marketplace.controller.ProjectManagerController}
+ */
 @Service
 public class ProjectManagerService {
 
@@ -38,6 +38,13 @@ public class ProjectManagerService {
     @Autowired
     private ResourceRepository resourceRepository;
 
+    /**
+     * Creates a {@link LoanTO} from a given {@link RawLoanTO} while also performing validation.
+     *
+     * @param rawLoanTO the {@link RawLoanTO} to transform and validate
+     * @return a {@link InvalidFieldsAndDataTO} containing the {@link RawLoanTO} as {@link InvalidFieldsAndDataTO#data}
+     * and any violating fields as {@link InvalidFieldsAndDataTO#invalidFields}
+     */
     public InvalidFieldsAndDataTO<LoanTO> createLoanTo(RawLoanTO rawLoanTO) {
         ResourceCollectionTO resourceCollectionTO = rawLoanTO.getResourceCollectionTO();
         int amount = rawLoanTO.getAmount();
@@ -55,6 +62,12 @@ public class ProjectManagerService {
         return validatorUtil.populateInvalidFieldsAndDataTO(violations, loanTO);
     }
 
+    /**
+     * Finds all resources that match the details of {@link LoanTO#resourceCollectionTO} and loans out
+     * {@link LoanTO#amount} of them to the {@link LoanTO#clientName} until {@link LoanTO#availabilityDate}.
+     *
+     * @param loanTO details of the resources and when/who to loan them to
+     */
     public void loanResource(LoanTO loanTO) {
         BandingEntity banding = enumUtil.bandingToEntity(loanTO.getResourceCollectionTO().getResource().getBanding());
         MainRoleEntity mainRole = enumUtil.mainRoleToEntity(loanTO.getResourceCollectionTO().getResource().getMainRole());
@@ -84,6 +97,12 @@ public class ProjectManagerService {
         }
     }
 
+    /**
+     * Returns a loaned resource. Sets their {@link ResourceEntity#loanedClient} and
+     * {@link ResourceEntity#availabilityDate} to null.
+     *
+     * @param resourceEntity the loaned resource entity to be returned.
+     */
     public void returnResource(ResourceEntity resourceEntity) {
         resourceEntity.setLoanedClient(null);
         resourceEntity.setAvailabilityDate(null);

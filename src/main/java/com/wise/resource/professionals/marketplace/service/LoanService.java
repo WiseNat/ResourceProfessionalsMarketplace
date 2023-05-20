@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class for {@link com.wise.resource.professionals.marketplace.module.LoanSearch}
+ */
 @Service
 public class LoanService {
 
@@ -29,7 +32,12 @@ public class LoanService {
     @Autowired
     private ResourceUtil resourceUtil;
 
-
+    /**
+     * Gets a list of loanable resources that match the given search predicates in {@link LoanSearchTO}.
+     *
+     * @param loanSearchTO the search predicates used when searching for loanable resources.
+     * @return a list of {@link ResourceCollectionTO} which match the given search predicates.
+     */
     public List<ResourceCollectionTO> getLoanables(LoanSearchTO loanSearchTO) {
         List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
                 enumUtil.bandingToEntity(loanSearchTO.getBanding()),
@@ -41,6 +49,15 @@ public class LoanService {
         return iResourceCollectionToResourceCollectionTO(foundLoanables);
     }
 
+    /**
+     * Converts a list of
+     * {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection} to a list
+     * of {@link ResourceCollectionTO} using the details from that {@code IResourceCollectionTO}.
+     *
+     * @param iResourceCollections a list of
+     * {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection}
+     * @return a list of {@link ResourceCollectionTO}
+     */
     public List<ResourceCollectionTO> iResourceCollectionToResourceCollectionTO(List<ResourceRepository.IResourceCollection> iResourceCollections) {
 
         ArrayList<ResourceCollectionTO> resourceCollections = new ArrayList<>();

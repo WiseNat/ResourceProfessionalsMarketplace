@@ -22,6 +22,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Service class for {@link com.wise.resource.professionals.marketplace.controller.AdminController}
+ */
 @Service
 public class AdminService {
 
@@ -40,6 +43,12 @@ public class AdminService {
     @Autowired
     private ResourceUtil resourceUtil;
 
+    /**
+     * Gets a list of approvals that match the search predicates in {@link ApprovalSearchTO}.
+     *
+     * @param approvalSearchTO the search predicates used when searching for approvals
+     * @return a list of {@link ApprovalEntity} which match the given search predicates
+     */
     public List<ApprovalEntity> getApprovals(ApprovalSearchTO approvalSearchTO) {
         List<ApprovalEntity> foundApprovals;
 
@@ -61,6 +70,12 @@ public class AdminService {
         return foundApprovals;
     }
 
+    /**
+     * Denies a given {@link ApprovalEntity}; deletes the approval request and deletes the associated
+     * {@link AccountEntity}
+     *
+     * @param approvalEntity the {@link ApprovalEntity} to be denied.
+     */
     public void denyApproval(ApprovalEntity approvalEntity) {
         AccountEntity accountEntity = approvalEntity.getAccount();
 
@@ -68,6 +83,13 @@ public class AdminService {
         accountRepository.delete(accountEntity);
     }
 
+    /**
+     * Approves a given {@link ApprovalEntity}; deletes the approval request and sets the associated
+     * {@link AccountEntity} to approved. If the {@link AccountEntity#accountType} is {@link AccountTypeEnum#RESOURCE} then a
+     * default {@link ResourceEntity} will be created for that account as well.
+     *
+     * @param approvalEntity the {@link ApprovalEntity} to be approved.
+     */
     public void approveApproval(ApprovalEntity approvalEntity) {
         AccountEntity accountEntity = approvalEntity.getAccount();
         accountEntity.setIsApproved(true);

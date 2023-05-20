@@ -62,8 +62,17 @@ public class DatabasePopulatorUtil {
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
 
-    @Value("#{new Boolean('${database-populator-util.create-fake-data}')}")
+    @Value("#{new Boolean('${database-populator.create-fake-data}')}")
     private Boolean createFakeData;
+
+    @Value("#{new Integer('${database-populator.fake-unapproved-accounts-quantity}')}")
+    private Integer fakeUnapprovedAccountsQuantity;
+
+    @Value("#{new Integer('${database-populator.fake-available-resources-quantity}')}")
+    private Integer fakeAvailableResourcesQuantity;
+
+    @Value("#{new Integer('${database-populator.fake-loaned-resources-quantity}')}")
+    private Integer fakeLoanedResourcesQuantity;
 
     /**
      * An event listener that executes once it receives a {@link ContextRefreshedEvent}. This shouldn't be manually
@@ -85,9 +94,9 @@ public class DatabasePopulatorUtil {
             if (createFakeData) {
                 log.info("Populating tables with fake data");
                 this.populateDevAccounts();
-                this.populateFakeUnapprovedAccounts(5);
-                this.populateFakeAvailableResources(100);
-                this.populateFakeLoanedResources(100);
+                this.populateFakeUnapprovedAccounts(fakeUnapprovedAccountsQuantity);
+                this.populateFakeAvailableResources(fakeAvailableResourcesQuantity);
+                this.populateFakeLoanedResources(fakeLoanedResourcesQuantity);
             }
         }
     }

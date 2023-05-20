@@ -27,10 +27,23 @@ import java.util.List;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
+/**
+ * Controller class for the LoanSearch.fxml module
+ */
 @Component
 @Getter
 @FxmlView("LoanSearch.fxml")
 public class LoanSearch {
+
+    @Autowired
+    private LoanService loanService;
+
+    @Autowired
+    private ComponentUtil componentUtil;
+
+    @Autowired
+    private ValidatorUtil validatorUtil;
+
     @FXML
     private Label title;
 
@@ -52,15 +65,6 @@ public class LoanSearch {
     @FXML
     private Button resetButton;
 
-    @Autowired
-    private LoanService loanService;
-
-    @Autowired
-    private ComponentUtil componentUtil;
-
-    @Autowired
-    private ValidatorUtil validatorUtil;
-
     private ListView listView;
 
     @FXML
@@ -77,14 +81,27 @@ public class LoanSearch {
         resetFields();
     }
 
+    /**
+     * Method for when the main role choicebox value is changed. Shouldn't be directly called.
+     * <p>
+     * Calls {@link LoanSearch#updateSubRoles()}
+     */
     private void mainRoleFieldChanged(ActionEvent actionEvent) {
         updateSubRoles();
     }
 
+    /**
+     * Method for when the reset button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link LoanSearch#resetFields()}
+     */
     private void resetButtonClicked(MouseEvent mouseEvent) {
         resetFields();
     }
 
+    /**
+     * Resets all the user input fields back to their default states.
+     */
     public void resetFields() {
         bandField.setTooltip(new Tooltip("Band"));
         mainRoleField.setTooltip(new Tooltip("Main Role"));
@@ -97,11 +114,18 @@ public class LoanSearch {
         costPerHourField.setText("");
     }
 
+    /**
+     * This updates the values in {@link LoanSearch#subRoleField} based on the value chosen in
+     * {@link LoanSearch#mainRoleField}.
+     */
     private void updateSubRoles() {
         String mainRoleString = mainRoleField.getValue();
         componentUtil.updateNullableSubRoles(subRoleField, mainRoleString);
     }
 
+    /**
+     * Populates loanable resources using the loanable resources found using the search field predicates.
+     */
     public void populatePredicateLoanables() {
         BandingEnum banding = BandingEnum.valueToEnum(bandField.getValue());
         MainRoleEnum mainRole = MainRoleEnum.valueToEnum(mainRoleField.getValue());
@@ -134,6 +158,13 @@ public class LoanSearch {
         populateLoanables(foundLoanables);
     }
 
+    /**
+     * Populates the {@link LoanSearch#listView} with multiple {@link LoanResourceListBox} which are created from the
+     * given list of {@link ResourceCollectionTO}.
+     *
+     * @param resourceCollections each {@link ResourceCollectionTO} in this list is used to create an individual
+     *                            {@link LoanResourceListBox}
+     */
     private void populateLoanables(List<ResourceCollectionTO> resourceCollections) {
         listView.clearAllChildren();
 

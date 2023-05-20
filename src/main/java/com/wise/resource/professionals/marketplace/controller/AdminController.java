@@ -32,14 +32,11 @@ import java.util.Objects;
 @FxmlView("AdminView.fxml")
 public class AdminController implements MainView {
 
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+    private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
+    private final ListView listView;
     @Autowired
     private AdminService adminService;
-
-    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-
-    private final FxControllerAndView<ApprovalsSearch, VBox> approvalsSearch;
-
-    private final ListView listView;
 
     public AdminController(
             FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton,
@@ -110,10 +107,11 @@ public class AdminController implements MainView {
     }
 
     /**
-     * Populates the {@link AdminController#listView} with multiple {@link ApprovalListBox} which are created from
-     * the given list of {@link ApprovalEntity}.
+     * Populates the {@link AdminController#listView} with multiple {@link ApprovalListBox} which are created from the
+     * given list of {@link ApprovalEntity}.
      *
-     * @param pendingApprovals each {@link ApprovalEntity} in this list is used to create an individual {@link ApprovalListBox}
+     * @param pendingApprovals each {@link ApprovalEntity} in this list is used to create an individual
+     *                         {@link ApprovalListBox}
      */
     private void populateApprovals(List<ApprovalEntity> pendingApprovals) {
         listView.clearAllChildren();

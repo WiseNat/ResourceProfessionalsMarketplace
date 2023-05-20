@@ -12,6 +12,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Roles validation annotation.
+ *
  * @see RolesValidator
  */
 @Target(TYPE)

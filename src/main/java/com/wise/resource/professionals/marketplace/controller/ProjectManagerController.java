@@ -31,17 +31,12 @@ import java.util.Objects;
 @FxmlView("ProjectManagerView.fxml")
 public class ProjectManagerController implements MainView {
 
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+    private final FxControllerAndView<LoanSearch, VBox> loanSearch;
+    private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
+    private final ListView listView;
     @Autowired
     private ProjectManagerService projectManagerService;
-
-    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-
-    private final FxControllerAndView<LoanSearch, VBox> loanSearch;
-
-    private final FxControllerAndView<ReturnSearch, VBox> returnSearch;
-
-    private final ListView listView;
-
     private NavbarButton loanNavbarButton;
 
     private NavbarButton returnNavbarButton;

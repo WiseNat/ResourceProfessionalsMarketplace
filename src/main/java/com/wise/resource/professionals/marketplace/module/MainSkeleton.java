@@ -19,6 +19,9 @@ import org.springframework.stereotype.Component;
 import java.net.URL;
 import java.util.Objects;
 
+/**
+ * Controller class for the MainSkeleton.fxml module
+ */
 @Component
 @Getter
 @FxmlView("MainSkeleton.fxml")
@@ -56,33 +59,69 @@ public class MainSkeleton extends BorderPane {
         logoutButton.setImageUrl(Objects.requireNonNull(getClass().getResource("../images/logout.png")));
     }
 
+    /**
+     * Sets the child of the {@link MainSkeleton#mainContent} as the given node, removing any existing nodes that
+     * previously existed under it
+     *
+     * @param content the node that will be set.
+     */
     public void setMainContent(Node content) {
         mainContent.getChildren().removeIf(n -> GridPane.getColumnIndex(n) == 0 && GridPane.getRowIndex(n) == 0);
         mainContent.add(content, 0, 0);
     }
 
+    /**
+     * Sets the child of the {@link MainSkeleton#rightContent} as the given node, removing any existing nodes that
+     * previously existed under it
+     *
+     * @param content the node that will be set.
+     */
     public void setRightContent(Node content) {
         rightContent.getChildren().removeIf(n -> GridPane.getColumnIndex(n) == 0 && GridPane.getRowIndex(n) == 0);
         rightContent.add(content, 0, 0);
     }
 
+    /**
+     * Sets the {@link MainSkeleton#title} text as the given text.
+     *
+     * @param text the text to be set to.
+     */
     public void setTitle(String text) {
         this.setTitle(text, "");
     }
 
+    /**
+     * Sets the {@link MainSkeleton#title} text as the given main text and the {@link MainSkeleton#subtext} text as the
+     * given sub text.
+     *
+     * @param mainText the main title text to be set.
+     * @param subText  the sub heading title text to be set.
+     */
     public void setTitle(String mainText, String subText) {
         title.setText(mainText);
         subtext.setText(subText);
     }
 
+    /**
+     * Removes the {@link MainSkeleton#subtext}.
+     */
     public void removeSubtitle() {
         componentUtil.removeNode(subtext);
     }
 
+    /**
+     * Removes the {@link MainSkeleton#rightContent}.
+     */
     public void removeRightContent() {
         componentUtil.removeNode(rightContent);
     }
 
+    /**
+     * Adds a {@link NavbarButton} using the {@code url} when setting the image.
+     *
+     * @param url a url to an image.
+     * @return the created {@link NavbarButton}
+     */
     public NavbarButton addNavbarButton(URL url) {
 
         NavbarButton navbarButtonComponent = new NavbarButton();
@@ -93,6 +132,9 @@ public class MainSkeleton extends BorderPane {
         return navbarButtonComponent;
     }
 
+    /**
+     * "Logs out" of the given scene. This just swaps to the {@link LogInController} view.
+     */
     public void logout() {
         stageHandler.swapScene(LogInController.class);
     }

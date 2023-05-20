@@ -12,6 +12,9 @@ import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller class for the UpdateDetails.fxml module
+ */
 @Component
 @Getter
 @FxmlView("UpdateDetails.fxml")

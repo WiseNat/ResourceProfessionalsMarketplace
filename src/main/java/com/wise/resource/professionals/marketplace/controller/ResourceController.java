@@ -42,25 +42,18 @@ import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEG
 @FxmlView("ResourceView.fxml")
 public class ResourceController implements MainView {
 
+    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
+    private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
     @Autowired
     private AccountRepository accountRepository;
-
     @Autowired
     private ValidatorUtil validatorUtil;
-
     @Autowired
     private EnumUtil enumUtil;
-
     @Autowired
     private ResourceService resourceService;
-
     @Autowired
     private ComponentUtil componentUtil;
-
-    private final FxControllerAndView<MainSkeleton, BorderPane> mainSkeleton;
-
-    private final FxControllerAndView<UpdateDetails, VBox> updateDetails;
-
     private AccountEntity accountEntity;
 
     private ResourceEntity resourceEntity;

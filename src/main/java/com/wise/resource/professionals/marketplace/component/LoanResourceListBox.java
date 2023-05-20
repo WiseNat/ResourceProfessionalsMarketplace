@@ -2,7 +2,6 @@ package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
-import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import lombok.Getter;
 import lombok.SneakyThrows;

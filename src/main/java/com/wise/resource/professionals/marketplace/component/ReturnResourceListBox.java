@@ -2,7 +2,6 @@ package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
-import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import lombok.Getter;
 import lombok.SneakyThrows;

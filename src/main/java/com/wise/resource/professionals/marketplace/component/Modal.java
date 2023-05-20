@@ -145,7 +145,7 @@ public class Modal extends DialogPane {
     /**
      * Helper method for creating a save dialog, creating the chosen file and saving the given string content to it.
      *
-     * @param window the owner window of the displayed file dialog. Used in {@link FileChooser#showSaveDialog(Window)}
+     * @param window  the owner window of the displayed file dialog. Used in {@link FileChooser#showSaveDialog(Window)}
      * @param content the file content that will be saved.
      */
     @SneakyThrows

@@ -23,10 +23,19 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+/**
+ * Controller class for the ReturnSearch.fxml module
+ */
 @Component
 @Getter
 @FxmlView("ReturnSearch.fxml")
 public class ReturnSearch {
+
+    @Autowired
+    private ReturnService returnService;
+
+    @Autowired
+    private ComponentUtil componentUtil;
 
     @FXML
     private Label title;
@@ -55,12 +64,6 @@ public class ReturnSearch {
     @FXML
     private Button resetButton;
 
-    @Autowired
-    private ReturnService returnService;
-
-    @Autowired
-    private ComponentUtil componentUtil;
-
     private ListView listView;
 
     @FXML
@@ -77,14 +80,27 @@ public class ReturnSearch {
         resetFields();
     }
 
+    /**
+     * Method for when the main role choicebox value is changed. Shouldn't be directly called.
+     * <p>
+     * Calls {@link ReturnSearch#updateSubRoles()}
+     */
     private void mainRoleFieldChanged(ActionEvent actionEvent) {
         updateSubRoles();
     }
 
+    /**
+     * Method for when the reset button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link ReturnSearch#resetFields()}
+     */
     private void resetButtonClicked(MouseEvent mouseEvent) {
         resetFields();
     }
 
+    /**
+     * Resets all the user input fields back to their default states.
+     */
     public void resetFields() {
         bandField.setTooltip(new Tooltip("Band"));
         mainRoleField.setTooltip(new Tooltip("Main Role"));
@@ -99,11 +115,18 @@ public class ReturnSearch {
         bandField.setValue(null);
     }
 
+    /**
+     * This updates the values in {@link ReturnSearch#subRoleField} based on the value chosen in
+     * {@link ReturnSearch#mainRoleField}.
+     */
     private void updateSubRoles() {
         String mainRoleString = mainRoleField.getValue();
         componentUtil.updateNullableSubRoles(subRoleField, mainRoleString);
     }
 
+    /**
+     * Populates returnable resources using the returnable resources found using the search field predicates.
+     */
     public void populatePredicateReturnables() {
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -130,6 +153,13 @@ public class ReturnSearch {
         populateReturnables(foundReturnables);
     }
 
+    /**
+     * Populates the {@link ReturnSearch#listView} with multiple {@link ReturnResourceListBox} which are created from
+     * the given list of {@link AccountEntity}.
+     *
+     * @param accountEntities each {@link AccountEntity} in this list is used to create an individual
+     *                        {@link ReturnResourceListBox}
+     */
     private void populateReturnables(List<AccountEntity> accountEntities) {
         listView.clearAllChildren();
 

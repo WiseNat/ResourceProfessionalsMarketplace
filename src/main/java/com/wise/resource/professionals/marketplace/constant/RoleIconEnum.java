@@ -7,6 +7,7 @@ import java.util.Set;
 
 /**
  * URLs to images associated with each main role and sub role.
+ *
  * @see MainRoleEnum
  * @see SubRoleEnum
  */

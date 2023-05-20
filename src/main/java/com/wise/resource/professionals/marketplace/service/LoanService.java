@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.util;
+package com.wise.resource.professionals.marketplace.service;
 
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -8,15 +8,20 @@ import com.wise.resource.professionals.marketplace.repository.ResourceRepository
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
+import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
-public class LoanUtil {
+/**
+ * Service class for {@link com.wise.resource.professionals.marketplace.module.LoanSearch}
+ */
+@Service
+public class LoanService {
 
     @Autowired
     private ResourceRepository resourceRepository;
@@ -27,7 +32,12 @@ public class LoanUtil {
     @Autowired
     private ResourceUtil resourceUtil;
 
-
+    /**
+     * Gets a list of loanable resources that match the given search predicates in {@link LoanSearchTO}.
+     *
+     * @param loanSearchTO the search predicates used when searching for loanable resources.
+     * @return a list of {@link ResourceCollectionTO} which match the given search predicates.
+     */
     public List<ResourceCollectionTO> getLoanables(LoanSearchTO loanSearchTO) {
         List<ResourceRepository.IResourceCollection> foundLoanables = resourceRepository.findAllByCollectionWithPredicates(
                 enumUtil.bandingToEntity(loanSearchTO.getBanding()),
@@ -39,6 +49,15 @@ public class LoanUtil {
         return iResourceCollectionToResourceCollectionTO(foundLoanables);
     }
 
+    /**
+     * Converts a list of
+     * {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection} to a list
+     * of {@link ResourceCollectionTO} using the details from that {@code IResourceCollectionTO}.
+     *
+     * @param iResourceCollections a list of
+     *                             {@link com.wise.resource.professionals.marketplace.repository.ResourceRepository.IResourceCollection}
+     * @return a list of {@link ResourceCollectionTO}
+     */
     public List<ResourceCollectionTO> iResourceCollectionToResourceCollectionTO(List<ResourceRepository.IResourceCollection> iResourceCollections) {
 
         ArrayList<ResourceCollectionTO> resourceCollections = new ArrayList<>();

@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import com.wise.resource.professionals.marketplace.constant.BandingEnum;
 import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
@@ -12,6 +12,9 @@ import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller class for the UpdateDetails.fxml module
+ */
 @Component
 @Getter
 @FxmlView("UpdateDetails.fxml")

@@ -5,11 +5,11 @@ import com.wise.resource.professionals.marketplace.entity.BandingEntity;
 import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.service.LoanService;
 import com.wise.resource.professionals.marketplace.to.LoanSearchTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.LoanUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import lombok.Data;
 import org.hamcrest.Matchers;
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 public class FT0009 {
 
     @InjectMocks
-    private LoanUtil loanUtil;
+    private LoanService loanService;
 
     @Mock
     private ResourceRepository resourceRepository;
@@ -55,7 +55,7 @@ public class FT0009 {
     public void testGetLoanableResourcesWithNoneFound() {
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(new ArrayList<>());
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertTrue(foundLoanableResources.isEmpty());
     }
@@ -63,9 +63,9 @@ public class FT0009 {
     @Test
     public void testGetLoanableResourcesWithOneResource() {
 
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -74,7 +74,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -95,8 +95,8 @@ public class FT0009 {
     @Test
     public void testGetLoanableResourcesWithOneResourceWithNullSubRole() {
 
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.UXDesigner;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.UX_DESIGNER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -105,7 +105,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -125,9 +125,9 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithAggregableResources() {
-        BandingEnum banding = BandingEnum.BandOne;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum banding = BandingEnum.BAND_ONE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Collections.singletonList(
@@ -136,7 +136,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -156,10 +156,10 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithNonAggregableResources() {
-        BandingEnum firstBanding = BandingEnum.BandOne;
-        BandingEnum secondBanding = BandingEnum.BandFive;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum firstBanding = BandingEnum.BAND_ONE;
+        BandingEnum secondBanding = BandingEnum.BAND_FIVE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Arrays.asList(
@@ -169,7 +169,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 
@@ -202,10 +202,10 @@ public class FT0009 {
 
     @Test
     public void testGetLoanableResourcesWithVaryingAggregableResources() {
-        BandingEnum firstBanding = BandingEnum.BandOne;
-        BandingEnum secondBanding = BandingEnum.BandFive;
-        MainRoleEnum mainRole = MainRoleEnum.Developer;
-        SubRoleEnum subRole = SubRoleEnum.FrontendDeveloper;
+        BandingEnum firstBanding = BandingEnum.BAND_ONE;
+        BandingEnum secondBanding = BandingEnum.BAND_FIVE;
+        MainRoleEnum mainRole = MainRoleEnum.DEVELOPER;
+        SubRoleEnum subRole = SubRoleEnum.FRONTEND_DEVELOPER;
         BigDecimal costPerHour = new BigDecimal("10.0");
 
         List<ResourceRepository.IResourceCollection> foundResults = Arrays.asList(
@@ -215,7 +215,7 @@ public class FT0009 {
 
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(foundResults);
 
-        List<ResourceCollectionTO> foundLoanableResources = loanUtil.getLoanables(loanSearchTO);
+        List<ResourceCollectionTO> foundLoanableResources = loanService.getLoanables(loanSearchTO);
 
         assertFalse(foundLoanableResources.isEmpty());
 

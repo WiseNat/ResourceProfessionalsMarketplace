@@ -17,8 +17,11 @@ import java.text.SimpleDateFormat;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeLabel;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
+/**
+ * An extension of {@link Modal} which provides automatic initialisation and helper methods specific to returns.
+ */
 @Getter
 public class ReturnModal extends Modal {
 
@@ -39,6 +42,13 @@ public class ReturnModal extends Modal {
     @FXML
     private Button saveToFileButton;
 
+    /**
+     * Creates the ReturnModal along with initialising the content using the given {@link AccountEntity}.
+     * <p>
+     * If the resource is overdue then specialised red text is initialised to show this.
+     *
+     * @param accountEntity used to initialise content within the modal.
+     */
     @SneakyThrows
     public ReturnModal(AccountEntity accountEntity) {
         super();
@@ -47,20 +57,16 @@ public class ReturnModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ReturnModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ReturnModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ReturnModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ReturnModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);
 
-        init();
-    }
-
-    private void init() {
         ComponentUtil componentUtil = new ComponentUtil();
 
         String name = accountEntity.getFirstName() + " " + accountEntity.getLastName();
@@ -89,7 +95,7 @@ public class ReturnModal extends Modal {
             bottomText.setText("Overdue since " + dueDateString + "\nLate fee for " + client + " is £"
                     + componentUtil.formatBigDecimal(lateFee));
 
-            componentUtil.safeAddStyleClass(bottomText, NegativeLabel.value);
+            componentUtil.safeAddStyleClass(bottomText, NEGATIVE_LABEL.value);
         } else {
             componentUtil.removeNode(middleText);
             bottomText.setText("Loaned to " + client + "\nAvailable " + dueDateString);
@@ -104,6 +110,9 @@ public class ReturnModal extends Modal {
         saveToFileButton.setOnMouseClicked(this::saveToFileButtonPressed);
     }
 
+    /**
+     * Saves the details of the associated {@link AccountEntity} to a file.
+     */
     private void saveToFileButtonPressed(MouseEvent mouseEvent) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 

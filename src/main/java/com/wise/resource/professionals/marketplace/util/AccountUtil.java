@@ -16,14 +16,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+/**
+ * Helper methods surrounding accounts
+ */
 @Component
 public class AccountUtil {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+
     @Autowired
     private AccountRepository accountRepository;
+
     @Autowired
     private AccountTypeRepository accountTypeRepository;
+
     @Autowired
     private StageHandler stageHandler;
 
@@ -35,7 +41,6 @@ public class AccountUtil {
 
     @Autowired
     private ProjectManagerController projectManagerController;
-
 
     /**
      * Authenticates the user given their details
@@ -72,11 +77,11 @@ public class AccountUtil {
     @SneakyThrows
     public MainView getAccountViewController(AccountTypeEnum accountType) {
         switch (accountType) {
-            case Admin:
+            case ADMIN:
                 return adminController;
-            case ProjectManager:
+            case PROJECT_MANAGER:
                 return projectManagerController;
-            case Resource:
+            case RESOURCE:
                 return resourceController;
             default:
                 throw new IllegalArgumentException("No view exists for this Account Type!");

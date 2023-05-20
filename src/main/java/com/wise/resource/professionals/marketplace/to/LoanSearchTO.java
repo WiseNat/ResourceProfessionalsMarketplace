@@ -10,6 +10,12 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
+/**
+ * A POJO for a Return Search
+ *
+ * @see com.wise.resource.professionals.marketplace.module.LoanSearch#populatePredicateLoanables()
+ * @see com.wise.resource.professionals.marketplace.service.LoanService#getLoanables(LoanSearchTO)
+ */
 @Data
 public class LoanSearchTO {
 

@@ -1,29 +1,26 @@
 package com.wise.resource.professionals.marketplace.constant;
 
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.Set;
 
 /**
- * Bandings which are directly mapped in {@link com.wise.resource.professionals.marketplace.entity.BandingEntity}.
+ * Application specific values which can't be placed inside of application.properties
  */
-public enum BandingEnum {
-    BAND_ONE("B1"),
-    BAND_TWO("B2"),
-    BAND_THREE("B3"),
-    BAND_FOUR("B4"),
-    BAND_FIVE("B5");
+public enum ApplicationEnum {
+    DEFAULT_STYLESHEET_PATH(Objects.requireNonNull(ApplicationEnum.class.getResource("../styles/application.css")).toExternalForm());
 
-    private static final LinkedHashMap<String, BandingEnum> cache = new LinkedHashMap<>();
+    private static final LinkedHashMap<String, ApplicationEnum> cache = new LinkedHashMap<>();
 
     static {
-        for (BandingEnum e : values()) {
+        for (ApplicationEnum e : values()) {
             cache.put(e.value, e);
         }
     }
 
     public final String value;
 
-    BandingEnum(String value) {
+    ApplicationEnum(String value) {
         this.value = value;
     }
 
@@ -33,7 +30,7 @@ public enum BandingEnum {
      * @param value the value to be found.
      * @return the enum value for the given value.
      */
-    public static BandingEnum valueToEnum(String value) {
+    public static ApplicationEnum valueToEnum(String value) {
         return cache.get(value);
     }
 

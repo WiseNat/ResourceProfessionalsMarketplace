@@ -10,6 +10,13 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
+/**
+ * A POJO that acts as a {@link com.wise.resource.professionals.marketplace.entity.ResourceEntity}. Used across various
+ * places.
+ *
+ * @see com.wise.resource.professionals.marketplace.service.AdminService#approveApproval
+ * @see com.wise.resource.professionals.marketplace.service.ResourceService#createResourceTo
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class ResourceTO extends RolesContainer {

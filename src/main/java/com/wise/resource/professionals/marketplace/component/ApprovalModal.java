@@ -11,6 +11,10 @@ import lombok.SneakyThrows;
 
 import java.text.SimpleDateFormat;
 
+/**
+ * An extension of {@link Modal} which provides automatic initialisation specific to approvals. It also stores the
+ * given {@link ApprovalEntity} for later use.
+ */
 @Getter
 public class ApprovalModal extends Modal {
 
@@ -29,6 +33,12 @@ public class ApprovalModal extends Modal {
     @FXML
     private Button denyButton;
 
+    /**
+     * Loads in the appropriate FXMLs needed for both the {@link Modal#setLeftContent(Node)} and
+     * {@link Modal#setRightContent(Node)} methods.
+     *
+     * @param approval the associated approval for this {@code ApprovalModal}
+     */
     @SneakyThrows
     public ApprovalModal(ApprovalEntity approval) {
         super();
@@ -37,20 +47,16 @@ public class ApprovalModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ApprovalModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ApprovalModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/ApprovalModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/ApprovalModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);
 
-        init();
-    }
-
-    private void init() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy @ HH:mm");
 
         String accountType = approval.getAccount().getAccountType().getName();

@@ -2,8 +2,8 @@ import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.entity.ApprovalEntity;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
+import com.wise.resource.professionals.marketplace.service.AdminService;
 import com.wise.resource.professionals.marketplace.to.ApprovalSearchTO;
-import com.wise.resource.professionals.marketplace.util.AdminUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 public class FT0004 {
 
     @InjectMocks
-    private AdminUtil adminUtil;
+    private AdminService adminService;
 
     @Spy
     private ApprovalRepository approvalRepository;
@@ -49,7 +49,7 @@ public class FT0004 {
 
     @Test
     public void testGetApprovalsWithNoPredicates() {
-        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+        List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
         assertTrue(foundApprovals.isEmpty());
     }
@@ -63,9 +63,9 @@ public class FT0004 {
         when(approvalRepository.findApprovalsByPredicatesAndAccountType(any(), any(), any(), any())).thenReturn(fakeApprovalEntities);
         when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
 
-        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+        List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
-        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.Resource);
+        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.RESOURCE);
         verify(approvalRepository, times(1)).findApprovalsByPredicatesAndAccountType(
                 any(), any(), any(), any()
         );
@@ -82,9 +82,9 @@ public class FT0004 {
         when(approvalRepository.findApprovalsByPredicatesAndAccountType(any(), any(), any(), any())).thenReturn(fakeApprovalEntities);
         when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
 
-        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+        List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
-        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.ProjectManager);
+        verify(enumUtil, times(1)).accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER);
         verify(approvalRepository, times(1)).findApprovalsByPredicatesAndAccountType(
                 any(), any(), any(), any()
         );
@@ -100,7 +100,7 @@ public class FT0004 {
         List<ApprovalEntity> fakeApprovalEntities = Arrays.asList(new ApprovalEntity(), new ApprovalEntity());
         when(approvalRepository.findAllApprovalsByPredicates(any(), any(), any())).thenReturn(fakeApprovalEntities);
 
-        List<ApprovalEntity> foundApprovals = adminUtil.getApprovals(approvalSearchTO);
+        List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
 
         verify(approvalRepository, times(1)).findAllApprovalsByPredicates(any(), any(), any());
 

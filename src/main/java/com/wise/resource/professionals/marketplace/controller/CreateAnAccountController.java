@@ -3,9 +3,8 @@ package com.wise.resource.professionals.marketplace.controller;
 import com.wise.resource.professionals.marketplace.application.StageHandler;
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
-import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,16 +12,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.TextField;
-import lombok.SneakyThrows;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.validation.Validator;
 import java.util.HashMap;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
+/**
+ * Controller class for CreateAnAccount.fxml
+ */
 @Component
 @FxmlView("CreateAnAccount.fxml")
 public class CreateAnAccountController {
@@ -31,19 +31,13 @@ public class CreateAnAccountController {
     private StageHandler stageHandler;
 
     @Autowired
-    private Validator validator;
-
-    @Autowired
     private AccountRepository accountRepository;
 
     @Autowired
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Autowired
     private ValidatorUtil validatorUtil;
-
-    @Autowired
-    private EnumUtil enumUtil;
 
     @FXML
     private TextField firstNameField;
@@ -62,23 +56,41 @@ public class CreateAnAccountController {
 
     @FXML
     public void initialize() {
-        ObservableList<String> values = FXCollections.observableArrayList(
-                AccountTypeEnum.ProjectManager.value, AccountTypeEnum.Resource.value
-        );
+        ObservableList<String> items = FXCollections.observableArrayList(AccountTypeEnum.getAllValues());
+        items.remove(AccountTypeEnum.ADMIN.value);
 
-        accountTypeField.setItems(values);
-        accountTypeField.setValue(values.get(0));
+        accountTypeField.setItems(items);
+        accountTypeField.setValue(items.get(0));
     }
 
+    /**
+     * Method for when the login hyperlink is clicked. Shouldn't be directly called.
+     * <p>
+     * This swaps the scene to the one associated with the {@link LogInController}
+     */
     @FXML
     public void onHyperLinkClick() {
         stageHandler.swapScene(LogInController.class);
     }
 
+    /**
+     * Method for when the search button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link CreateAnAccountController#createAccount()}
+     */
     @FXML
-    @SneakyThrows
     public void onCreateAccountButtonClick() {
+        createAccount();
+    }
 
+    /**
+     * Attempts to create a create an account request with the current user inputs.
+     * <p>
+     * Populates a {@link CreateAccountTO} with the user inputs and tries to create an account with using these details.
+     * If the given details are invalid, then the violating fields are then marked. Otherwise, an account approval
+     * request is created.
+     */
+    private void createAccount() {
         CreateAccountTO accountTO = new CreateAccountTO();
         accountTO.setFirstName(firstNameField.getText());
         accountTO.setLastName(lastNameField.getText());
@@ -86,17 +98,22 @@ public class CreateAnAccountController {
         accountTO.setPassword(passwordField.getText());
         accountTO.setAccountType(AccountTypeEnum.valueToEnum(accountTypeField.getValue()));
 
-        String[] negativeFields = createAnAccountUtil.createAccount(accountTO);
+        String[] negativeFields = createAnAccountService.createAccount(accountTO);
 
         if (negativeFields.length > 0) {
-            markTextFields(negativeFields);
+            markFields(negativeFields);
             return;
         }
 
         stageHandler.swapScene(LogInController.class);
     }
 
-    private void markTextFields(String[] fields) {
+    /**
+     * Styles the given fields as negative. This is useful for validation.
+     *
+     * @param fields the fields to be marked.
+     */
+    private void markFields(String[] fields) {
         HashMap<String, Control> fieldToControl = new HashMap<String, Control>() {{
             put("firstName", firstNameField);
             put("lastName", lastNameField);
@@ -105,6 +122,6 @@ public class CreateAnAccountController {
             put("accountType", accountTypeField);
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(fields, fieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, fieldToControl, NEGATIVE_CONTROL.value);
     }
 }

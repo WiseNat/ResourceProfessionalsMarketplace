@@ -3,7 +3,7 @@ import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.repository.ApprovalRepository;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
-import com.wise.resource.professionals.marketplace.util.AdminUtil;
+import com.wise.resource.professionals.marketplace.service.AdminService;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 public class FT0006 {
 
     @InjectMocks
-    private AdminUtil adminUtil;
+    private AdminService adminService;
 
     @Mock
     private ResourceRepository resourceRepository;
@@ -56,13 +56,13 @@ public class FT0006 {
 
     @Test
     public void testApprovingApprovalWithResourceAccountType() {
-        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.Resource.value);
+        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.RESOURCE.value);
 
         when(resourceUtil.calculateDailyLateFee(any())).thenReturn(new BigDecimal("15.0"));
         when(enumUtil.mainRoleToEntity(any())).thenReturn(new MainRoleEntity());
         when(enumUtil.bandingToEntity(any())).thenReturn(new BandingEntity());
 
-        adminUtil.approveApproval(approvalEntity);
+        adminService.approveApproval(approvalEntity);
 
         verify(resourceRepository, times(1)).save(any());
         verify(approvalRepository, times(1)).delete(any());
@@ -71,9 +71,9 @@ public class FT0006 {
 
     @Test
     public void testApprovingApprovalWithProjectManagerAccountType() {
-        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.ProjectManager.value);
+        approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.PROJECT_MANAGER.value);
 
-        adminUtil.approveApproval(approvalEntity);
+        adminService.approveApproval(approvalEntity);
 
         verify(resourceRepository, never()).save(any());
         verify(approvalRepository, times(1)).delete(any());

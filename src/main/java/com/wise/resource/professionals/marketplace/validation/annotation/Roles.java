@@ -10,6 +10,11 @@ import java.lang.annotation.Target;
 import static java.lang.annotation.ElementType.TYPE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
+/**
+ * Roles validation annotation.
+ *
+ * @see RolesValidator
+ */
 @Target(TYPE)
 @Retention(RUNTIME)
 @Constraint(validatedBy = RolesValidator.class)

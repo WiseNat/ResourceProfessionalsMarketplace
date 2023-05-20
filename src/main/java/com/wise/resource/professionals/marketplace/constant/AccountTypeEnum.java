@@ -3,10 +3,13 @@ package com.wise.resource.professionals.marketplace.constant;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+/**
+ * Account Types which are directly mapped in {@link com.wise.resource.professionals.marketplace.entity.AccountTypeEntity}.
+ */
 public enum AccountTypeEnum {
-    Admin("Admin"),
-    Resource("Resource"),
-    ProjectManager("Project Manager");
+    ADMIN("Admin"),
+    RESOURCE("Resource"),
+    PROJECT_MANAGER("Project Manager");
 
     private static final LinkedHashMap<String, AccountTypeEnum> cache = new LinkedHashMap<>();
 
@@ -22,10 +25,21 @@ public enum AccountTypeEnum {
         this.value = value;
     }
 
-    public static AccountTypeEnum valueToEnum(String label) {
-        return cache.get(label);
+    /**
+     * Converts a given value to the enum value that it is associated with.
+     *
+     * @param value the value to be found.
+     * @return the enum value for the given value.
+     */
+    public static AccountTypeEnum valueToEnum(String value) {
+        return cache.get(value);
     }
 
+    /**
+     * Gets all the values associated with each enum value.
+     *
+     * @return a set of values.
+     */
     public static Set<String> getAllValues() {
         return cache.keySet();
     }

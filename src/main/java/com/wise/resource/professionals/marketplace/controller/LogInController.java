@@ -16,8 +16,11 @@ import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
 
+/**
+ * Controller class for LogIn.fxml
+ */
 @Component
 @FxmlView("LogIn.fxml")
 public class LogInController {
@@ -46,18 +49,30 @@ public class LogInController {
 
         accountTypeField.setItems(items);
         accountTypeField.setValue(items.get(0));
-
-        // TODO: Remove
-        emailField.setText("dev@account");
-        passwordField.setText("password");
-        accountTypeField.setValue(AccountTypeEnum.ProjectManager.value);
     }
 
     @FXML
-    public void onLogInButtonClick() {
-        this.login();
+    public void onHyperLinkClick() {
+        stageHandler.swapScene(CreateAnAccountController.class);
     }
 
+    /**
+     * Method for when the login button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link LogInController#login()}
+     */
+    @FXML
+    public void onLogInButtonClick() {
+        login();
+    }
+
+    /**
+     * Attempts to log in a user with the current user inputs.
+     * <p>
+     * Populates a {@link LogInAccountTO} with the user inputs and authenticates this with
+     * {@link AccountUtil#authenticate(LogInAccountTO)}. If the user is successfully authenticated then the scene is
+     * swapped to the scene associated with their account type; otherwise the user input fields are marked.
+     */
     private void login() {
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -74,16 +89,11 @@ public class LogInController {
 
             stageHandler.swapScene(scene);
         } else {
-            validatorUtil.markControlNegative(emailField, NegativeControl.value);
-            validatorUtil.markControlNegative(accountTypeField, NegativeControl.value);
-            validatorUtil.markControlNegative(passwordField, NegativeControl.value);
+            validatorUtil.markControlNegative(emailField, NEGATIVE_CONTROL.value);
+            validatorUtil.markControlNegative(accountTypeField, NEGATIVE_CONTROL.value);
+            validatorUtil.markControlNegative(passwordField, NEGATIVE_CONTROL.value);
 
             System.out.println("Invalid email or password");
         }
-    }
-
-    @FXML
-    public void onHyperLinkClick() {
-        stageHandler.swapScene(CreateAnAccountController.class);
     }
 }

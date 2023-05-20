@@ -6,21 +6,18 @@ import com.wise.resource.professionals.marketplace.entity.MainRoleEntity;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.service.ProjectManagerService;
 import com.wise.resource.professionals.marketplace.to.LoanTO;
 import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.ProjectManagerUtil;
 import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import lombok.Data;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
@@ -39,8 +36,8 @@ public class FT0010 {
     @Captor
     private ArgumentCaptor<ResourceEntity> resourceEntityCaptor;
     @InjectMocks
-    private ProjectManagerUtil projectManagerUtil;
-    @InjectMocks
+    private ProjectManagerService projectManagerService;
+    @Spy
     private ResourceUtil resourceUtil;
     @Mock
     private ResourceRepository resourceRepository;
@@ -61,9 +58,9 @@ public class FT0010 {
         int resourcesToLoan = 2;
 
         BloatedLoanTO bloatedLoanTO = new BloatedLoanTO(
-                BandingEnum.BandOne,
-                MainRoleEnum.Developer,
-                SubRoleEnum.FrontendDeveloper,
+                BandingEnum.BAND_ONE,
+                MainRoleEnum.DEVELOPER,
+                SubRoleEnum.FRONTEND_DEVELOPER,
                 new BigDecimal("15.5"),
                 availableResources,
                 resourcesToLoan,
@@ -76,7 +73,7 @@ public class FT0010 {
         when(resourceRepository.findByBandingAndMainRoleAndSubRoleAndCostPerHour(any(), any(), any(), any()))
                 .thenReturn(fakeResourceEntities);
 
-        projectManagerUtil.loanResource(bloatedLoanTO.getLoanTO());
+        projectManagerService.loanResource(bloatedLoanTO.getLoanTO());
 
 
         verify(resourceRepository, times(resourcesToLoan)).save(resourceEntityCaptor.capture());
@@ -94,8 +91,8 @@ public class FT0010 {
         int resourcesToLoan = 5;
 
         BloatedLoanTO bloatedLoanTO = new BloatedLoanTO(
-                BandingEnum.BandOne,
-                MainRoleEnum.Developer,
+                BandingEnum.BAND_ONE,
+                MainRoleEnum.DEVELOPER,
                 null,
                 new BigDecimal("15.5"),
                 availableResources,
@@ -109,7 +106,7 @@ public class FT0010 {
         when(resourceRepository.findByBandingAndMainRoleAndSubRoleAndCostPerHour(any(), any(), any(), any()))
                 .thenReturn(fakeResourceEntities);
 
-        projectManagerUtil.loanResource(bloatedLoanTO.getLoanTO());
+        projectManagerService.loanResource(bloatedLoanTO.getLoanTO());
 
 
         verify(resourceRepository, times(availableResources)).save(resourceEntityCaptor.capture());

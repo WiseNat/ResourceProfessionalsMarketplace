@@ -7,6 +7,7 @@ import com.wise.resource.professionals.marketplace.constant.MainRoleEnum;
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.*;
 import com.wise.resource.professionals.marketplace.repository.*;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,9 @@ import java.util.*;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
+/**
+ * Helper methods surrounding populating the database on startup
+ */
 @Component
 @Slf4j
 public class DatabasePopulatorUtil {
@@ -50,7 +54,7 @@ public class DatabasePopulatorUtil {
     private AccountUtil accountUtil;
 
     @Autowired
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Autowired
     private ResourceUtil resourceUtil;
@@ -58,7 +62,27 @@ public class DatabasePopulatorUtil {
     @Value("${spring.jpa.properties.hibernate.hbm2ddl.auto}")
     private String hbm2ddlAuto;
 
+    @Value("#{new Boolean('${database-populator.create-fake-data}')}")
+    private Boolean createFakeData;
 
+    @Value("#{new Integer('${database-populator.fake-unapproved-accounts-quantity}')}")
+    private Integer fakeUnapprovedAccountsQuantity;
+
+    @Value("#{new Integer('${database-populator.fake-available-resources-quantity}')}")
+    private Integer fakeAvailableResourcesQuantity;
+
+    @Value("#{new Integer('${database-populator.fake-loaned-resources-quantity}')}")
+    private Integer fakeLoanedResourcesQuantity;
+
+    /**
+     * An event listener that executes once it receives a {@link ContextRefreshedEvent}. This shouldn't be manually
+     * called.
+     * <p>
+     * On application startup, this initialises the enum tables with their relevant data. It also populates the
+     * database with fake data if {@link DatabasePopulatorUtil#createFakeData} is {@code true}.
+     *
+     * @param event the {@link ContextRefreshedEvent}
+     */
     @EventListener
     public void onApplicationEvent(ContextRefreshedEvent event) {
         if (!(hbm2ddlAuto.equals("validate") || hbm2ddlAuto.equals("none") || hbm2ddlAuto.equals("update"))) {
@@ -67,14 +91,19 @@ public class DatabasePopulatorUtil {
             this.initialiseBandingTable();
             this.initialiseRoleTables();
 
-            log.info("Populating tables with fake data");
-            this.populateDevAccounts();
-            this.populateFakeUnapprovedAccounts(5);
-            this.populateFakeAvailableResources(100);
-            this.populateFakeLoanedResources(100);
+            if (createFakeData) {
+                log.info("Populating tables with fake data");
+                this.populateDevAccounts();
+                this.populateFakeUnapprovedAccounts(fakeUnapprovedAccountsQuantity);
+                this.populateFakeAvailableResources(fakeAvailableResourcesQuantity);
+                this.populateFakeLoanedResources(fakeLoanedResourcesQuantity);
+            }
         }
     }
 
+    /**
+     * Initialises the Account Type table ({@link AccountTypeRepository}) using data from {@link AccountTypeEnum}
+     */
     private void initialiseAccountTypeTable() {
         for (AccountTypeEnum accountType : AccountTypeEnum.values()) {
             AccountTypeEntity accountTypeEntity = new AccountTypeEntity();
@@ -84,6 +113,9 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Initialises the Banding table ({@link BandingRepository}) using data from {@link BandingEnum}
+     */
     private void initialiseBandingTable() {
         for (BandingEnum banding : BandingEnum.values()) {
             BandingEntity bandingEntity = new BandingEntity();
@@ -93,6 +125,10 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Initialises both of the role tables ({@link MainRoleRepository} and {@link SubRoleRepository}) using data from
+     * {@link com.wise.resource.professionals.marketplace.constant.RoleMapping#ROLE_MAPPING}
+     */
     private void initialiseRoleTables() {
         for (Map.Entry<MainRoleEnum, SubRoleEnum[]> entry : ROLE_MAPPING.entrySet()) {
             MainRoleEnum mainRole = entry.getKey();
@@ -113,13 +149,17 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with development accounts for each account type. These use {@code dev@account} for the
+     * email and {@code password} for the password.
+     */
     private void populateDevAccounts() {
         AccountEntity accountEntity;
 
         { // Admin
             accountEntity = new AccountEntity();
             accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ProjectManager));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Project Manager");
             accountEntity.setEmail("dev@account");
@@ -132,7 +172,7 @@ public class DatabasePopulatorUtil {
         { // Admin
             accountEntity = new AccountEntity();
             accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Admin));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ADMIN));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Admin");
             accountEntity.setEmail("dev@account");
@@ -144,9 +184,9 @@ public class DatabasePopulatorUtil {
 
         { // Resource
             ResourceEntity resourceEntity = new ResourceEntity();
-            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BandFive));
-            resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BackendDeveloper));
-            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.Developer));
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BAND_FIVE));
+            resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BACKEND_DEVELOPER));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.DEVELOPER));
             resourceEntity.setCostPerHour(new BigDecimal("12.5"));
             resourceEntity.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceEntity.getCostPerHour()));
             resourceEntity.setLoanedClient(null);
@@ -155,7 +195,7 @@ public class DatabasePopulatorUtil {
 
             accountEntity = new AccountEntity();
             accountEntity.setResource(resourceEntity);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.Resource));
+            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE));
             accountEntity.setFirstName("Dev");
             accountEntity.setLastName("Resource");
             accountEntity.setEmail("dev@account");
@@ -166,10 +206,15 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with fake approvals and fake unapproved accounts.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeUnapprovedAccounts(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
-        AccountTypeEnum[] validAccountTypes = new AccountTypeEnum[]{AccountTypeEnum.ProjectManager, AccountTypeEnum.Resource};
+        AccountTypeEnum[] validAccountTypes = new AccountTypeEnum[]{AccountTypeEnum.PROJECT_MANAGER, AccountTypeEnum.RESOURCE};
 
         for (int i = 0; i < amount; i++) {
             AccountTypeEnum accountType = validAccountTypes[random.nextInt(validAccountTypes.length)];
@@ -193,11 +238,16 @@ public class DatabasePopulatorUtil {
             approvalTO.setAccount(createAccountTO);
             approvalTO.setDate(faker.date().birthday());
 
-            createAnAccountUtil.persistAccount(createAccountTO);
-            createAnAccountUtil.persistApproval(approvalTO);
+            createAnAccountService.persistAccount(createAccountTO);
+            createAnAccountService.persistApproval(approvalTO);
         }
     }
 
+    /**
+     * Populates the database with fake available resources.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeAvailableResources(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
@@ -235,7 +285,7 @@ public class DatabasePopulatorUtil {
 
             resourceRepository.save(resourceEntity);
 
-            AccountTypeEnum accountType = AccountTypeEnum.Resource;
+            AccountTypeEnum accountType = AccountTypeEnum.RESOURCE;
             String firstName = faker.name().firstName();
             String lastName = faker.name().lastName();
             String email = faker.internet().emailAddress(firstName + "." + lastName);
@@ -254,8 +304,14 @@ public class DatabasePopulatorUtil {
         }
     }
 
+    /**
+     * Populates the database with fake loaned resources. This uses
+     * {@link DatabasePopulatorUtil#populateFakeAvailableResources(int)} to create new fake resources and then selects
+     * the same amount of resources to become loaned.
+     *
+     * @param amount the amount to make
+     */
     private void populateFakeLoanedResources(int amount) {
-        Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
 
         this.populateFakeAvailableResources(amount);

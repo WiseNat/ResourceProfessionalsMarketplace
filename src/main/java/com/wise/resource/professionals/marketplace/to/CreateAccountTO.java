@@ -7,6 +7,12 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * A POJO for creating an account
+ *
+ * @see com.wise.resource.professionals.marketplace.controller.CreateAnAccountController#createAccount
+ * @see com.wise.resource.professionals.marketplace.service.CreateAnAccountService#persistAccountAndApproval
+ */
 @Data
 public class CreateAccountTO {
 

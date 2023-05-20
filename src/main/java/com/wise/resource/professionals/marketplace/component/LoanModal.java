@@ -17,9 +17,12 @@ import lombok.SneakyThrows;
 import java.time.LocalDate;
 import java.util.HashMap;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeControl;
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeDatePickerDayCell;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_CONTROL;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_DATE_PICKER_DAY_CELL;
 
+/**
+ * An extension of {@link Modal} which provides automatic initialisation and helper methods specific to loans.
+ */
 @Getter
 public class LoanModal extends Modal {
 
@@ -46,6 +49,11 @@ public class LoanModal extends Modal {
     @FXML
     private Button saveToFileButton;
 
+    /**
+     * Creates the LoanModal along with initialising the content using the given {@link ResourceCollectionTO}
+     *
+     * @param resourceCollectionTO used to initialise content within the modal.
+     */
     @SneakyThrows
     public LoanModal(ResourceCollectionTO resourceCollectionTO) {
         super();
@@ -54,20 +62,16 @@ public class LoanModal extends Modal {
 
         FXMLLoader fxmlLoader;
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/LoanModalLeft.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/LoanModalLeft.fxml"));
         fxmlLoader.setController(this);
         Node leftContainer = fxmlLoader.load();
         setLeftContent(leftContainer);
 
-        fxmlLoader = new FXMLLoader(getClass().getResource("../modules/LoanModalRight.fxml"));
+        fxmlLoader = new FXMLLoader(getClass().getResource("../module/LoanModalRight.fxml"));
         fxmlLoader.setController(this);
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);
 
-        init();
-    }
-
-    private void init() {
         ResourceTO resourceTO = resourceCollectionTO.getResource();
 
         String banding = resourceTO.getBanding().value;
@@ -102,7 +106,7 @@ public class LoanModal extends Modal {
 
                         if (item.isBefore(LocalDate.now())) {
                             setDisable(true);
-                            componentUtil.safeAddStyleClass(this, NegativeDatePickerDayCell.value);
+                            componentUtil.safeAddStyleClass(this, NEGATIVE_DATE_PICKER_DAY_CELL.value);
                         }
                     }
                 };
@@ -114,6 +118,9 @@ public class LoanModal extends Modal {
         saveToFileButton.setOnMouseClicked(this::saveToFileButtonPressed);
     }
 
+    /**
+     * Saves the details of the associated {@link ResourceCollectionTO} to a file.
+     */
     private void saveToFileButtonPressed(MouseEvent mouseEvent) {
         StringBuilder content = new StringBuilder();
         content
@@ -138,7 +145,12 @@ public class LoanModal extends Modal {
         saveDetailsToFile(this.getScene().getWindow(), content.toString());
     }
 
-    public void markTextFields(String[] fields) {
+    /**
+     * Styles the given fields as negative. This is useful for validation.
+     *
+     * @param fields the fields to be marked.
+     */
+    public void markFields(String[] fields) {
         ValidatorUtil validatorUtil = new ValidatorUtil();
 
         HashMap<String, Control> toFieldToControl = new HashMap<String, Control>() {{
@@ -147,6 +159,6 @@ public class LoanModal extends Modal {
             put("availabilityDate", dateField.getEditor());
         }};
 
-        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NegativeControl.value);
+        validatorUtil.markControlAgainstValidatedTO(fields, toFieldToControl, NEGATIVE_CONTROL.value);
     }
 }

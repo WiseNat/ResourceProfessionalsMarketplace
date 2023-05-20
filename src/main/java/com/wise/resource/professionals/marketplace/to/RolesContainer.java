@@ -7,6 +7,12 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * A POJO used within other POJOs which defines both a main and sub role
+ *
+ * @see Roles
+ * @see ResourceTO
+ */
 @Roles
 @Data
 public class RolesContainer {

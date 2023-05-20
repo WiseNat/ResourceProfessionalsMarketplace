@@ -1,8 +1,8 @@
 import com.wise.resource.professionals.marketplace.constant.AccountTypeEnum;
 import com.wise.resource.professionals.marketplace.entity.AccountTypeEntity;
 import com.wise.resource.professionals.marketplace.repository.AccountRepository;
+import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
-import com.wise.resource.professionals.marketplace.util.CreateAnAccountUtil;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
@@ -24,7 +24,7 @@ public class FT0002 {
 
     @Spy
     @InjectMocks
-    private CreateAnAccountUtil createAnAccountUtil;
+    private CreateAnAccountService createAnAccountService;
 
     @Mock
     private Validator validator;
@@ -49,10 +49,10 @@ public class FT0002 {
 
     @Test
     public void testIgnoreAdminAccountCreation() {
-        createAccountTO.setAccountType(AccountTypeEnum.Admin);
+        createAccountTO.setAccountType(AccountTypeEnum.ADMIN);
 
-        createAnAccountUtil.createAccount(createAccountTO);
-        verify(createAnAccountUtil, never()).persistAccountAndApproval(any());
+        createAnAccountService.createAccount(createAccountTO);
+        verify(createAnAccountService, never()).persistAccountAndApproval(any());
     }
 
     @Nested
@@ -63,25 +63,25 @@ public class FT0002 {
             when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
             when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
 
-            doNothing().when(createAnAccountUtil).persistAccountAndApproval(any());
+            doNothing().when(createAnAccountService).persistAccountAndApproval(any());
         }
 
         @Test
         public void testAcknowledgeResourceAccountCreation() {
-            createAccountTO.setAccountType(AccountTypeEnum.Resource);
+            createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
 
-            createAnAccountUtil.createAccount(createAccountTO);
+            createAnAccountService.createAccount(createAccountTO);
 
-            verify(createAnAccountUtil, times(1)).persistAccountAndApproval(any());
+            verify(createAnAccountService, times(1)).persistAccountAndApproval(any());
         }
 
         @Test
         public void testAcknowledgeProjectManagerAccountCreation() {
-            createAccountTO.setAccountType(AccountTypeEnum.Resource);
+            createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
 
-            createAnAccountUtil.createAccount(createAccountTO);
+            createAnAccountService.createAccount(createAccountTO);
 
-            verify(createAnAccountUtil, times(1)).persistAccountAndApproval(any());
+            verify(createAnAccountService, times(1)).persistAccountAndApproval(any());
         }
 
     }

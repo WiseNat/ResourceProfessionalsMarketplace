@@ -8,6 +8,12 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+/**
+ * A POJO for loaning anonymised resources
+ *
+ * @see com.wise.resource.professionals.marketplace.service.ProjectManagerService#createLoanTo
+ * @see com.wise.resource.professionals.marketplace.service.ProjectManagerService#loanResource
+ */
 @Data
 public class LoanTO {
 

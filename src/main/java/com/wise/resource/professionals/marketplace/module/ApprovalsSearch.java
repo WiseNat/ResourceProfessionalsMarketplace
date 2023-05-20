@@ -1,4 +1,4 @@
-package com.wise.resource.professionals.marketplace.modules;
+package com.wise.resource.professionals.marketplace.module;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +10,9 @@ import lombok.Getter;
 import net.rgielen.fxweaver.core.FxmlView;
 import org.springframework.stereotype.Component;
 
+/**
+ * Controller class for the ApprovalsSearch.fxml module
+ */
 @Component
 @Getter
 @FxmlView("ApprovalsSearch.fxml")
@@ -43,10 +46,18 @@ public class ApprovalsSearch {
         resetButton.setOnMouseClicked(this::resetButtonClicked);
     }
 
+    /**
+     * Method for when the reset button is clicked. Shouldn't be directly called.
+     * <p>
+     * Calls {@link ApprovalsSearch#resetFields()}
+     */
     private void resetButtonClicked(MouseEvent mouseEvent) {
         resetFields();
     }
 
+    /**
+     * Resets all the user input fields back to their default states.
+     */
     private void resetFields() {
         firstNameField.setText("");
         lastNameField.setText("");

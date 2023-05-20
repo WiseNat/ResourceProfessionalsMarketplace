@@ -1,9 +1,9 @@
 import com.wise.resource.professionals.marketplace.constant.SubRoleEnum;
 import com.wise.resource.professionals.marketplace.entity.ResourceEntity;
 import com.wise.resource.professionals.marketplace.repository.ResourceRepository;
+import com.wise.resource.professionals.marketplace.service.ResourceService;
 import com.wise.resource.professionals.marketplace.to.ResourceTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
-import com.wise.resource.professionals.marketplace.util.ResourceUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.verify;
 public class FT0008 {
 
     @InjectMocks
-    private ResourceUtil resourceUtil;
+    private ResourceService resourceService;
 
     @Mock
     private ResourceRepository resourceRepository;
@@ -39,16 +39,16 @@ public class FT0008 {
     public void testUpdateDetailsWithNullSubRole() {
         resourceTO.setSubRole(null);
 
-        resourceUtil.updateResourceDetails(resourceEntity, resourceTO);
+        resourceService.updateResourceDetails(resourceEntity, resourceTO);
 
         verify(resourceRepository).save(resourceEntity);
     }
 
     @Test
     public void testUpdateDetailsWithSubRole() {
-        resourceTO.setSubRole(SubRoleEnum.BackendDeveloper);
+        resourceTO.setSubRole(SubRoleEnum.BACKEND_DEVELOPER);
 
-        resourceUtil.updateResourceDetails(resourceEntity, resourceTO);
+        resourceService.updateResourceDetails(resourceEntity, resourceTO);
 
         verify(resourceRepository).save(resourceEntity);
     }

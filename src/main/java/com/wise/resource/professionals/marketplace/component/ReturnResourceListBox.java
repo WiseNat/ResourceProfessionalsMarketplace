@@ -9,10 +9,12 @@ import lombok.SneakyThrows;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NegativeLabel;
+import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
-// TODO: This..
-
+/**
+ * An extension of {@link ListBox} which provides automatic initialisation specific to returning loaned resources. It
+ * also stores the given {@link AccountEntity} for later use.
+ */
 @Getter
 public class ReturnResourceListBox extends ListBox {
 
@@ -24,10 +26,6 @@ public class ReturnResourceListBox extends ListBox {
 
         this.accountEntity = accountEntity;
 
-        init();
-    }
-
-    private void init() {
         ComponentUtil componentUtil = new ComponentUtil();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
@@ -49,7 +47,7 @@ public class ReturnResourceListBox extends ListBox {
 
         if (dueDate.before(new Date(System.currentTimeMillis()))) {
             rightSubText += "Overdue since " + dueDateString;
-            componentUtil.safeAddStyleClass(this.getRightSubtext(), NegativeLabel.value);
+            componentUtil.safeAddStyleClass(this.getRightSubtext(), NEGATIVE_LABEL.value);
         } else {
             rightSubText += "Available " + dueDateString;
         }

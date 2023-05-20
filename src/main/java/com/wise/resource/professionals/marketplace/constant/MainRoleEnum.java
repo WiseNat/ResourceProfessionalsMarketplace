@@ -3,6 +3,9 @@ package com.wise.resource.professionals.marketplace.constant;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
+/**
+ * Main roles which are directly mapped in {@link com.wise.resource.professionals.marketplace.entity.MainRoleEntity}.
+ */
 public enum MainRoleEnum {
     DEVELOPER("Developer"),
     DEV_OPS("DevOps"),
@@ -26,10 +29,21 @@ public enum MainRoleEnum {
         this.value = value;
     }
 
-    public static MainRoleEnum valueToEnum(String label) {
-        return cache.get(label);
+    /**
+     * Converts a given value to the enum value that it is associated with.
+     *
+     * @param value the value to be found.
+     * @return the enum value for the given value.
+     */
+    public static MainRoleEnum valueToEnum(String value) {
+        return cache.get(value);
     }
 
+    /**
+     * Gets all the values associated with each enum value.
+     *
+     * @return a set of values.
+     */
     public static Set<String> getAllValues() {
         return cache.keySet();
     }

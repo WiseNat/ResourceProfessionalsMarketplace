@@ -59,7 +59,7 @@ public class StageHandler implements ApplicationListener<StageReadyEvent> {
     /**
      * Gets the scene associated with a given controller class.
      * This controller class will initially be loaded through the {@link FxWeaver#loadView(Class)} method.
-     * <p/>
+     * <p>
      * Example usage: {@code getScene(MyController.class)}
      *
      * @param controllerClass a controller class which uses the {@link net.rgielen.fxweaver.core.FxmlView} annotation

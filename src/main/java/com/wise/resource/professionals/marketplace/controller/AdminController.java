@@ -122,7 +122,7 @@ public class AdminController implements MainView {
 
         populatePredicateApprovals();
 
-        approvalModal.closeDialog();
+        approvalModal.closeModal();
     }
 
     private void denyButtonClicked(ApprovalModal approvalModal) {
@@ -130,7 +130,7 @@ public class AdminController implements MainView {
 
         populatePredicateApprovals();
 
-        approvalModal.closeDialog();
+        approvalModal.closeModal();
     }
 
 }

@@ -13,6 +13,9 @@ import java.net.URL;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NAVBAR_BUTTON_ACTIVE;
 
+/**
+ * A button which is used within the navigation bar.
+ */
 @Getter
 public class NavbarButton extends Button {
 
@@ -36,12 +39,22 @@ public class NavbarButton extends Button {
         componentUtil = new ComponentUtil();
     }
 
+    /**
+     * Sets the image within the navbar button as the image found at the given URL.
+     *
+     * @param url url to an image. This is used when creating an {@link Image}.
+     */
     @SneakyThrows
     public void setImageUrl(URL url) {
         Image innerImage = new Image(url.toString());
         image.setImage(innerImage);
     }
 
+    /**
+     * Changes the {@link NavbarButton#isActive} to the given value. This is used to determine styling.
+     *
+     * @param isActive
+     */
     public void setActive(boolean isActive) {
         this.isActive = isActive;
 

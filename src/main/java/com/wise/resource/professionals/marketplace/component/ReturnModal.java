@@ -2,6 +2,7 @@ package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
+import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,9 @@ import java.util.Date;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
+/**
+ * An extension of {@link Modal} which provides automatic initialisation and helper methods specific to returns.
+ */
 @Getter
 public class ReturnModal extends Modal {
 
@@ -39,6 +43,13 @@ public class ReturnModal extends Modal {
     @FXML
     private Button saveToFileButton;
 
+    /**
+     * Creates the ReturnModal along with initialising the content using the given {@link AccountEntity}.
+     * <p>
+     * If the resource is overdue then specialised red text is initialised to show this.
+     *
+     * @param accountEntity used to initialise content within the modal.
+     */
     @SneakyThrows
     public ReturnModal(AccountEntity accountEntity) {
         super();
@@ -57,10 +68,6 @@ public class ReturnModal extends Modal {
         Node rightContainer = fxmlLoader.load();
         setRightContent(rightContainer);
 
-        init();
-    }
-
-    private void init() {
         ComponentUtil componentUtil = new ComponentUtil();
 
         String name = accountEntity.getFirstName() + " " + accountEntity.getLastName();
@@ -104,6 +111,9 @@ public class ReturnModal extends Modal {
         saveToFileButton.setOnMouseClicked(this::saveToFileButtonPressed);
     }
 
+    /**
+     * Saves the details of the associated {@link AccountEntity} to a file.
+     */
     private void saveToFileButtonPressed(MouseEvent mouseEvent) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 

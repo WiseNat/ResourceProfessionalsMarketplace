@@ -192,7 +192,7 @@ public class ProjectManagerController implements MainView {
         InvalidFieldsAndDataTO<LoanTO> convertedTO = projectManagerService.createLoanTo(rawLoanTO);
 
         if (convertedTO.getInvalidFields().length > 0) {
-            loanModal.markTextFields(convertedTO.getInvalidFields());
+            loanModal.markFields(convertedTO.getInvalidFields());
             return;
         }
 
@@ -200,7 +200,7 @@ public class ProjectManagerController implements MainView {
 
         populatePredicateLoanables();
 
-        loanModal.closeDialog();
+        loanModal.closeModal();
     }
 
     private void returnButtonClicked(ReturnModal returnModal) {
@@ -208,6 +208,6 @@ public class ProjectManagerController implements MainView {
 
         populatePredicateReturnables();
 
-        returnModal.closeDialog();
+        returnModal.closeModal();
     }
 }

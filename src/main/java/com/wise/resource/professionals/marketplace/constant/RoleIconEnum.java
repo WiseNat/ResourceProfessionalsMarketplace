@@ -5,6 +5,11 @@ import java.util.LinkedHashMap;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * URLs to images associated with each main role and sub role.
+ * @see MainRoleEnum
+ * @see SubRoleEnum
+ */
 public enum RoleIconEnum {
     DEVELOPER(Objects.requireNonNull(RoleIconEnum.class.getResource("../images/developer.png"))),
     WEB_DEVELOPER(Objects.requireNonNull(RoleIconEnum.class.getResource("../images/web_developer.png"))),
@@ -43,10 +48,21 @@ public enum RoleIconEnum {
         this.value = value;
     }
 
+    /**
+     * Converts a given value to the enum value that it is associated with.
+     *
+     * @param value the value to be found.
+     * @return the enum value for the given value.
+     */
     public static RoleIconEnum valueToEnum(URL value) {
         return cache.get(value);
     }
 
+    /**
+     * Gets all the values associated with each enum value.
+     *
+     * @return a set of values.
+     */
     public static Set<URL> getAllValues() {
         return cache.keySet();
     }

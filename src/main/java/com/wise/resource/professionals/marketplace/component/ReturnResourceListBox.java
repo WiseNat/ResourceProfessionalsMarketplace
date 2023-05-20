@@ -2,6 +2,7 @@ package com.wise.resource.professionals.marketplace.component;
 
 import com.wise.resource.professionals.marketplace.entity.AccountEntity;
 import com.wise.resource.professionals.marketplace.entity.SubRoleEntity;
+import com.wise.resource.professionals.marketplace.to.ResourceCollectionTO;
 import com.wise.resource.professionals.marketplace.util.ComponentUtil;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -11,8 +12,10 @@ import java.util.Date;
 
 import static com.wise.resource.professionals.marketplace.constant.StyleEnum.NEGATIVE_LABEL;
 
-// TODO: This..
-
+/**
+ * An extension of {@link ListBox} which provides automatic initialisation specific to returning loaned resources. It
+ * also stores the given {@link AccountEntity} for later use.
+ */
 @Getter
 public class ReturnResourceListBox extends ListBox {
 
@@ -24,10 +27,6 @@ public class ReturnResourceListBox extends ListBox {
 
         this.accountEntity = accountEntity;
 
-        init();
-    }
-
-    private void init() {
         ComponentUtil componentUtil = new ComponentUtil();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");

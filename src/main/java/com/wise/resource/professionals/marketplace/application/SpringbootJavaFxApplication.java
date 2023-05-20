@@ -7,6 +7,10 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ConfigurableApplicationContext;
 
 
+/**
+ * {@code SpringbootJavaFxApplication} acts as an injector of Springboot into a JavaFX application.
+ * This is created as per the recommendation of building a WeaverFX application.
+ */
 public class SpringbootJavaFxApplication extends javafx.application.Application {
 
     private ConfigurableApplicationContext context;

@@ -58,6 +58,9 @@ public class FT0006 {
         doNothing().when(approvalRepository).delete(any());
     }
 
+    /**
+     * FTC0016
+     */
     @Test
     public void testApprovingApprovalWithResourceAccountType() {
         approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.RESOURCE.value);
@@ -73,6 +76,9 @@ public class FT0006 {
         verify(accountRepository, times(1)).save(any());
     }
 
+    /**
+     * FTC0017
+     */
     @Test
     public void testApprovingApprovalWithProjectManagerAccountType() {
         approvalEntity.getAccount().getAccountType().setName(AccountTypeEnum.PROJECT_MANAGER.value);

@@ -50,6 +50,9 @@ public class FT0004 {
                 isResourceAllowed, isProjectManagerAllowed, firstName, lastName, email);
     }
 
+    /**
+     * FTC0011
+     */
     @Test
     public void testGetApprovalsWithNoPredicates() {
         List<ApprovalEntity> foundApprovals = adminService.getApprovals(approvalSearchTO);
@@ -57,6 +60,9 @@ public class FT0004 {
         assertTrue(foundApprovals.isEmpty());
     }
 
+    /**
+     * FTC0012
+     */
     @Test
     public void testGetApprovalsWithOnlyResource() {
         approvalSearchTO.setResourceAllowed(true);
@@ -76,6 +82,9 @@ public class FT0004 {
         assertFalse(foundApprovals.isEmpty());
     }
 
+    /**
+     * FTC0013
+     */
     @Test
     public void testGetApprovalsWithOnlyProjectManager() {
         approvalSearchTO.setProjectManagerAllowed(true);
@@ -95,6 +104,9 @@ public class FT0004 {
         assertFalse(foundApprovals.isEmpty());
     }
 
+    /**
+     * FTC0014
+     */
     @Test
     public void testGetApprovalsWithResourceAndProjectManager() {
         approvalSearchTO.setResourceAllowed(true);

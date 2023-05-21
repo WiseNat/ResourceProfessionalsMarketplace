@@ -34,6 +34,9 @@ public class FT0005 {
         approvalEntity = new ApprovalEntity();
     }
 
+    /**
+     * FTC0015
+     */
     @Test
     public void testDenyingApproval() {
         adminService.denyApproval(approvalEntity);

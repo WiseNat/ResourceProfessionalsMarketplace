@@ -54,6 +54,10 @@ public class FT0009 {
         loanSearchTO = new LoanSearchTO();
     }
 
+
+    /**
+     * FT0026
+     */
     @Test
     public void testGetLoanableResourcesWithNoneFound() {
         when(resourceRepository.findAllByCollectionWithPredicates(any(), any(), any(), any())).thenReturn(new ArrayList<>());
@@ -63,6 +67,9 @@ public class FT0009 {
         assertTrue(foundLoanableResources.isEmpty());
     }
 
+    /**
+     * FT0027
+     */
     @Test
     public void testGetLoanableResourcesWithOneResource() {
 
@@ -95,6 +102,9 @@ public class FT0009 {
         assertEquals(foundLoanableResources.get(0), expectedResourceCollectionTO);
     }
 
+    /**
+     * FT0028
+     */
     @Test
     public void testGetLoanableResourcesWithOneResourceWithNullSubRole() {
 
@@ -126,6 +136,9 @@ public class FT0009 {
         assertEquals(foundLoanableResources.get(0), expectedResourceCollectionTO);
     }
 
+    /**
+     * FT0029
+     */
     @Test
     public void testGetLoanableResourcesWithAggregableResources() {
         BandingEnum banding = BandingEnum.BAND_ONE;
@@ -157,6 +170,9 @@ public class FT0009 {
         assertEquals(foundLoanableResources.get(0), expectedResourceCollectionTO);
     }
 
+    /**
+     * FT0030
+     */
     @Test
     public void testGetLoanableResourcesWithNonAggregableResources() {
         BandingEnum firstBanding = BandingEnum.BAND_ONE;
@@ -203,6 +219,9 @@ public class FT0009 {
                 Matchers.containsInAnyOrder(firstExpectedResourceCollectionTO, secondExpectedResourceCollectionTO));
     }
 
+    /**
+     * FT0031
+     */
     @Test
     public void testGetLoanableResourcesWithVaryingAggregableResources() {
         BandingEnum firstBanding = BandingEnum.BAND_ONE;

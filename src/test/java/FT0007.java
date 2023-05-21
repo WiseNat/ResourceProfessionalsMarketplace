@@ -51,6 +51,9 @@ public class FT0007 {
     public void init() {
     }
 
+    /**
+     * FTC0023
+     */
     @Test
     public void testCalculateDailyLateFee() {
         BigDecimal costPerHour = new BigDecimal("10");
@@ -90,8 +93,11 @@ public class FT0007 {
             expectedDailyLateFee = new BigDecimal("40.0").multiply(new BigDecimal(rawResourceTO.getCostPerHour()));
         }
 
+        /**
+         * FTC0018
+         */
         @Test
-        public void testCreateResourceToWithValidUpdateResourceTO() {
+        public void testCreateResourceToWithValidRawResourceTO() {
             InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
 
             ResourceTO resourceTO = invalidFieldsAndDataTO.getData();
@@ -106,8 +112,11 @@ public class FT0007 {
             assertEquals(resourceTO.getAvailabilityDate(), resourceEntity.getAvailabilityDate());
         }
 
+        /**
+         * FTC0019
+         */
         @Test
-        public void testCreateResourceToWithEmptyUpdateResourceTO() {
+        public void testCreateResourceToWithEmptyRawResourceTO() {
             rawResourceTO.setMainRole("");
             rawResourceTO.setSubRole("");
             rawResourceTO.setBanding("");
@@ -122,8 +131,11 @@ public class FT0007 {
             assertThat(Arrays.asList("mainRole", "banding", "costPerHour"), Matchers.containsInAnyOrder(invalidFields));
         }
 
+        /**
+         * FTC0020
+         */
         @Test
-        public void testCreateResourceToWithEmptyMainRoleInUpdateResourceTO() {
+        public void testCreateResourceToWithEmptyMainRoleInRawResourceTO() {
             rawResourceTO.setMainRole("");
 
             InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
@@ -135,8 +147,11 @@ public class FT0007 {
             assertThat(Collections.singletonList("mainRole"), Matchers.containsInAnyOrder(invalidFields));
         }
 
+        /**
+         * FTC0021
+         */
         @Test
-        public void testCreateResourceToWithEmptyButRequiredSubRoleInUpdateResourceTO() {
+        public void testCreateResourceToWithEmptyButRequiredSubRoleInRawResourceTO() {
             rawResourceTO.setSubRole("");
 
             InvalidFieldsAndDataTO<ResourceTO> invalidFieldsAndDataTO = resourceService.createResourceTo(rawResourceTO);
@@ -148,8 +163,11 @@ public class FT0007 {
             assertThat(Arrays.asList("mainRole", "subRole"), Matchers.containsInAnyOrder(invalidFields));
         }
 
+        /**
+         * FTC0022
+         */
         @Test
-        public void testCreateResourceToWithEmptyButUnwantedSubRoleInUpdateResourceTO() {
+        public void testCreateResourceToWithEmptyButUnwantedSubRoleInRawResourceTO() {
             rawResourceTO.setMainRole(MainRoleEnum.UX_DESIGNER.value);
             rawResourceTO.setSubRole("");
 

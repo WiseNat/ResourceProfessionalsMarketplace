@@ -51,6 +51,10 @@ public class FT0011 {
         when(enumUtil.subRoleToEntity(any())).thenReturn(new SubRoleEntity());
     }
 
+
+    /**
+     * FTC0034
+     */
     @Test
     public void testGetLoanedResourcesWithNoneFound() {
         when(accountRepository.findAllWithPredicates(any(), any(), any(), any(), any(), any())).thenReturn(new ArrayList<>());
@@ -60,6 +64,9 @@ public class FT0011 {
         assertTrue(foundReturnables.isEmpty());
     }
 
+    /**
+     * FTC0035
+     */
     @Test
     public void testGetLoanedResourcesWithNoResources() {
 
@@ -77,6 +84,9 @@ public class FT0011 {
         assertTrue(foundReturnables.isEmpty());
     }
 
+    /**
+     * FTC0036
+     */
     @Test
     public void testGetLoanedResourcesWithOneResource() {
 

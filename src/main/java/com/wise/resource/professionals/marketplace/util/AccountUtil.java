@@ -53,12 +53,10 @@ public class AccountUtil {
         AccountEntity account = accountRepository.findByEmailAndAccountType(loginAccount.getEmail(), accountTypeEntity);
 
         if (account == null) {
-            System.out.println("[No account exists]");
             return false;
         }
 
         if (!account.getIsApproved()) {
-            System.out.println("Unapproved Account");
             return false;
         }
 

@@ -18,7 +18,7 @@ public class ReflectionUtil {
      * @return a {@link String} array of the found fields
      */
     public String[] getFields(Object someClass) {
-        return Arrays.stream(someClass.getClass().getFields())
+        return Arrays.stream(someClass.getClass().getDeclaredFields())
                 .map(Field::getName)
                 .toArray(String[]::new);
     }

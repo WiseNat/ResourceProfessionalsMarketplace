@@ -34,13 +34,11 @@ public class CreateAccountTO {
     @NotNull
     private String email;
 
-    @NotNull
     private String encodedPassword;
 
     @Size(min = 1)
     @NotNull
     private String password;
 
-    @NotNull
     private Boolean isApproved;
 }

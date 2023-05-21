@@ -4,6 +4,8 @@ import com.wise.resource.professionals.marketplace.repository.AccountRepository;
 import com.wise.resource.professionals.marketplace.service.CreateAnAccountService;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import com.wise.resource.professionals.marketplace.util.EnumUtil;
+import com.wise.resource.professionals.marketplace.util.ValidatorUtil;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -13,9 +15,15 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.Validation;
 import javax.validation.Validator;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -30,8 +38,11 @@ public class FT0002 {
     @InjectMocks
     private CreateAnAccountService createAnAccountService;
 
-    @Mock
-    private Validator validator;
+    @Spy
+    private Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
+
+    @Spy
+    private ValidatorUtil validatorUtil = new ValidatorUtil();
 
     @Mock
     private AccountRepository accountRepository;
@@ -47,7 +58,7 @@ public class FT0002 {
 
         createAccountTO.setFirstName("FIRSTNAME");
         createAccountTO.setLastName("LASTNAME");
-        createAccountTO.setEmail("EMAIL");
+        createAccountTO.setEmail("myemail@domain.com");
         createAccountTO.setPassword("PASSWORD");
     }
 
@@ -58,8 +69,10 @@ public class FT0002 {
     public void testIgnoreAdminAccountCreation() {
         createAccountTO.setAccountType(AccountTypeEnum.ADMIN);
 
-        createAnAccountService.createAccount(createAccountTO);
+        String[] violatingFields = createAnAccountService.createAccount(createAccountTO);
+
         verify(createAnAccountService, never()).persistAccountAndApproval(any());
+        assertArrayEquals(violatingFields, new String[]{"accountType"});
     }
 
     /**
@@ -69,15 +82,39 @@ public class FT0002 {
     public void testIgnoreUnknownAccountCreation() {
         createAccountTO.setAccountType(AccountTypeEnum.valueToEnum("FAKE VALUE"));
 
-        createAnAccountService.createAccount(createAccountTO);
+        String[] violatingFields = createAnAccountService.createAccount(createAccountTO);
+
         verify(createAnAccountService, never()).persistAccountAndApproval(any());
+        assertArrayEquals(violatingFields, new String[]{"accountType"});
+    }
+
+    /**
+     * FTC0037
+     */
+    @Test
+    public void testInvalidCreateAccountToWithValidAccountType() {
+        createAccountTO.setResource(null);
+        createAccountTO.setFirstName(null);
+        createAccountTO.setLastName(null);
+        createAccountTO.setEmail(null);
+        createAccountTO.setEncodedPassword(null);
+        createAccountTO.setPassword(null);
+        createAccountTO.setIsApproved(null);
+
+        createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
+
+        String[] violatingFields = createAnAccountService.createAccount(createAccountTO);
+        verify(createAnAccountService, never()).persistAccountAndApproval(any());
+
+        assertThat(
+                Arrays.asList("firstName", "lastName", "email", "password"),
+                Matchers.containsInAnyOrder(violatingFields));
     }
 
     @Nested
     class PositiveFlow {
         @BeforeEach
         public void init() {
-            when(validator.validate(any())).thenReturn(new HashSet<>());
             when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
             when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);
 
@@ -101,7 +138,7 @@ public class FT0002 {
          */
         @Test
         public void testAcknowledgeProjectManagerAccountCreation() {
-            createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
+            createAccountTO.setAccountType(AccountTypeEnum.PROJECT_MANAGER);
 
             createAnAccountService.createAccount(createAccountTO);
 

@@ -56,7 +56,7 @@ public class FT0009 {
 
 
     /**
-     * FT0026
+     * FTC0026
      */
     @Test
     public void testGetLoanableResourcesWithNoneFound() {
@@ -68,7 +68,7 @@ public class FT0009 {
     }
 
     /**
-     * FT0027
+     * FTC0027
      */
     @Test
     public void testGetLoanableResourcesWithOneResource() {
@@ -103,7 +103,7 @@ public class FT0009 {
     }
 
     /**
-     * FT0028
+     * FTC0028
      */
     @Test
     public void testGetLoanableResourcesWithOneResourceWithNullSubRole() {
@@ -137,7 +137,7 @@ public class FT0009 {
     }
 
     /**
-     * FT0029
+     * FTC0029
      */
     @Test
     public void testGetLoanableResourcesWithAggregableResources() {
@@ -171,7 +171,7 @@ public class FT0009 {
     }
 
     /**
-     * FT0030
+     * FTC0030
      */
     @Test
     public void testGetLoanableResourcesWithNonAggregableResources() {
@@ -220,7 +220,7 @@ public class FT0009 {
     }
 
     /**
-     * FT0031
+     * FTC0031
      */
     @Test
     public void testGetLoanableResourcesWithVaryingAggregableResources() {

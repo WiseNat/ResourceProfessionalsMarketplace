@@ -27,7 +27,7 @@
                 <TextFlow minWidth="-Infinity">
                     <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Already have an account? "/>
-                        <Hyperlink onMouseClicked="#onHyperLinkClick" text="Login"/>
+                        <Hyperlink onMouseClicked="#onHyperLinkClick" text="Log in"/>
                     </children>
                 </TextFlow>
             </children>

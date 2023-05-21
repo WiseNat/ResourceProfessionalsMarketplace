@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.wise.resource.professionals.marketplace.constant.RoleMapping.ROLE_MAPPING;
 
@@ -303,7 +304,7 @@ public class DatabasePopulatorUtil {
      *
      * @param amount the amount to make
      */
-    private void populateFakeAvailableResources(int amount) {
+    private List<AccountEntity> populateFakeAvailableResources(int amount) {
         Random random = new Random();
         Faker faker = new Faker(new Locale("en-GB"));
         BigDecimal[] validBigDecimals = new BigDecimal[]{
@@ -313,6 +314,9 @@ public class DatabasePopulatorUtil {
                 new BigDecimal("17.20"),
                 new BigDecimal("8.42"),
         };
+
+        List<ResourceEntity> resourceEntities = new ArrayList<>();
+        List<AccountEntity> accountEntities = new ArrayList<>();
 
         for (int i = 0; i < amount; i++) {
             BandingEnum banding = BandingEnum.values()[random.nextInt(BandingEnum.values().length)];
@@ -338,7 +342,7 @@ public class DatabasePopulatorUtil {
                 resourceEntity.setSubRole(enumUtil.subRoleToEntity(subRole));
             }
 
-            resourceRepository.save(resourceEntity);
+            resourceEntities.add(resourceEntity);
 
             AccountTypeEnum accountType = AccountTypeEnum.RESOURCE;
             String firstName = faker.name().firstName();
@@ -355,8 +359,13 @@ public class DatabasePopulatorUtil {
             accountEntity.setEncodedPassword(accountUtil.hashPassword(password));
             accountEntity.setIsApproved(true);
 
-            accountRepository.save(accountEntity);
+            accountEntities.add(accountEntity);
         }
+
+        resourceRepository.saveAll(resourceEntities);
+        accountRepository.saveAll(accountEntities);
+
+        return accountEntities;
     }
 
     /**
@@ -369,10 +378,8 @@ public class DatabasePopulatorUtil {
     private void populateFakeLoanedResources(int amount) {
         Faker faker = new Faker(new Locale("en-GB"));
 
-        this.populateFakeAvailableResources(amount);
-
-        List<ResourceEntity> resourceEntities = resourceRepository.findAll();
-        List<ResourceEntity> loanedResourceEntities = resourceEntities.subList(0, amount);
+        List<AccountEntity> accountEntities = this.populateFakeAvailableResources(amount);
+        List<ResourceEntity> loanedResourceEntities = accountEntities.stream().map(AccountEntity::getResource).collect(Collectors.toList());
 
         for (ResourceEntity resourceEntity : loanedResourceEntities) {
             resourceEntity.setLoanedClient(faker.company().name());

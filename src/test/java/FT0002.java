@@ -18,12 +18,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 

@@ -11,6 +11,7 @@ import com.wise.resource.professionals.marketplace.service.CreateAnAccountServic
 import com.wise.resource.professionals.marketplace.to.ApprovalTO;
 import com.wise.resource.professionals.marketplace.to.CreateAccountTO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -94,6 +95,7 @@ public class DatabasePopulatorUtil {
             if (createFakeData) {
                 log.info("Populating tables with fake data");
                 this.populateDevAccounts();
+                this.populateSingularDevAccounts();
                 this.populateFakeUnapprovedAccounts(fakeUnapprovedAccountsQuantity);
                 this.populateFakeAvailableResources(fakeAvailableResourcesQuantity);
                 this.populateFakeLoanedResources(fakeLoanedResourcesQuantity);
@@ -154,32 +156,32 @@ public class DatabasePopulatorUtil {
      * email and {@code password} for the password.
      */
     private void populateDevAccounts() {
-        AccountEntity accountEntity;
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setResource(null);
+        accountEntity.setFirstName("Dev");
+        accountEntity.setEmail("dev@account");
+        accountEntity.setIsApproved(true);
 
         { // Admin
-            accountEntity = new AccountEntity();
-            accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER));
-            accountEntity.setFirstName("Dev");
-            accountEntity.setLastName("Project Manager");
-            accountEntity.setEmail("dev@account");
-            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
-            accountEntity.setIsApproved(true);
+            AccountEntity adminAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, adminAccountEntity, "id");
 
-            accountRepository.save(accountEntity);
+            adminAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ADMIN));
+            adminAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            adminAccountEntity.setLastName("Admin");
+
+            accountRepository.save(adminAccountEntity);
         }
 
-        { // Admin
-            accountEntity = new AccountEntity();
-            accountEntity.setResource(null);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ADMIN));
-            accountEntity.setFirstName("Dev");
-            accountEntity.setLastName("Admin");
-            accountEntity.setEmail("dev@account");
-            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
-            accountEntity.setIsApproved(true);
+        { // Project Manager
+            AccountEntity projectManagerAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, projectManagerAccountEntity, "id");
 
-            accountRepository.save(accountEntity);
+            projectManagerAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER));
+            projectManagerAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            projectManagerAccountEntity.setLastName("ProjectManager");
+
+            accountRepository.save(projectManagerAccountEntity);
         }
 
         { // Resource
@@ -193,16 +195,69 @@ public class DatabasePopulatorUtil {
 
             resourceRepository.save(resourceEntity);
 
-            accountEntity = new AccountEntity();
-            accountEntity.setResource(resourceEntity);
-            accountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE));
-            accountEntity.setFirstName("Dev");
-            accountEntity.setLastName("Resource");
-            accountEntity.setEmail("dev@account");
-            accountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
-            accountEntity.setIsApproved(true);
+            AccountEntity resourceAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, resourceAccountEntity, "id");
 
-            accountRepository.save(accountEntity);
+            resourceAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE));
+            resourceAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            resourceAccountEntity.setLastName("Resource");
+            resourceAccountEntity.setResource(resourceEntity);
+
+            accountRepository.save(resourceAccountEntity);
+        }
+    }
+
+    private void populateSingularDevAccounts() {
+        AccountEntity accountEntity = new AccountEntity();
+        accountEntity.setResource(null);
+        accountEntity.setFirstName("SDev");
+        accountEntity.setIsApproved(true);
+
+        { // Admin
+            AccountEntity adminAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, adminAccountEntity, "id");
+
+            adminAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.ADMIN));
+            adminAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            adminAccountEntity.setLastName("Admin");
+            adminAccountEntity.setEmail("dev@admin");
+
+            accountRepository.save(adminAccountEntity);
+        }
+
+        { // Project Manager
+            AccountEntity projectManagerAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, projectManagerAccountEntity, "id");
+
+            projectManagerAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.PROJECT_MANAGER));
+            projectManagerAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            projectManagerAccountEntity.setLastName("ProjectManager");
+            projectManagerAccountEntity.setEmail("dev@project-manager");
+
+            accountRepository.save(projectManagerAccountEntity);
+        }
+
+        { // Resource
+            ResourceEntity resourceEntity = new ResourceEntity();
+            resourceEntity.setBanding(enumUtil.bandingToEntity(BandingEnum.BAND_FIVE));
+            resourceEntity.setSubRole(enumUtil.subRoleToEntity(SubRoleEnum.BACKEND_DEVELOPER));
+            resourceEntity.setMainRole(enumUtil.mainRoleToEntity(MainRoleEnum.DEVELOPER));
+            resourceEntity.setCostPerHour(new BigDecimal("12.5"));
+            resourceEntity.setDailyLateFee(resourceUtil.calculateDailyLateFee(resourceEntity.getCostPerHour()));
+            resourceEntity.setLoanedClient(null);
+
+            resourceRepository.save(resourceEntity);
+
+            AccountEntity resourceAccountEntity = new AccountEntity();
+            BeanUtils.copyProperties(accountEntity, resourceAccountEntity, "id");
+
+            resourceAccountEntity.setAccountType(enumUtil.accountTypeToEntity(AccountTypeEnum.RESOURCE));
+            resourceAccountEntity.setEncodedPassword(accountUtil.hashPassword("password"));
+            resourceAccountEntity.setLastName("Resource");
+            resourceAccountEntity.setResource(resourceEntity);
+            resourceAccountEntity.setEmail("dev@resource");
+
+            accountRepository.save(resourceAccountEntity);
         }
     }
 

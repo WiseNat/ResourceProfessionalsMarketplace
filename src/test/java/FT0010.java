@@ -55,7 +55,7 @@ public class FT0010 {
     }
 
     /**
-     * FT0032
+     * FTC0032
      */
     @Test
     public void testLoanResourceWithValidLoanTO() {
@@ -92,7 +92,7 @@ public class FT0010 {
     }
 
     /**
-     * FT0033
+     * FTC0033
      */
     @Test
     public void testLoanResourceWithNotEnoughAvailableResourcesAndNullSubRole() {

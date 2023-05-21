@@ -59,6 +59,9 @@ public class FT0003 {
         when(enumUtil.accountTypeToEntity(any())).thenReturn(new AccountTypeEntity());
     }
 
+    /**
+     * FTC0009
+     */
     @Test
     public void testTerminateFlowIfAccountExists() {
         when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(new AccountEntity());
@@ -69,6 +72,9 @@ public class FT0003 {
         verify(createAnAccountService, never()).persistAccountAndApproval(any());
     }
 
+    /**
+     * FTC0010
+     */
     @Test
     public void testContinueFlowIfAccountDoesNotExist() {
         when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);

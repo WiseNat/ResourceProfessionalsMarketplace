@@ -57,7 +57,7 @@ public class CreateAnAccountService {
      * @return all violating fields
      */
     public String[] createAccount(CreateAccountTO createAccountTO) {
-        if (createAccountTO.getAccountType() == AccountTypeEnum.ADMIN) {
+        if (createAccountTO.getAccountType() == null || createAccountTO.getAccountType() == AccountTypeEnum.ADMIN) {
             return new String[]{"accountType"};
         }
 

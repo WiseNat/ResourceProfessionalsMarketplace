@@ -39,18 +39,24 @@ public class FT0008 {
         resourceTO = new ResourceTO();
     }
 
+    /**
+     * FTC0024
+     */
     @Test
-    public void testUpdateDetailsWithNullSubRole() {
-        resourceTO.setSubRole(null);
+    public void testUpdateDetailsWithSubRole() {
+        resourceTO.setSubRole(SubRoleEnum.BACKEND_DEVELOPER);
 
         resourceService.updateResourceDetails(resourceEntity, resourceTO);
 
         verify(resourceRepository).save(resourceEntity);
     }
 
+    /**
+     * FTC0025
+     */
     @Test
-    public void testUpdateDetailsWithSubRole() {
-        resourceTO.setSubRole(SubRoleEnum.BACKEND_DEVELOPER);
+    public void testUpdateDetailsWithNullSubRole() {
+        resourceTO.setSubRole(null);
 
         resourceService.updateResourceDetails(resourceEntity, resourceTO);
 

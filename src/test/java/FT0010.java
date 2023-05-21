@@ -54,6 +54,9 @@ public class FT0010 {
         when(enumUtil.subRoleToEntity(any())).thenReturn(new SubRoleEntity());
     }
 
+    /**
+     * FT0032
+     */
     @Test
     public void testLoanResourceWithValidLoanTO() {
 
@@ -88,6 +91,9 @@ public class FT0010 {
         assertEquals(resourceEntityCaptor.getAllValues().size(), resourcesToLoan);
     }
 
+    /**
+     * FT0033
+     */
     @Test
     public void testLoanResourceWithNotEnoughAvailableResourcesAndNullSubRole() {
         int availableResources = 3;

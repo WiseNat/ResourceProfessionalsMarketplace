@@ -51,9 +51,23 @@ public class FT0002 {
         createAccountTO.setPassword("PASSWORD");
     }
 
+    /**
+     * FTC0005
+     */
     @Test
     public void testIgnoreAdminAccountCreation() {
         createAccountTO.setAccountType(AccountTypeEnum.ADMIN);
+
+        createAnAccountService.createAccount(createAccountTO);
+        verify(createAnAccountService, never()).persistAccountAndApproval(any());
+    }
+
+    /**
+     * FTC0008
+     */
+    @Test
+    public void testIgnoreUnknownAccountCreation() {
+        createAccountTO.setAccountType(AccountTypeEnum.valueToEnum("FAKE VALUE"));
 
         createAnAccountService.createAccount(createAccountTO);
         verify(createAnAccountService, never()).persistAccountAndApproval(any());
@@ -70,6 +84,9 @@ public class FT0002 {
             doNothing().when(createAnAccountService).persistAccountAndApproval(any());
         }
 
+        /**
+         * FTC0006
+         */
         @Test
         public void testAcknowledgeResourceAccountCreation() {
             createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
@@ -79,6 +96,9 @@ public class FT0002 {
             verify(createAnAccountService, times(1)).persistAccountAndApproval(any());
         }
 
+        /**
+         * FTC0007
+         */
         @Test
         public void testAcknowledgeProjectManagerAccountCreation() {
             createAccountTO.setAccountType(AccountTypeEnum.RESOURCE);
@@ -87,6 +107,5 @@ public class FT0002 {
 
             verify(createAnAccountService, times(1)).persistAccountAndApproval(any());
         }
-
     }
 }

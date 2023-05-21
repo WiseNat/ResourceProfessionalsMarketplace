@@ -49,6 +49,9 @@ public class FT0001 {
         when(accountTypeRepository.findByName(any())).thenReturn(new AccountTypeEntity());
     }
 
+    /**
+     * FTC0001
+     */
     @Test
     public void testAuthenticateWithValidAccount() {
         AccountEntity account = new AccountEntity();
@@ -60,6 +63,9 @@ public class FT0001 {
         assertTrue(accountUtil.authenticate(logInAccountTO));
     }
 
+    /**
+     * FTC0002
+     */
     @Test
     public void testAuthenticateWithInvalidPassword() {
         AccountEntity account = new AccountEntity();
@@ -71,6 +77,9 @@ public class FT0001 {
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }
 
+    /**
+     * FTC0003
+     */
     @Test
     public void testAuthenticateWithUnapprovedAccount() {
         AccountEntity account = new AccountEntity();
@@ -81,6 +90,9 @@ public class FT0001 {
         assertFalse(accountUtil.authenticate(logInAccountTO));
     }
 
+    /**
+     * FTC0004
+     */
     @Test
     public void testAuthenticateWithNoAccount() {
         when(accountRepository.findByEmailAndAccountType(any(), any())).thenReturn(null);

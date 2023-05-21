@@ -117,7 +117,12 @@ public class ResourceController implements MainView {
 
         updateSubRoles();
 
-        updateDetails.getController().getSubRoleField().setValue(resourceEntity.getSubRole().getName());
+        if (resourceEntity.getSubRole() == null) {
+            updateDetails.getController().getSubRoleField().setValue(null);
+            updateDetails.getController().getSubRoleField().setDisable(true);
+        } else {
+            updateDetails.getController().getSubRoleField().setValue(resourceEntity.getSubRole().getName());
+        }
 
         updateDetails.getController().getMainRoleField().setOnAction(this::mainRoleFieldChanged);
         updateDetails.getController().getSaveDetailsButton().setOnMouseClicked(this::saveDetailsClicked);
@@ -139,7 +144,8 @@ public class ResourceController implements MainView {
         String mainRole = updateDetails.getController().getMainRoleField().getValue();
         String costPerHour = updateDetails.getController().getCostPerHourField().getText();
 
-        RawResourceTO rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
+        RawResourceTO rawResourceTO = new RawResourceTO(resourceEntity, mainRole, banding, costPerHour);
+        rawResourceTO.setSubRole(subRole);
 
         InvalidFieldsAndDataTO<ResourceTO> convertedTO = resourceService.createResourceTo(rawResourceTO);
 

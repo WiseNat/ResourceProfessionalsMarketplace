@@ -20,7 +20,6 @@ public class RawResourceTO {
     @NonNull
     private String mainRole;
 
-    @NonNull
     private String subRole;
 
     @NonNull

@@ -88,7 +88,8 @@ public class FT0007 {
             String banding = BandingEnum.BAND_TWO.value;
             String costPerHour = "10.5";
 
-            rawResourceTO = new RawResourceTO(resourceEntity, mainRole, subRole, banding, costPerHour);
+            rawResourceTO = new RawResourceTO(resourceEntity, mainRole, banding, costPerHour);
+            rawResourceTO.setSubRole(subRole);
 
             expectedDailyLateFee = new BigDecimal("40.0").multiply(new BigDecimal(rawResourceTO.getCostPerHour()));
         }

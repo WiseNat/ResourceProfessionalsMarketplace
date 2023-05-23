@@ -71,7 +71,6 @@ public class CreateAnAccountService {
                 createAccountTO.getEmail(), enumUtil.accountTypeToEntity(createAccountTO.getAccountType()));
 
         if (existingAccountEntity != null) {
-            System.out.println("Account already exists. If you've already submitted a create account request then please wait.");
             return reflectionUtil.getFields(createAccountTO);
         }
 

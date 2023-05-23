@@ -42,7 +42,6 @@ public class RolesValidator implements ConstraintValidator<Roles, RolesContainer
         }
 
         if (!isValid) {
-            System.out.println("bad");
             context.disableDefaultConstraintViolation();
             context
                     .buildConstraintViolationWithTemplate("invalid role combination")

@@ -27,7 +27,7 @@
 |------------------------------------------------------|----------------------------------------------------------------------------------------------------------|---------------------------------------------|
 | spring.jpa.properties.hibernate.hbm2ddl.auto         | Hibernate database generation type.                                                                      | none, create, create-drop, validate, update |
 | database-populator.create-fake-data                  | Whether to populate the database with fake data or not                                                   | true, false                                 |
-| database-populator.fake-unapproved-accounts-quantity | The amount of fake unapproved accounts to create; only valid if database-populator.create-fake-data=true |                                             |
-| database-populator.fake-available-resources-quantity | The amount of fake available resources to create; only valid if database-populator.create-fake-data=true |                                             |
-| database-populator.fake-loaned-resources-quantity    | The amount of fake loaned resources to create; only valid if database-populator.create-fake-data=true    |                                             |
+| database-populator.fake-unapproved-accounts-quantity | The amount of fake unapproved accounts to create; only valid if database-populator.create-fake-data=true | Any int                                     |
+| database-populator.fake-available-resources-quantity | The amount of fake available resources to create; only valid if database-populator.create-fake-data=true | Any int                                     |
+| database-populator.fake-loaned-resources-quantity    | The amount of fake loaned resources to create; only valid if database-populator.create-fake-data=true    | Any int                                     |
 
